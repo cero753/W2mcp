@@ -1,0 +1,4 @@
+{
+  "notion": "./out/notion-dual/server.ts",
+  "frankfurter": "./out/frankfurter-http/server.ts"
+}

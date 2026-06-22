@@ -1,0 +1,31 @@
+{
+  "name": "anymcp",
+  "version": "0.1.0",
+  "description": "Turn any API's docs URL into a working MCP server — no OpenAPI spec required.",
+  "type": "module",
+  "bin": {
+    "anymcp": "src/cli.ts"
+  },
+  "scripts": {
+    "anymcp": "tsx src/cli.ts",
+    "verify": "tsx src/verify-cli.ts",
+    "gen": "tsx src/gen-cli.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.40.0",
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "openai": "^6.42.0",
+    "pg": "^8.21.0",
+    "playwright": "^1.60.0",
+    "turndown": "^7.2.0",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/pg": "^8.20.0",
+    "@types/turndown": "^5.0.5",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}

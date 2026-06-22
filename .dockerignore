@@ -1,0 +1,8 @@
+node_modules
+.git
+test-*.mjs
+pw-smoke.mjs
+*.test.*
+.test-store.json
+anymcp-store.json
+.env

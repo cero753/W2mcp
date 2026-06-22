@@ -1,0 +1,12 @@
+# Secrets — NEVER commit
+.env
+.env.*
+
+# Dependencies
+node_modules/
+
+# Generated MCP servers (produced by `anymcp <url>`) + test artifacts
+out/
+anymcp-store.json
+.test-store.json
+*.log
