@@ -1,0 +1,20 @@
+{
+  "api": "CoinGecko API",
+  "tokenEnv": "COINGECKO_API_TOKEN",
+  "hadToken": false,
+  "endpoints": [
+    {
+      "name": "coins_list_with_market_data",
+      "status": "structurally-checked",
+      "detail": "needs args we can't synthesize — not live-probed"
+    },
+    {
+      "name": "coin_price_by_ids_symbols_or_names",
+      "status": "structurally-checked",
+      "detail": "needs args we can't synthesize — not live-probed"
+    }
+  ],
+  "summary": {
+    "structurally-checked": 2
+  }
+}

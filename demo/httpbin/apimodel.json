@@ -1,0 +1,1370 @@
+{
+  "api_name": "httpbin.org",
+  "base_url": "https://httpbin.org",
+  "auth": {
+    "type": "none",
+    "location": null,
+    "header_name": null,
+    "format": null,
+    "extra_headers": [],
+    "confidence": 1
+  },
+  "endpoints": [
+    {
+      "name": "get_absolute_redirect_n",
+      "summary": "Absolutely 302 Redirects n times.",
+      "method": "GET",
+      "path": "/absolute-redirect/{n}",
+      "operation": "read",
+      "path_params": [
+        {
+          "name": "n",
+          "type": "string",
+          "required": true,
+          "description": ""
+        }
+      ],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Redirects"
+    },
+    {
+      "name": "get_anything",
+      "summary": "Returns anything passed in request data.",
+      "method": "GET",
+      "path": "/anything",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Anything"
+    },
+    {
+      "name": "post_anything",
+      "summary": "Returns anything passed in request data.",
+      "method": "POST",
+      "path": "/anything",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Anything"
+    },
+    {
+      "name": "put_anything",
+      "summary": "Returns anything passed in request data.",
+      "method": "PUT",
+      "path": "/anything",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Anything"
+    },
+    {
+      "name": "patch_anything",
+      "summary": "Returns anything passed in request data.",
+      "method": "PATCH",
+      "path": "/anything",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Anything"
+    },
+    {
+      "name": "delete_anything",
+      "summary": "Returns anything passed in request data.",
+      "method": "DELETE",
+      "path": "/anything",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Anything"
+    },
+    {
+      "name": "get_anything_anything",
+      "summary": "Returns anything passed in request data.",
+      "method": "GET",
+      "path": "/anything/{anything}",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Anything"
+    },
+    {
+      "name": "post_anything_anything",
+      "summary": "Returns anything passed in request data.",
+      "method": "POST",
+      "path": "/anything/{anything}",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Anything"
+    },
+    {
+      "name": "put_anything_anything",
+      "summary": "Returns anything passed in request data.",
+      "method": "PUT",
+      "path": "/anything/{anything}",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Anything"
+    },
+    {
+      "name": "patch_anything_anything",
+      "summary": "Returns anything passed in request data.",
+      "method": "PATCH",
+      "path": "/anything/{anything}",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Anything"
+    },
+    {
+      "name": "delete_anything_anything",
+      "summary": "Returns anything passed in request data.",
+      "method": "DELETE",
+      "path": "/anything/{anything}",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Anything"
+    },
+    {
+      "name": "get_base64_value",
+      "summary": "Decodes base64url-encoded string.",
+      "method": "GET",
+      "path": "/base64/{value}",
+      "operation": "read",
+      "path_params": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": true,
+          "description": ""
+        }
+      ],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Dynamic data"
+    },
+    {
+      "name": "get_basic_auth_user_passwd",
+      "summary": "Prompts the user for authorization using HTTP Basic Auth.",
+      "method": "GET",
+      "path": "/basic-auth/{user}/{passwd}",
+      "operation": "read",
+      "path_params": [
+        {
+          "name": "user",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "passwd",
+          "type": "string",
+          "required": true,
+          "description": ""
+        }
+      ],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [
+        {
+          "code": 401,
+          "meaning": "Unsuccessful authentication."
+        }
+      ],
+      "confidence": 1,
+      "notes": "tags: Auth"
+    },
+    {
+      "name": "get_bearer",
+      "summary": "Prompts the user for authorization using bearer authentication.",
+      "method": "GET",
+      "path": "/bearer",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [
+        {
+          "code": 401,
+          "meaning": "Unsuccessful authentication."
+        }
+      ],
+      "confidence": 1,
+      "notes": "tags: Auth"
+    },
+    {
+      "name": "get_brotli",
+      "summary": "Returns Brotli-encoded data.",
+      "method": "GET",
+      "path": "/brotli",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Response formats"
+    },
+    {
+      "name": "get_bytes_n",
+      "summary": "Returns n random bytes generated with given seed",
+      "method": "GET",
+      "path": "/bytes/{n}",
+      "operation": "read",
+      "path_params": [
+        {
+          "name": "n",
+          "type": "string",
+          "required": true,
+          "description": ""
+        }
+      ],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Dynamic data"
+    },
+    {
+      "name": "get_cache",
+      "summary": "Returns a 304 if an If-Modified-Since header or If-None-Match is present. Returns the same as a GET otherwise.",
+      "method": "GET",
+      "path": "/cache",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Response inspection"
+    },
+    {
+      "name": "get_cache_value",
+      "summary": "Sets a Cache-Control header for n seconds.",
+      "method": "GET",
+      "path": "/cache/{value}",
+      "operation": "read",
+      "path_params": [
+        {
+          "name": "value",
+          "type": "number",
+          "required": true,
+          "description": ""
+        }
+      ],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Response inspection"
+    },
+    {
+      "name": "get_cookies",
+      "summary": "Returns cookie data.",
+      "method": "GET",
+      "path": "/cookies",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Cookies"
+    },
+    {
+      "name": "get_cookies_delete",
+      "summary": "Deletes cookie(s) as provided by the query string and redirects to cookie list.",
+      "method": "GET",
+      "path": "/cookies/delete",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "freeform",
+          "type": "object",
+          "required": false,
+          "description": ""
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Cookies"
+    },
+    {
+      "name": "get_cookies_set",
+      "summary": "Sets cookie(s) as provided by the query string and redirects to cookie list.",
+      "method": "GET",
+      "path": "/cookies/set",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "freeform",
+          "type": "object",
+          "required": false,
+          "description": ""
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Cookies"
+    },
+    {
+      "name": "get_cookies_set_name_value",
+      "summary": "Sets a cookie and redirects to cookie list.",
+      "method": "GET",
+      "path": "/cookies/set/{name}/{value}",
+      "operation": "read",
+      "path_params": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": true,
+          "description": ""
+        }
+      ],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Cookies"
+    },
+    {
+      "name": "get_deflate",
+      "summary": "Returns Deflate-encoded data.",
+      "method": "GET",
+      "path": "/deflate",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Response formats"
+    },
+    {
+      "name": "get_delay_delay",
+      "summary": "Returns a delayed response (max of 10 seconds).",
+      "method": "GET",
+      "path": "/delay/{delay}",
+      "operation": "read",
+      "path_params": [
+        {
+          "name": "delay",
+          "type": "string",
+          "required": true,
+          "description": ""
+        }
+      ],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Dynamic data"
+    },
+    {
+      "name": "post_delay_delay",
+      "summary": "Returns a delayed response (max of 10 seconds).",
+      "method": "POST",
+      "path": "/delay/{delay}",
+      "operation": "write",
+      "path_params": [
+        {
+          "name": "delay",
+          "type": "string",
+          "required": true,
+          "description": ""
+        }
+      ],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Dynamic data"
+    },
+    {
+      "name": "put_delay_delay",
+      "summary": "Returns a delayed response (max of 10 seconds).",
+      "method": "PUT",
+      "path": "/delay/{delay}",
+      "operation": "write",
+      "path_params": [
+        {
+          "name": "delay",
+          "type": "string",
+          "required": true,
+          "description": ""
+        }
+      ],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Dynamic data"
+    },
+    {
+      "name": "patch_delay_delay",
+      "summary": "Returns a delayed response (max of 10 seconds).",
+      "method": "PATCH",
+      "path": "/delay/{delay}",
+      "operation": "write",
+      "path_params": [
+        {
+          "name": "delay",
+          "type": "string",
+          "required": true,
+          "description": ""
+        }
+      ],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Dynamic data"
+    },
+    {
+      "name": "delete_delay_delay",
+      "summary": "Returns a delayed response (max of 10 seconds).",
+      "method": "DELETE",
+      "path": "/delay/{delay}",
+      "operation": "write",
+      "path_params": [
+        {
+          "name": "delay",
+          "type": "string",
+          "required": true,
+          "description": ""
+        }
+      ],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Dynamic data"
+    },
+    {
+      "name": "delete_delete",
+      "summary": "The request's DELETE parameters.",
+      "method": "DELETE",
+      "path": "/delete",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: HTTP Methods"
+    },
+    {
+      "name": "get_deny",
+      "summary": "Returns page denied by robots.txt rules.",
+      "method": "GET",
+      "path": "/deny",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Response formats"
+    },
+    {
+      "name": "get_digest_auth_qop_user_passwd",
+      "summary": "Prompts the user for authorization using Digest Auth.",
+      "method": "GET",
+      "path": "/digest-auth/{qop}/{user}/{passwd}",
+      "operation": "read",
+      "path_params": [
+        {
+          "name": "qop",
+          "type": "string",
+          "required": true,
+          "description": "auth or auth-int"
+        },
+        {
+          "name": "user",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "passwd",
+          "type": "string",
+          "required": true,
+          "description": ""
+        }
+      ],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [
+        {
+          "code": 401,
+          "meaning": "Unsuccessful authentication."
+        }
+      ],
+      "confidence": 1,
+      "notes": "tags: Auth"
+    },
+    {
+      "name": "get_digest_auth_qop_user_passwd_algorithm",
+      "summary": "Prompts the user for authorization using Digest Auth + Algorithm.",
+      "method": "GET",
+      "path": "/digest-auth/{qop}/{user}/{passwd}/{algorithm}",
+      "operation": "read",
+      "path_params": [
+        {
+          "name": "qop",
+          "type": "string",
+          "required": true,
+          "description": "auth or auth-int"
+        },
+        {
+          "name": "user",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "passwd",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "algorithm",
+          "type": "string",
+          "required": true,
+          "description": "MD5, SHA-256, SHA-512"
+        }
+      ],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [
+        {
+          "code": 401,
+          "meaning": "Unsuccessful authentication."
+        }
+      ],
+      "confidence": 1,
+      "notes": "tags: Auth"
+    },
+    {
+      "name": "get_digest_auth_qop_user_passwd_algorithm_stale_after",
+      "summary": "Prompts the user for authorization using Digest Auth + Algorithm.",
+      "method": "GET",
+      "path": "/digest-auth/{qop}/{user}/{passwd}/{algorithm}/{stale_after}",
+      "operation": "read",
+      "path_params": [
+        {
+          "name": "qop",
+          "type": "string",
+          "required": true,
+          "description": "auth or auth-int"
+        },
+        {
+          "name": "user",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "passwd",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "algorithm",
+          "type": "string",
+          "required": true,
+          "description": "MD5, SHA-256, SHA-512"
+        },
+        {
+          "name": "stale_after",
+          "type": "string",
+          "required": true,
+          "description": ""
+        }
+      ],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [
+        {
+          "code": 401,
+          "meaning": "Unsuccessful authentication."
+        }
+      ],
+      "confidence": 1,
+      "notes": "tags: Auth"
+    },
+    {
+      "name": "get_drip",
+      "summary": "Drips data over a duration after an optional initial delay.",
+      "method": "GET",
+      "path": "/drip",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "duration",
+          "type": "number",
+          "required": false,
+          "description": "The amount of time (in seconds) over which to drip each byte"
+        },
+        {
+          "name": "numbytes",
+          "type": "number",
+          "required": false,
+          "description": "The number of bytes to respond with"
+        },
+        {
+          "name": "code",
+          "type": "number",
+          "required": false,
+          "description": "The response code that will be returned"
+        },
+        {
+          "name": "delay",
+          "type": "number",
+          "required": false,
+          "description": "The amount of time (in seconds) to delay before responding"
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Dynamic data"
+    },
+    {
+      "name": "get_encoding_utf8",
+      "summary": "Returns a UTF-8 encoded body.",
+      "method": "GET",
+      "path": "/encoding/utf8",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Response formats"
+    },
+    {
+      "name": "get_etag_etag",
+      "summary": "Assumes the resource has the given etag and responds to If-None-Match and If-Match headers appropriately.",
+      "method": "GET",
+      "path": "/etag/{etag}",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [
+        {
+          "code": 412,
+          "meaning": "match"
+        }
+      ],
+      "confidence": 1,
+      "notes": "tags: Response inspection"
+    },
+    {
+      "name": "get_get",
+      "summary": "The request's query parameters.",
+      "method": "GET",
+      "path": "/get",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: HTTP Methods"
+    },
+    {
+      "name": "get_gzip",
+      "summary": "Returns GZip-encoded data.",
+      "method": "GET",
+      "path": "/gzip",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Response formats"
+    },
+    {
+      "name": "get_headers",
+      "summary": "Return the incoming request's HTTP headers.",
+      "method": "GET",
+      "path": "/headers",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Request inspection"
+    },
+    {
+      "name": "get_hidden_basic_auth_user_passwd",
+      "summary": "Prompts the user for authorization using HTTP Basic Auth.",
+      "method": "GET",
+      "path": "/hidden-basic-auth/{user}/{passwd}",
+      "operation": "read",
+      "path_params": [
+        {
+          "name": "user",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "passwd",
+          "type": "string",
+          "required": true,
+          "description": ""
+        }
+      ],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [
+        {
+          "code": 404,
+          "meaning": "Unsuccessful authentication."
+        }
+      ],
+      "confidence": 1,
+      "notes": "tags: Auth"
+    },
+    {
+      "name": "get_html",
+      "summary": "Returns a simple HTML document.",
+      "method": "GET",
+      "path": "/html",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Response formats"
+    },
+    {
+      "name": "get_image",
+      "summary": "Returns a simple image of the type suggest by the Accept header.",
+      "method": "GET",
+      "path": "/image",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Images"
+    },
+    {
+      "name": "get_image_jpeg",
+      "summary": "Returns a simple JPEG image.",
+      "method": "GET",
+      "path": "/image/jpeg",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Images"
+    },
+    {
+      "name": "get_image_png",
+      "summary": "Returns a simple PNG image.",
+      "method": "GET",
+      "path": "/image/png",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Images"
+    },
+    {
+      "name": "get_image_svg",
+      "summary": "Returns a simple SVG image.",
+      "method": "GET",
+      "path": "/image/svg",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Images"
+    },
+    {
+      "name": "get_image_webp",
+      "summary": "Returns a simple WEBP image.",
+      "method": "GET",
+      "path": "/image/webp",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Images"
+    },
+    {
+      "name": "get_ip",
+      "summary": "Returns the requester's IP Address.",
+      "method": "GET",
+      "path": "/ip",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Request inspection"
+    },
+    {
+      "name": "get_json",
+      "summary": "Returns a simple JSON document.",
+      "method": "GET",
+      "path": "/json",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Response formats"
+    },
+    {
+      "name": "get_links_n_offset",
+      "summary": "Generate a page containing n links to other pages which do the same.",
+      "method": "GET",
+      "path": "/links/{n}/{offset}",
+      "operation": "read",
+      "path_params": [
+        {
+          "name": "n",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "offset",
+          "type": "string",
+          "required": true,
+          "description": ""
+        }
+      ],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Dynamic data"
+    },
+    {
+      "name": "patch_patch",
+      "summary": "The request's PATCH parameters.",
+      "method": "PATCH",
+      "path": "/patch",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: HTTP Methods"
+    },
+    {
+      "name": "post_post",
+      "summary": "The request's POST parameters.",
+      "method": "POST",
+      "path": "/post",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: HTTP Methods"
+    },
+    {
+      "name": "put_put",
+      "summary": "The request's PUT parameters.",
+      "method": "PUT",
+      "path": "/put",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: HTTP Methods"
+    },
+    {
+      "name": "get_range_numbytes",
+      "summary": "Streams n random bytes generated with given seed, at given chunk size per packet.",
+      "method": "GET",
+      "path": "/range/{numbytes}",
+      "operation": "read",
+      "path_params": [
+        {
+          "name": "numbytes",
+          "type": "string",
+          "required": true,
+          "description": ""
+        }
+      ],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Dynamic data"
+    },
+    {
+      "name": "get_redirect_to",
+      "summary": "302/3XX Redirects to the given URL.",
+      "method": "GET",
+      "path": "/redirect-to",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "url",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "status_code",
+          "type": "string",
+          "required": false,
+          "description": ""
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Redirects"
+    },
+    {
+      "name": "post_redirect_to",
+      "summary": "302/3XX Redirects to the given URL.",
+      "method": "POST",
+      "path": "/redirect-to",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Redirects"
+    },
+    {
+      "name": "put_redirect_to",
+      "summary": "302/3XX Redirects to the given URL.",
+      "method": "PUT",
+      "path": "/redirect-to",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Redirects"
+    },
+    {
+      "name": "patch_redirect_to",
+      "summary": "302/3XX Redirects to the given URL.",
+      "method": "PATCH",
+      "path": "/redirect-to",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Redirects"
+    },
+    {
+      "name": "delete_redirect_to",
+      "summary": "302/3XX Redirects to the given URL.",
+      "method": "DELETE",
+      "path": "/redirect-to",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Redirects"
+    },
+    {
+      "name": "get_redirect_n",
+      "summary": "302 Redirects n times.",
+      "method": "GET",
+      "path": "/redirect/{n}",
+      "operation": "read",
+      "path_params": [
+        {
+          "name": "n",
+          "type": "string",
+          "required": true,
+          "description": ""
+        }
+      ],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Redirects"
+    },
+    {
+      "name": "get_relative_redirect_n",
+      "summary": "Relatively 302 Redirects n times.",
+      "method": "GET",
+      "path": "/relative-redirect/{n}",
+      "operation": "read",
+      "path_params": [
+        {
+          "name": "n",
+          "type": "string",
+          "required": true,
+          "description": ""
+        }
+      ],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Redirects"
+    },
+    {
+      "name": "get_response_headers",
+      "summary": "Returns a set of response headers from the query string.",
+      "method": "GET",
+      "path": "/response-headers",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "freeform",
+          "type": "object",
+          "required": false,
+          "description": ""
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Response inspection"
+    },
+    {
+      "name": "post_response_headers",
+      "summary": "Returns a set of response headers from the query string.",
+      "method": "POST",
+      "path": "/response-headers",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "freeform",
+          "type": "object",
+          "required": false,
+          "description": ""
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Response inspection"
+    },
+    {
+      "name": "get_robots_txt",
+      "summary": "Returns some robots.txt rules.",
+      "method": "GET",
+      "path": "/robots.txt",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Response formats"
+    },
+    {
+      "name": "get_status_codes",
+      "summary": "Return status code or random status code if more than one are given",
+      "method": "GET",
+      "path": "/status/{codes}",
+      "operation": "read",
+      "path_params": [
+        {
+          "name": "codes",
+          "type": "string",
+          "required": true,
+          "description": ""
+        }
+      ],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [
+        {
+          "code": 400,
+          "meaning": "Client Errors"
+        },
+        {
+          "code": 500,
+          "meaning": "Server Errors"
+        }
+      ],
+      "confidence": 1,
+      "notes": "tags: Status codes"
+    },
+    {
+      "name": "post_status_codes",
+      "summary": "Return status code or random status code if more than one are given",
+      "method": "POST",
+      "path": "/status/{codes}",
+      "operation": "write",
+      "path_params": [
+        {
+          "name": "codes",
+          "type": "string",
+          "required": true,
+          "description": ""
+        }
+      ],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [
+        {
+          "code": 400,
+          "meaning": "Client Errors"
+        },
+        {
+          "code": 500,
+          "meaning": "Server Errors"
+        }
+      ],
+      "confidence": 1,
+      "notes": "tags: Status codes"
+    },
+    {
+      "name": "put_status_codes",
+      "summary": "Return status code or random status code if more than one are given",
+      "method": "PUT",
+      "path": "/status/{codes}",
+      "operation": "write",
+      "path_params": [
+        {
+          "name": "codes",
+          "type": "string",
+          "required": true,
+          "description": ""
+        }
+      ],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [
+        {
+          "code": 400,
+          "meaning": "Client Errors"
+        },
+        {
+          "code": 500,
+          "meaning": "Server Errors"
+        }
+      ],
+      "confidence": 1,
+      "notes": "tags: Status codes"
+    },
+    {
+      "name": "patch_status_codes",
+      "summary": "Return status code or random status code if more than one are given",
+      "method": "PATCH",
+      "path": "/status/{codes}",
+      "operation": "write",
+      "path_params": [
+        {
+          "name": "codes",
+          "type": "string",
+          "required": true,
+          "description": ""
+        }
+      ],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [
+        {
+          "code": 400,
+          "meaning": "Client Errors"
+        },
+        {
+          "code": 500,
+          "meaning": "Server Errors"
+        }
+      ],
+      "confidence": 1,
+      "notes": "tags: Status codes"
+    },
+    {
+      "name": "delete_status_codes",
+      "summary": "Return status code or random status code if more than one are given",
+      "method": "DELETE",
+      "path": "/status/{codes}",
+      "operation": "write",
+      "path_params": [
+        {
+          "name": "codes",
+          "type": "string",
+          "required": true,
+          "description": ""
+        }
+      ],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [
+        {
+          "code": 400,
+          "meaning": "Client Errors"
+        },
+        {
+          "code": 500,
+          "meaning": "Server Errors"
+        }
+      ],
+      "confidence": 1,
+      "notes": "tags: Status codes"
+    },
+    {
+      "name": "get_stream_bytes_n",
+      "summary": "Streams n random bytes generated with given seed, at given chunk size per packet.",
+      "method": "GET",
+      "path": "/stream-bytes/{n}",
+      "operation": "read",
+      "path_params": [
+        {
+          "name": "n",
+          "type": "string",
+          "required": true,
+          "description": ""
+        }
+      ],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Dynamic data"
+    },
+    {
+      "name": "get_stream_n",
+      "summary": "Stream n JSON responses",
+      "method": "GET",
+      "path": "/stream/{n}",
+      "operation": "read",
+      "path_params": [
+        {
+          "name": "n",
+          "type": "string",
+          "required": true,
+          "description": ""
+        }
+      ],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Dynamic data"
+    },
+    {
+      "name": "get_user_agent",
+      "summary": "Return the incoming requests's User-Agent header.",
+      "method": "GET",
+      "path": "/user-agent",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Request inspection"
+    },
+    {
+      "name": "get_uuid",
+      "summary": "Return a UUID4.",
+      "method": "GET",
+      "path": "/uuid",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Dynamic data"
+    },
+    {
+      "name": "get_xml",
+      "summary": "Returns a simple XML document.",
+      "method": "GET",
+      "path": "/xml",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: Response formats"
+    }
+  ],
+  "response_noise": []
+}

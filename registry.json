@@ -1,4 +1,7 @@
 {
-  "notion": "./out/notion-dual/server.ts",
-  "frankfurter": "./out/frankfurter-http/server.ts"
+  "coingecko": "./demo/coingecko/server.ts",
+  "frankfurter": "./out/frankfurter-http/server.ts",
+  "httpbin": "./demo/httpbin/server.ts",
+  "chuck": "./out/chuck-demo/server.ts",
+  "dog": "./out/dog-demo/server.ts"
 }

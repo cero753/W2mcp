@@ -12,6 +12,8 @@
  */
 import { createServer as createHttpServer, request as httpRequest, type IncomingMessage, type ServerResponse } from "node:http";
 import { spawn, type ChildProcess } from "node:child_process";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import type { Store } from "./store.js";
 
 export interface GatewayConfig {
@@ -19,6 +21,7 @@ export interface GatewayConfig {
   registry: Record<string, string>; // api name → generated server module path
   port: number;
   basePort?: number;                 // internal subprocess ports start here (default 41000)
+  registryPath?: string;             // if set, re-read on a miss so APIs added at runtime host without a restart
 }
 
 interface Backend { port: number; child: ChildProcess; ready: Promise<void> }
@@ -28,8 +31,21 @@ export async function startGateway(cfg: GatewayConfig) {
   const backends = new Map<string, Backend>();
   let nextPort = basePort;
 
+  // Hot-reload: if an api isn't in the registry yet, re-read registry.json (APIs added by `anymcp new`
+  // or the hub's create tool at runtime become hostable without restarting the gateway).
+  function resolvePath(api: string): string | undefined {
+    if (cfg.registry[api]) return cfg.registry[api];
+    if (cfg.registryPath) {
+      try {
+        const fresh = JSON.parse(readFileSync(cfg.registryPath, "utf8").replace(/^﻿/, "")) as Record<string, string>;
+        for (const [k, v] of Object.entries(fresh)) if (!cfg.registry[k]) cfg.registry[k] = resolve(v);
+      } catch {}
+    }
+    return cfg.registry[api];
+  }
+
   function spawnBackend(api: string): Backend | null {
-    const path = cfg.registry[api];
+    const path = resolvePath(api);
     if (!path) return null;
     const port = nextPort++;
     const child = spawn(process.execPath, ["--import", "tsx", path], {
@@ -64,9 +80,9 @@ export async function startGateway(cfg: GatewayConfig) {
     const customerId = await cfg.store.authenticate(key);
     if (!customerId) return end(res, 401, "invalid or missing anymcp API key");
 
-    // 2. Resolve THIS customer's credential for THIS api.
-    const cred = await cfg.store.getCredential(customerId, api);
-    if (cred === null) return end(res, 403, `no stored credential for customer/${api}`);
+    // 2. Resolve THIS customer's credential for THIS api. A public API generated at runtime may have no
+    //    stored credential yet — inject an empty string so it's callable immediately (public servers ignore it).
+    const cred = (await cfg.store.getCredential(customerId, api)) ?? "";
 
     // 3. Ensure the sandboxed subprocess is running.
     let backend: Backend | null;

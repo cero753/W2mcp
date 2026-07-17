@@ -1,0 +1,4018 @@
+{
+  "api_name": "Slack Web API",
+  "base_url": "https://slack.com/api",
+  "auth": {
+    "type": "oauth2",
+    "location": "header",
+    "header_name": "Authorization",
+    "format": "Bearer {token}",
+    "extra_headers": [],
+    "confidence": 1
+  },
+  "endpoints": [
+    {
+      "name": "admin_apps_approve",
+      "summary": "Approve an app for installation on a workspace.",
+      "method": "POST",
+      "path": "/admin.apps.approve",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.apps, admin"
+    },
+    {
+      "name": "admin_apps_approved_list",
+      "summary": "List approved apps for an org or workspace.",
+      "method": "GET",
+      "path": "/admin.apps.approved.list",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": true,
+          "description": "Authentication token. Requires scope: `admin.apps:read`"
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "required": false,
+          "description": "The maximum number of items to return. Must be between 1 - 1000 both inclusive."
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "Set `cursor` to `next_cursor` returned by the previous call to list items in the next page"
+        },
+        {
+          "name": "team_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "enterprise_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.apps.approved, admin"
+    },
+    {
+      "name": "admin_apps_requests_list",
+      "summary": "List app requests for a team/workspace.",
+      "method": "GET",
+      "path": "/admin.apps.requests.list",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": true,
+          "description": "Authentication token. Requires scope: `admin.apps:read`"
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "required": false,
+          "description": "The maximum number of items to return. Must be between 1 - 1000 both inclusive."
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "Set `cursor` to `next_cursor` returned by the previous call to list items in the next page"
+        },
+        {
+          "name": "team_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.apps.requests, admin"
+    },
+    {
+      "name": "admin_apps_restrict",
+      "summary": "Restrict an app for installation on a workspace.",
+      "method": "POST",
+      "path": "/admin.apps.restrict",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.apps, admin"
+    },
+    {
+      "name": "admin_apps_restricted_list",
+      "summary": "List restricted apps for an org or workspace.",
+      "method": "GET",
+      "path": "/admin.apps.restricted.list",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": true,
+          "description": "Authentication token. Requires scope: `admin.apps:read`"
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "required": false,
+          "description": "The maximum number of items to return. Must be between 1 - 1000 both inclusive."
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "Set `cursor` to `next_cursor` returned by the previous call to list items in the next page"
+        },
+        {
+          "name": "team_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "enterprise_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.apps.restricted, admin"
+    },
+    {
+      "name": "admin_conversations_archive",
+      "summary": "Archive a public or private channel.",
+      "method": "POST",
+      "path": "/admin.conversations.archive",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.conversations, admin"
+    },
+    {
+      "name": "admin_conversations_convert_to_private",
+      "summary": "Convert a public channel to a private channel.",
+      "method": "POST",
+      "path": "/admin.conversations.convertToPrivate",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.conversations, admin"
+    },
+    {
+      "name": "admin_conversations_create",
+      "summary": "Create a public or private channel-based conversation.",
+      "method": "POST",
+      "path": "/admin.conversations.create",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.conversations, admin"
+    },
+    {
+      "name": "admin_conversations_delete",
+      "summary": "Delete a public or private channel.",
+      "method": "POST",
+      "path": "/admin.conversations.delete",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.conversations, admin"
+    },
+    {
+      "name": "admin_conversations_disconnect_shared",
+      "summary": "Disconnect a connected channel from one or more workspaces.",
+      "method": "POST",
+      "path": "/admin.conversations.disconnectShared",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.conversations, admin"
+    },
+    {
+      "name": "admin_conversations_ekm_list_original_connected_channel_info",
+      "summary": "List all disconnected channels—i.e., channels that were once connected to other workspaces and then disconnected—and the corresponding original channel IDs for key revocation with EKM.",
+      "method": "GET",
+      "path": "/admin.conversations.ekm.listOriginalConnectedChannelInfo",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": true,
+          "description": "Authentication token. Requires scope: `admin.conversations:read`"
+        },
+        {
+          "name": "channel_ids",
+          "type": "string",
+          "required": false,
+          "description": "A comma-separated list of channels to filter to."
+        },
+        {
+          "name": "team_ids",
+          "type": "string",
+          "required": false,
+          "description": "A comma-separated list of the workspaces to which the channels you would like returned belong."
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "required": false,
+          "description": "The maximum number of items to return. Must be between 1 - 1000 both inclusive."
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "Set `cursor` to `next_cursor` returned by the previous call to list items in the next page."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.conversations.ekm, admin"
+    },
+    {
+      "name": "admin_conversations_get_conversation_prefs",
+      "summary": "Get conversation preferences for a public or private channel.",
+      "method": "GET",
+      "path": "/admin.conversations.getConversationPrefs",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "channel_id",
+          "type": "string",
+          "required": true,
+          "description": "The channel to get preferences for."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.conversations, admin"
+    },
+    {
+      "name": "admin_conversations_get_teams",
+      "summary": "Get all the workspaces a given public or private channel is connected to within this Enterprise org.",
+      "method": "GET",
+      "path": "/admin.conversations.getTeams",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "channel_id",
+          "type": "string",
+          "required": true,
+          "description": "The channel to determine connected workspaces within the organization for."
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "Set `cursor` to `next_cursor` returned by the previous call to list items in the next page"
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "required": false,
+          "description": "The maximum number of items to return. Must be between 1 - 1000 both inclusive."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.conversations, admin"
+    },
+    {
+      "name": "admin_conversations_invite",
+      "summary": "Invite a user to a public or private channel.",
+      "method": "POST",
+      "path": "/admin.conversations.invite",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.conversations, admin"
+    },
+    {
+      "name": "admin_conversations_rename",
+      "summary": "Rename a public or private channel.",
+      "method": "POST",
+      "path": "/admin.conversations.rename",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.conversations, admin"
+    },
+    {
+      "name": "admin_conversations_restrict_access_add_group",
+      "summary": "Add an allowlist of IDP groups for accessing a channel",
+      "method": "POST",
+      "path": "/admin.conversations.restrictAccess.addGroup",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.conversations.restrictAccess, admin"
+    },
+    {
+      "name": "admin_conversations_restrict_access_list_groups",
+      "summary": "List all IDP Groups linked to a channel",
+      "method": "GET",
+      "path": "/admin.conversations.restrictAccess.listGroups",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": true,
+          "description": "Authentication token. Requires scope: `admin.conversations:read`"
+        },
+        {
+          "name": "channel_id",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "team_id",
+          "type": "string",
+          "required": false,
+          "description": "The workspace where the channel exists. This argument is required for channels only tied to one workspace, and optional for channels that are shared across an organization."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.conversations.restrictAccess, admin"
+    },
+    {
+      "name": "admin_conversations_restrict_access_remove_group",
+      "summary": "Remove a linked IDP group linked from a private channel",
+      "method": "POST",
+      "path": "/admin.conversations.restrictAccess.removeGroup",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.conversations.restrictAccess, admin"
+    },
+    {
+      "name": "admin_conversations_search",
+      "summary": "Search for public or private channels in an Enterprise organization.",
+      "method": "GET",
+      "path": "/admin.conversations.search",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "team_ids",
+          "type": "string",
+          "required": false,
+          "description": "Comma separated string of team IDs, signifying the workspaces to search through."
+        },
+        {
+          "name": "query",
+          "type": "string",
+          "required": false,
+          "description": "Name of the the channel to query by."
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "required": false,
+          "description": "Maximum number of items to be returned. Must be between 1 - 20 both inclusive. Default is 10."
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "Set `cursor` to `next_cursor` returned by the previous call to list items in the next page."
+        },
+        {
+          "name": "search_channel_types",
+          "type": "string",
+          "required": false,
+          "description": "The type of channel to include or exclude in the search. For example `private` will search private channels, while `private_exclude` will exclude them. For a full list of types, check the [Types section](#types)."
+        },
+        {
+          "name": "sort",
+          "type": "string",
+          "required": false,
+          "description": "Possible values are `relevant` (search ranking based on what we think is closest), `name` (alphabetical), `member_count` (number of users in the channel), and `created` (date channel was created). You can optionally pair this with the `sort_dir` arg to change how it is sorted "
+        },
+        {
+          "name": "sort_dir",
+          "type": "string",
+          "required": false,
+          "description": "Sort direction. Possible values are `asc` for ascending order like (1, 2, 3) or (a, b, c), and `desc` for descending order like (3, 2, 1) or (c, b, a)"
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.conversations, admin"
+    },
+    {
+      "name": "admin_conversations_set_conversation_prefs",
+      "summary": "Set the posting permissions for a public or private channel.",
+      "method": "POST",
+      "path": "/admin.conversations.setConversationPrefs",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.conversations, admin"
+    },
+    {
+      "name": "admin_conversations_set_teams",
+      "summary": "Set the workspaces in an Enterprise grid org that connect to a public or private channel.",
+      "method": "POST",
+      "path": "/admin.conversations.setTeams",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.conversations, admin"
+    },
+    {
+      "name": "admin_conversations_unarchive",
+      "summary": "Unarchive a public or private channel.",
+      "method": "POST",
+      "path": "/admin.conversations.unarchive",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.conversations, admin"
+    },
+    {
+      "name": "admin_emoji_add",
+      "summary": "Add an emoji.",
+      "method": "POST",
+      "path": "/admin.emoji.add",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.emoji, admin"
+    },
+    {
+      "name": "admin_emoji_add_alias",
+      "summary": "Add an emoji alias.",
+      "method": "POST",
+      "path": "/admin.emoji.addAlias",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.emoji, admin"
+    },
+    {
+      "name": "admin_emoji_list",
+      "summary": "List emoji for an Enterprise Grid organization.",
+      "method": "GET",
+      "path": "/admin.emoji.list",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": true,
+          "description": "Authentication token. Requires scope: `admin.teams:read`"
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "Set `cursor` to `next_cursor` returned by the previous call to list items in the next page"
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "required": false,
+          "description": "The maximum number of items to return. Must be between 1 - 1000 both inclusive."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.emoji, admin"
+    },
+    {
+      "name": "admin_emoji_remove",
+      "summary": "Remove an emoji across an Enterprise Grid organization",
+      "method": "POST",
+      "path": "/admin.emoji.remove",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.emoji, admin"
+    },
+    {
+      "name": "admin_emoji_rename",
+      "summary": "Rename an emoji.",
+      "method": "POST",
+      "path": "/admin.emoji.rename",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.emoji, admin"
+    },
+    {
+      "name": "admin_invite_requests_approve",
+      "summary": "Approve a workspace invite request.",
+      "method": "POST",
+      "path": "/admin.inviteRequests.approve",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.inviteRequests, admin"
+    },
+    {
+      "name": "admin_invite_requests_approved_list",
+      "summary": "List all approved workspace invite requests.",
+      "method": "GET",
+      "path": "/admin.inviteRequests.approved.list",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "team_id",
+          "type": "string",
+          "required": false,
+          "description": "ID for the workspace where the invite requests were made."
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "Value of the `next_cursor` field sent as part of the previous API response"
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "required": false,
+          "description": "The number of results that will be returned by the API on each invocation. Must be between 1 - 1000, both inclusive"
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.inviteRequests.approved, admin"
+    },
+    {
+      "name": "admin_invite_requests_denied_list",
+      "summary": "List all denied workspace invite requests.",
+      "method": "GET",
+      "path": "/admin.inviteRequests.denied.list",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "team_id",
+          "type": "string",
+          "required": false,
+          "description": "ID for the workspace where the invite requests were made."
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "Value of the `next_cursor` field sent as part of the previous api response"
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "required": false,
+          "description": "The number of results that will be returned by the API on each invocation. Must be between 1 - 1000 both inclusive"
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.inviteRequests.denied, admin"
+    },
+    {
+      "name": "admin_invite_requests_deny",
+      "summary": "Deny a workspace invite request.",
+      "method": "POST",
+      "path": "/admin.inviteRequests.deny",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.inviteRequests, admin"
+    },
+    {
+      "name": "admin_invite_requests_list",
+      "summary": "List all pending workspace invite requests.",
+      "method": "GET",
+      "path": "/admin.inviteRequests.list",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "team_id",
+          "type": "string",
+          "required": false,
+          "description": "ID for the workspace where the invite requests were made."
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "Value of the `next_cursor` field sent as part of the previous API response"
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "required": false,
+          "description": "The number of results that will be returned by the API on each invocation. Must be between 1 - 1000, both inclusive"
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.inviteRequests, admin"
+    },
+    {
+      "name": "admin_teams_admins_list",
+      "summary": "List all of the admins on a given workspace.",
+      "method": "GET",
+      "path": "/admin.teams.admins.list",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": true,
+          "description": "Authentication token. Requires scope: `admin.teams:read`"
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "required": false,
+          "description": "The maximum number of items to return."
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "Set `cursor` to `next_cursor` returned by the previous call to list items in the next page."
+        },
+        {
+          "name": "team_id",
+          "type": "string",
+          "required": true,
+          "description": ""
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.teams.admins, admin"
+    },
+    {
+      "name": "admin_teams_create",
+      "summary": "Create an Enterprise team.",
+      "method": "POST",
+      "path": "/admin.teams.create",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.teams, admin"
+    },
+    {
+      "name": "admin_teams_list",
+      "summary": "List all teams on an Enterprise organization",
+      "method": "GET",
+      "path": "/admin.teams.list",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "limit",
+          "type": "number",
+          "required": false,
+          "description": "The maximum number of items to return. Must be between 1 - 100 both inclusive."
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "Set `cursor` to `next_cursor` returned by the previous call to list items in the next page."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.teams, admin"
+    },
+    {
+      "name": "admin_teams_owners_list",
+      "summary": "List all of the owners on a given workspace.",
+      "method": "GET",
+      "path": "/admin.teams.owners.list",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": true,
+          "description": "Authentication token. Requires scope: `admin.teams:read`"
+        },
+        {
+          "name": "team_id",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "required": false,
+          "description": "The maximum number of items to return. Must be between 1 - 1000 both inclusive."
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "Set `cursor` to `next_cursor` returned by the previous call to list items in the next page."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.teams.owners, admin"
+    },
+    {
+      "name": "admin_teams_settings_info",
+      "summary": "Fetch information about settings in a workspace",
+      "method": "GET",
+      "path": "/admin.teams.settings.info",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "team_id",
+          "type": "string",
+          "required": true,
+          "description": ""
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.teams.settings, admin"
+    },
+    {
+      "name": "admin_teams_settings_set_default_channels",
+      "summary": "Set the default channels of a workspace.",
+      "method": "POST",
+      "path": "/admin.teams.settings.setDefaultChannels",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.teams.settings, admin"
+    },
+    {
+      "name": "admin_teams_settings_set_description",
+      "summary": "Set the description of a given workspace.",
+      "method": "POST",
+      "path": "/admin.teams.settings.setDescription",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.teams.settings, admin"
+    },
+    {
+      "name": "admin_teams_settings_set_discoverability",
+      "summary": "An API method that allows admins to set the discoverability of a given workspace",
+      "method": "POST",
+      "path": "/admin.teams.settings.setDiscoverability",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.teams.settings, admin"
+    },
+    {
+      "name": "admin_teams_settings_set_icon",
+      "summary": "Sets the icon of a workspace.",
+      "method": "POST",
+      "path": "/admin.teams.settings.setIcon",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.teams.settings, admin"
+    },
+    {
+      "name": "admin_teams_settings_set_name",
+      "summary": "Set the name of a given workspace.",
+      "method": "POST",
+      "path": "/admin.teams.settings.setName",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.teams.settings, admin"
+    },
+    {
+      "name": "admin_usergroups_add_channels",
+      "summary": "Add one or more default channels to an IDP group.",
+      "method": "POST",
+      "path": "/admin.usergroups.addChannels",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.usergroups, admin"
+    },
+    {
+      "name": "admin_usergroups_add_teams",
+      "summary": "Associate one or more default workspaces with an organization-wide IDP group.",
+      "method": "POST",
+      "path": "/admin.usergroups.addTeams",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.usergroups, admin"
+    },
+    {
+      "name": "admin_usergroups_list_channels",
+      "summary": "List the channels linked to an org-level IDP group (user group).",
+      "method": "GET",
+      "path": "/admin.usergroups.listChannels",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "usergroup_id",
+          "type": "string",
+          "required": true,
+          "description": "ID of the IDP group to list default channels for."
+        },
+        {
+          "name": "team_id",
+          "type": "string",
+          "required": false,
+          "description": "ID of the the workspace."
+        },
+        {
+          "name": "include_num_members",
+          "type": "boolean",
+          "required": false,
+          "description": "Flag to include or exclude the count of members per channel."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.usergroups, admin"
+    },
+    {
+      "name": "admin_usergroups_remove_channels",
+      "summary": "Remove one or more default channels from an org-level IDP group (user group).",
+      "method": "POST",
+      "path": "/admin.usergroups.removeChannels",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.usergroups, admin"
+    },
+    {
+      "name": "admin_users_assign",
+      "summary": "Add an Enterprise user to a workspace.",
+      "method": "POST",
+      "path": "/admin.users.assign",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.users, admin"
+    },
+    {
+      "name": "admin_users_invite",
+      "summary": "Invite a user to a workspace.",
+      "method": "POST",
+      "path": "/admin.users.invite",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.users, admin"
+    },
+    {
+      "name": "admin_users_list",
+      "summary": "List users on a workspace",
+      "method": "GET",
+      "path": "/admin.users.list",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "team_id",
+          "type": "string",
+          "required": true,
+          "description": "The ID (`T1234`) of the workspace."
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "Set `cursor` to `next_cursor` returned by the previous call to list items in the next page."
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "required": false,
+          "description": "Limit for how many users to be retrieved per page"
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.users, admin"
+    },
+    {
+      "name": "admin_users_remove",
+      "summary": "Remove a user from a workspace.",
+      "method": "POST",
+      "path": "/admin.users.remove",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.users, admin"
+    },
+    {
+      "name": "admin_users_session_invalidate",
+      "summary": "Invalidate a single session for a user by session_id",
+      "method": "POST",
+      "path": "/admin.users.session.invalidate",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.users.session, admin"
+    },
+    {
+      "name": "admin_users_session_reset",
+      "summary": "Wipes all valid sessions on all devices for a given user",
+      "method": "POST",
+      "path": "/admin.users.session.reset",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.users.session, admin"
+    },
+    {
+      "name": "admin_users_set_admin",
+      "summary": "Set an existing guest, regular user, or owner to be an admin user.",
+      "method": "POST",
+      "path": "/admin.users.setAdmin",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.users, admin"
+    },
+    {
+      "name": "admin_users_set_expiration",
+      "summary": "Set an expiration for a guest user",
+      "method": "POST",
+      "path": "/admin.users.setExpiration",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.users, admin"
+    },
+    {
+      "name": "admin_users_set_owner",
+      "summary": "Set an existing guest, regular user, or admin user to be a workspace owner.",
+      "method": "POST",
+      "path": "/admin.users.setOwner",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.users, admin"
+    },
+    {
+      "name": "admin_users_set_regular",
+      "summary": "Set an existing guest user, admin user, or owner to be a regular user.",
+      "method": "POST",
+      "path": "/admin.users.setRegular",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: admin.users, admin"
+    },
+    {
+      "name": "api_test",
+      "summary": "Checks API calling code.",
+      "method": "GET",
+      "path": "/api.test",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "error",
+          "type": "string",
+          "required": false,
+          "description": "Error response to return"
+        },
+        {
+          "name": "foo",
+          "type": "string",
+          "required": false,
+          "description": "example property to return"
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: api"
+    },
+    {
+      "name": "apps_event_authorizations_list",
+      "summary": "Get a list of authorizations for the given event context. Each authorization represents an app installation that the event is visible to.",
+      "method": "GET",
+      "path": "/apps.event.authorizations.list",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "event_context",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "required": false,
+          "description": ""
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: apps.event.authorizations, apps"
+    },
+    {
+      "name": "apps_permissions_info",
+      "summary": "Returns list of permissions this app has on a team.",
+      "method": "GET",
+      "path": "/apps.permissions.info",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": false,
+          "description": "Authentication token. Requires scope: `none`"
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: apps.permissions, apps"
+    },
+    {
+      "name": "apps_permissions_request",
+      "summary": "Allows an app to request additional scopes",
+      "method": "GET",
+      "path": "/apps.permissions.request",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": true,
+          "description": "Authentication token. Requires scope: `none`"
+        },
+        {
+          "name": "scopes",
+          "type": "string",
+          "required": true,
+          "description": "A comma separated list of scopes to request for"
+        },
+        {
+          "name": "trigger_id",
+          "type": "string",
+          "required": true,
+          "description": "Token used to trigger the permissions API"
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: apps.permissions, apps"
+    },
+    {
+      "name": "apps_permissions_resources_list",
+      "summary": "Returns list of resource grants this app has on a team.",
+      "method": "GET",
+      "path": "/apps.permissions.resources.list",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": true,
+          "description": "Authentication token. Requires scope: `none`"
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "Paginate through collections of data by setting the `cursor` parameter to a `next_cursor` attribute returned by a previous request's `response_metadata`. Default value fetches the first \"page\" of the collection. See [pagination](/docs/pagination) for more detail."
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "required": false,
+          "description": "The maximum number of items to return."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: apps.permissions.resources, apps"
+    },
+    {
+      "name": "apps_permissions_scopes_list",
+      "summary": "Returns list of scopes this app has on a team.",
+      "method": "GET",
+      "path": "/apps.permissions.scopes.list",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": true,
+          "description": "Authentication token. Requires scope: `none`"
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: apps.permissions.scopes, apps"
+    },
+    {
+      "name": "apps_permissions_users_list",
+      "summary": "Returns list of user grants and corresponding scopes this app has on a team.",
+      "method": "GET",
+      "path": "/apps.permissions.users.list",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": true,
+          "description": "Authentication token. Requires scope: `none`"
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "Paginate through collections of data by setting the `cursor` parameter to a `next_cursor` attribute returned by a previous request's `response_metadata`. Default value fetches the first \"page\" of the collection. See [pagination](/docs/pagination) for more detail."
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "required": false,
+          "description": "The maximum number of items to return."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: apps.permissions.users, apps"
+    },
+    {
+      "name": "apps_permissions_users_request",
+      "summary": "Enables an app to trigger a permissions modal to grant an app access to a user access scope.",
+      "method": "GET",
+      "path": "/apps.permissions.users.request",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": true,
+          "description": "Authentication token. Requires scope: `none`"
+        },
+        {
+          "name": "scopes",
+          "type": "string",
+          "required": true,
+          "description": "A comma separated list of user scopes to request for"
+        },
+        {
+          "name": "trigger_id",
+          "type": "string",
+          "required": true,
+          "description": "Token used to trigger the request"
+        },
+        {
+          "name": "user",
+          "type": "string",
+          "required": true,
+          "description": "The user this scope is being requested for"
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: apps.permissions.users, apps"
+    },
+    {
+      "name": "apps_uninstall",
+      "summary": "Uninstalls your app from a workspace.",
+      "method": "GET",
+      "path": "/apps.uninstall",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": false,
+          "description": "Authentication token. Requires scope: `none`"
+        },
+        {
+          "name": "client_id",
+          "type": "string",
+          "required": false,
+          "description": "Issued when you created your application."
+        },
+        {
+          "name": "client_secret",
+          "type": "string",
+          "required": false,
+          "description": "Issued when you created your application."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: apps"
+    },
+    {
+      "name": "auth_revoke",
+      "summary": "Revokes a token.",
+      "method": "GET",
+      "path": "/auth.revoke",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": true,
+          "description": "Authentication token. Requires scope: `none`"
+        },
+        {
+          "name": "test",
+          "type": "boolean",
+          "required": false,
+          "description": "Setting this parameter to `1` triggers a _testing mode_ where the specified token will not actually be revoked."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: auth"
+    },
+    {
+      "name": "auth_test",
+      "summary": "Checks authentication & identity.",
+      "method": "GET",
+      "path": "/auth.test",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: auth"
+    },
+    {
+      "name": "bots_info",
+      "summary": "Gets information about a bot user.",
+      "method": "GET",
+      "path": "/bots.info",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": true,
+          "description": "Authentication token. Requires scope: `users:read`"
+        },
+        {
+          "name": "bot",
+          "type": "string",
+          "required": false,
+          "description": "Bot user to get info on"
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: bots"
+    },
+    {
+      "name": "calls_add",
+      "summary": "Registers a new Call.",
+      "method": "POST",
+      "path": "/calls.add",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: calls"
+    },
+    {
+      "name": "calls_end",
+      "summary": "Ends a Call.",
+      "method": "POST",
+      "path": "/calls.end",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: calls"
+    },
+    {
+      "name": "calls_info",
+      "summary": "Returns information about a Call.",
+      "method": "GET",
+      "path": "/calls.info",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "description": "`id` of the Call returned by the [`calls.add`](/methods/calls.add) method."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: calls"
+    },
+    {
+      "name": "calls_participants_add",
+      "summary": "Registers new participants added to a Call.",
+      "method": "POST",
+      "path": "/calls.participants.add",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: calls.participants, calls"
+    },
+    {
+      "name": "calls_participants_remove",
+      "summary": "Registers participants removed from a Call.",
+      "method": "POST",
+      "path": "/calls.participants.remove",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: calls.participants, calls"
+    },
+    {
+      "name": "calls_update",
+      "summary": "Updates information about a Call.",
+      "method": "POST",
+      "path": "/calls.update",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: calls"
+    },
+    {
+      "name": "chat_delete",
+      "summary": "Deletes a message.",
+      "method": "POST",
+      "path": "/chat.delete",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: chat"
+    },
+    {
+      "name": "chat_delete_scheduled_message",
+      "summary": "Deletes a pending scheduled message from the queue.",
+      "method": "POST",
+      "path": "/chat.deleteScheduledMessage",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: chat"
+    },
+    {
+      "name": "chat_get_permalink",
+      "summary": "Retrieve a permalink URL for a specific extant message",
+      "method": "GET",
+      "path": "/chat.getPermalink",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": true,
+          "description": "Authentication token. Requires scope: `none`"
+        },
+        {
+          "name": "channel",
+          "type": "string",
+          "required": true,
+          "description": "The ID of the conversation or channel containing the message"
+        },
+        {
+          "name": "message_ts",
+          "type": "string",
+          "required": true,
+          "description": "A message's `ts` value, uniquely identifying it within a channel"
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: chat"
+    },
+    {
+      "name": "chat_me_message",
+      "summary": "Share a me message into a channel.",
+      "method": "POST",
+      "path": "/chat.meMessage",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: chat"
+    },
+    {
+      "name": "chat_post_ephemeral",
+      "summary": "Sends an ephemeral message to a user in a channel.",
+      "method": "POST",
+      "path": "/chat.postEphemeral",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: chat"
+    },
+    {
+      "name": "chat_post_message",
+      "summary": "Sends a message to a channel.",
+      "method": "POST",
+      "path": "/chat.postMessage",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: chat"
+    },
+    {
+      "name": "chat_schedule_message",
+      "summary": "Schedules a message to be sent to a channel.",
+      "method": "POST",
+      "path": "/chat.scheduleMessage",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: chat"
+    },
+    {
+      "name": "chat_scheduled_messages_list",
+      "summary": "Returns a list of scheduled messages.",
+      "method": "GET",
+      "path": "/chat.scheduledMessages.list",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "channel",
+          "type": "string",
+          "required": false,
+          "description": "The channel of the scheduled messages"
+        },
+        {
+          "name": "latest",
+          "type": "number",
+          "required": false,
+          "description": "A UNIX timestamp of the latest value in the time range"
+        },
+        {
+          "name": "oldest",
+          "type": "number",
+          "required": false,
+          "description": "A UNIX timestamp of the oldest value in the time range"
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "required": false,
+          "description": "Maximum number of original entries to return."
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "For pagination purposes, this is the `cursor` value returned from a previous call to `chat.scheduledmessages.list` indicating where you want to start this call from."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: chat.scheduledMessages, chat"
+    },
+    {
+      "name": "chat_unfurl",
+      "summary": "Provide custom unfurl behavior for user-posted URLs",
+      "method": "POST",
+      "path": "/chat.unfurl",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: chat"
+    },
+    {
+      "name": "chat_update",
+      "summary": "Updates a message.",
+      "method": "POST",
+      "path": "/chat.update",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: chat"
+    },
+    {
+      "name": "conversations_archive",
+      "summary": "Archives a conversation.",
+      "method": "POST",
+      "path": "/conversations.archive",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: conversations"
+    },
+    {
+      "name": "conversations_close",
+      "summary": "Closes a direct message or multi-person direct message.",
+      "method": "POST",
+      "path": "/conversations.close",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: conversations"
+    },
+    {
+      "name": "conversations_create",
+      "summary": "Initiates a public or private channel-based conversation",
+      "method": "POST",
+      "path": "/conversations.create",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: conversations"
+    },
+    {
+      "name": "conversations_history",
+      "summary": "Fetches a conversation's history of messages and events.",
+      "method": "GET",
+      "path": "/conversations.history",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": false,
+          "description": "Authentication token. Requires scope: `conversations:history`"
+        },
+        {
+          "name": "channel",
+          "type": "string",
+          "required": false,
+          "description": "Conversation ID to fetch history for."
+        },
+        {
+          "name": "latest",
+          "type": "number",
+          "required": false,
+          "description": "End of time range of messages to include in results."
+        },
+        {
+          "name": "oldest",
+          "type": "number",
+          "required": false,
+          "description": "Start of time range of messages to include in results."
+        },
+        {
+          "name": "inclusive",
+          "type": "boolean",
+          "required": false,
+          "description": "Include messages with latest or oldest timestamp in results only when either timestamp is specified."
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "required": false,
+          "description": "The maximum number of items to return. Fewer than the requested number of items may be returned, even if the end of the users list hasn't been reached."
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "Paginate through collections of data by setting the `cursor` parameter to a `next_cursor` attribute returned by a previous request's `response_metadata`. Default value fetches the first \"page\" of the collection. See [pagination](/docs/pagination) for more detail."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: conversations"
+    },
+    {
+      "name": "conversations_info",
+      "summary": "Retrieve information about a conversation.",
+      "method": "GET",
+      "path": "/conversations.info",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": false,
+          "description": "Authentication token. Requires scope: `conversations:read`"
+        },
+        {
+          "name": "channel",
+          "type": "string",
+          "required": false,
+          "description": "Conversation ID to learn more about"
+        },
+        {
+          "name": "include_locale",
+          "type": "boolean",
+          "required": false,
+          "description": "Set this to `true` to receive the locale for this conversation. Defaults to `false`"
+        },
+        {
+          "name": "include_num_members",
+          "type": "boolean",
+          "required": false,
+          "description": "Set to `true` to include the member count for the specified conversation. Defaults to `false`"
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: conversations"
+    },
+    {
+      "name": "conversations_invite",
+      "summary": "Invites users to a channel.",
+      "method": "POST",
+      "path": "/conversations.invite",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: conversations"
+    },
+    {
+      "name": "conversations_join",
+      "summary": "Joins an existing conversation.",
+      "method": "POST",
+      "path": "/conversations.join",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: conversations"
+    },
+    {
+      "name": "conversations_kick",
+      "summary": "Removes a user from a conversation.",
+      "method": "POST",
+      "path": "/conversations.kick",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: conversations"
+    },
+    {
+      "name": "conversations_leave",
+      "summary": "Leaves a conversation.",
+      "method": "POST",
+      "path": "/conversations.leave",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: conversations"
+    },
+    {
+      "name": "conversations_list",
+      "summary": "Lists all channels in a Slack team.",
+      "method": "GET",
+      "path": "/conversations.list",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": false,
+          "description": "Authentication token. Requires scope: `conversations:read`"
+        },
+        {
+          "name": "exclude_archived",
+          "type": "boolean",
+          "required": false,
+          "description": "Set to `true` to exclude archived channels from the list"
+        },
+        {
+          "name": "types",
+          "type": "string",
+          "required": false,
+          "description": "Mix and match channel types by providing a comma-separated list of any combination of `public_channel`, `private_channel`, `mpim`, `im`"
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "required": false,
+          "description": "The maximum number of items to return. Fewer than the requested number of items may be returned, even if the end of the list hasn't been reached. Must be an integer no larger than 1000."
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "Paginate through collections of data by setting the `cursor` parameter to a `next_cursor` attribute returned by a previous request's `response_metadata`. Default value fetches the first \"page\" of the collection. See [pagination](/docs/pagination) for more detail."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: conversations"
+    },
+    {
+      "name": "conversations_mark",
+      "summary": "Sets the read cursor in a channel.",
+      "method": "POST",
+      "path": "/conversations.mark",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: conversations"
+    },
+    {
+      "name": "conversations_members",
+      "summary": "Retrieve members of a conversation.",
+      "method": "GET",
+      "path": "/conversations.members",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": false,
+          "description": "Authentication token. Requires scope: `conversations:read`"
+        },
+        {
+          "name": "channel",
+          "type": "string",
+          "required": false,
+          "description": "ID of the conversation to retrieve members for"
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "required": false,
+          "description": "The maximum number of items to return. Fewer than the requested number of items may be returned, even if the end of the users list hasn't been reached."
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "Paginate through collections of data by setting the `cursor` parameter to a `next_cursor` attribute returned by a previous request's `response_metadata`. Default value fetches the first \"page\" of the collection. See [pagination](/docs/pagination) for more detail."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: conversations"
+    },
+    {
+      "name": "conversations_open",
+      "summary": "Opens or resumes a direct message or multi-person direct message.",
+      "method": "POST",
+      "path": "/conversations.open",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: conversations"
+    },
+    {
+      "name": "conversations_rename",
+      "summary": "Renames a conversation.",
+      "method": "POST",
+      "path": "/conversations.rename",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: conversations"
+    },
+    {
+      "name": "conversations_replies",
+      "summary": "Retrieve a thread of messages posted to a conversation",
+      "method": "GET",
+      "path": "/conversations.replies",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": false,
+          "description": "Authentication token. Requires scope: `conversations:history`"
+        },
+        {
+          "name": "channel",
+          "type": "string",
+          "required": false,
+          "description": "Conversation ID to fetch thread from."
+        },
+        {
+          "name": "ts",
+          "type": "number",
+          "required": false,
+          "description": "Unique identifier of a thread's parent message. `ts` must be the timestamp of an existing message with 0 or more replies. If there are no replies then just the single message referenced by `ts` will return - it is just an ordinary, unthreaded message."
+        },
+        {
+          "name": "latest",
+          "type": "number",
+          "required": false,
+          "description": "End of time range of messages to include in results."
+        },
+        {
+          "name": "oldest",
+          "type": "number",
+          "required": false,
+          "description": "Start of time range of messages to include in results."
+        },
+        {
+          "name": "inclusive",
+          "type": "boolean",
+          "required": false,
+          "description": "Include messages with latest or oldest timestamp in results only when either timestamp is specified."
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "required": false,
+          "description": "The maximum number of items to return. Fewer than the requested number of items may be returned, even if the end of the users list hasn't been reached."
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "Paginate through collections of data by setting the `cursor` parameter to a `next_cursor` attribute returned by a previous request's `response_metadata`. Default value fetches the first \"page\" of the collection. See [pagination](/docs/pagination) for more detail."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: conversations"
+    },
+    {
+      "name": "conversations_set_purpose",
+      "summary": "Sets the purpose for a conversation.",
+      "method": "POST",
+      "path": "/conversations.setPurpose",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: conversations"
+    },
+    {
+      "name": "conversations_set_topic",
+      "summary": "Sets the topic for a conversation.",
+      "method": "POST",
+      "path": "/conversations.setTopic",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: conversations"
+    },
+    {
+      "name": "conversations_unarchive",
+      "summary": "Reverses conversation archival.",
+      "method": "POST",
+      "path": "/conversations.unarchive",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: conversations"
+    },
+    {
+      "name": "dialog_open",
+      "summary": "Open a dialog with a user",
+      "method": "GET",
+      "path": "/dialog.open",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "dialog",
+          "type": "string",
+          "required": true,
+          "description": "The dialog definition. This must be a JSON-encoded string."
+        },
+        {
+          "name": "trigger_id",
+          "type": "string",
+          "required": true,
+          "description": "Exchange a trigger to post to the user."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: dialog"
+    },
+    {
+      "name": "dnd_end_dnd",
+      "summary": "Ends the current user's Do Not Disturb session immediately.",
+      "method": "POST",
+      "path": "/dnd.endDnd",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: dnd"
+    },
+    {
+      "name": "dnd_end_snooze",
+      "summary": "Ends the current user's snooze mode immediately.",
+      "method": "POST",
+      "path": "/dnd.endSnooze",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: dnd"
+    },
+    {
+      "name": "dnd_info",
+      "summary": "Retrieves a user's current Do Not Disturb status.",
+      "method": "GET",
+      "path": "/dnd.info",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": false,
+          "description": "Authentication token. Requires scope: `dnd:read`"
+        },
+        {
+          "name": "user",
+          "type": "string",
+          "required": false,
+          "description": "User to fetch status for (defaults to current user)"
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: dnd"
+    },
+    {
+      "name": "dnd_set_snooze",
+      "summary": "Turns on Do Not Disturb mode for the current user, or changes its duration.",
+      "method": "POST",
+      "path": "/dnd.setSnooze",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: dnd"
+    },
+    {
+      "name": "dnd_team_info",
+      "summary": "Retrieves the Do Not Disturb status for up to 50 users on a team.",
+      "method": "GET",
+      "path": "/dnd.teamInfo",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": false,
+          "description": "Authentication token. Requires scope: `dnd:read`"
+        },
+        {
+          "name": "users",
+          "type": "string",
+          "required": false,
+          "description": "Comma-separated list of users to fetch Do Not Disturb status for"
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: dnd"
+    },
+    {
+      "name": "emoji_list",
+      "summary": "Lists custom emoji for a team.",
+      "method": "GET",
+      "path": "/emoji.list",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": true,
+          "description": "Authentication token. Requires scope: `emoji:read`"
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: emoji"
+    },
+    {
+      "name": "files_comments_delete",
+      "summary": "Deletes an existing comment on a file.",
+      "method": "POST",
+      "path": "/files.comments.delete",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: files.comments, files"
+    },
+    {
+      "name": "files_delete",
+      "summary": "Deletes a file.",
+      "method": "POST",
+      "path": "/files.delete",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: files"
+    },
+    {
+      "name": "files_info",
+      "summary": "Gets information about a file.",
+      "method": "GET",
+      "path": "/files.info",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": false,
+          "description": "Authentication token. Requires scope: `files:read`"
+        },
+        {
+          "name": "file",
+          "type": "string",
+          "required": false,
+          "description": "Specify a file by providing its ID."
+        },
+        {
+          "name": "count",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "page",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "required": false,
+          "description": "The maximum number of items to return. Fewer than the requested number of items may be returned, even if the end of the list hasn't been reached."
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "Parameter for pagination. File comments are paginated for a single file. Set `cursor` equal to the `next_cursor` attribute returned by the previous request's `response_metadata`. This parameter is optional, but pagination is mandatory: the default value simply fetches the first \"page\" of the collection of comments. See [pagination](/docs/pagination) for more details."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: files"
+    },
+    {
+      "name": "files_list",
+      "summary": "List for a team, in a channel, or from a user with applied filters.",
+      "method": "GET",
+      "path": "/files.list",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": false,
+          "description": "Authentication token. Requires scope: `files:read`"
+        },
+        {
+          "name": "user",
+          "type": "string",
+          "required": false,
+          "description": "Filter files created by a single user."
+        },
+        {
+          "name": "channel",
+          "type": "string",
+          "required": false,
+          "description": "Filter files appearing in a specific channel, indicated by its ID."
+        },
+        {
+          "name": "ts_from",
+          "type": "number",
+          "required": false,
+          "description": "Filter files created after this timestamp (inclusive)."
+        },
+        {
+          "name": "ts_to",
+          "type": "number",
+          "required": false,
+          "description": "Filter files created before this timestamp (inclusive)."
+        },
+        {
+          "name": "types",
+          "type": "string",
+          "required": false,
+          "description": "Filter files by type ([see below](#file_types)). You can pass multiple values in the types argument, like `types=spaces,snippets`.The default value is `all`, which does not filter the list."
+        },
+        {
+          "name": "count",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "page",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "show_files_hidden_by_limit",
+          "type": "boolean",
+          "required": false,
+          "description": "Show truncated file info for files hidden due to being too old, and the team who owns the file being over the file limit."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: files"
+    },
+    {
+      "name": "files_remote_add",
+      "summary": "Adds a file from a remote service",
+      "method": "POST",
+      "path": "/files.remote.add",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: files.remote, files"
+    },
+    {
+      "name": "files_remote_info",
+      "summary": "Retrieve information about a remote file added to Slack",
+      "method": "GET",
+      "path": "/files.remote.info",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": false,
+          "description": "Authentication token. Requires scope: `remote_files:read`"
+        },
+        {
+          "name": "file",
+          "type": "string",
+          "required": false,
+          "description": "Specify a file by providing its ID."
+        },
+        {
+          "name": "external_id",
+          "type": "string",
+          "required": false,
+          "description": "Creator defined GUID for the file."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: files.remote, files"
+    },
+    {
+      "name": "files_remote_list",
+      "summary": "Retrieve information about a remote file added to Slack",
+      "method": "GET",
+      "path": "/files.remote.list",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": false,
+          "description": "Authentication token. Requires scope: `remote_files:read`"
+        },
+        {
+          "name": "channel",
+          "type": "string",
+          "required": false,
+          "description": "Filter files appearing in a specific channel, indicated by its ID."
+        },
+        {
+          "name": "ts_from",
+          "type": "number",
+          "required": false,
+          "description": "Filter files created after this timestamp (inclusive)."
+        },
+        {
+          "name": "ts_to",
+          "type": "number",
+          "required": false,
+          "description": "Filter files created before this timestamp (inclusive)."
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "required": false,
+          "description": "The maximum number of items to return."
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "Paginate through collections of data by setting the `cursor` parameter to a `next_cursor` attribute returned by a previous request's `response_metadata`. Default value fetches the first \"page\" of the collection. See [pagination](/docs/pagination) for more detail."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: files.remote, files"
+    },
+    {
+      "name": "files_remote_remove",
+      "summary": "Remove a remote file.",
+      "method": "POST",
+      "path": "/files.remote.remove",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: files.remote, files"
+    },
+    {
+      "name": "files_remote_share",
+      "summary": "Share a remote file into a channel.",
+      "method": "GET",
+      "path": "/files.remote.share",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": false,
+          "description": "Authentication token. Requires scope: `remote_files:share`"
+        },
+        {
+          "name": "file",
+          "type": "string",
+          "required": false,
+          "description": "Specify a file registered with Slack by providing its ID. Either this field or `external_id` or both are required."
+        },
+        {
+          "name": "external_id",
+          "type": "string",
+          "required": false,
+          "description": "The globally unique identifier (GUID) for the file, as set by the app registering the file with Slack.  Either this field or `file` or both are required."
+        },
+        {
+          "name": "channels",
+          "type": "string",
+          "required": false,
+          "description": "Comma-separated list of channel IDs where the file will be shared."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: files.remote, files"
+    },
+    {
+      "name": "files_remote_update",
+      "summary": "Updates an existing remote file.",
+      "method": "POST",
+      "path": "/files.remote.update",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: files.remote, files"
+    },
+    {
+      "name": "files_revoke_public_url",
+      "summary": "Revokes public/external sharing access for a file",
+      "method": "POST",
+      "path": "/files.revokePublicURL",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: files"
+    },
+    {
+      "name": "files_shared_public_url",
+      "summary": "Enables a file for public/external sharing.",
+      "method": "POST",
+      "path": "/files.sharedPublicURL",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: files"
+    },
+    {
+      "name": "files_upload",
+      "summary": "Uploads or creates a file.",
+      "method": "POST",
+      "path": "/files.upload",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: files"
+    },
+    {
+      "name": "migration_exchange",
+      "summary": "For Enterprise Grid workspaces, map local user IDs to global user IDs",
+      "method": "GET",
+      "path": "/migration.exchange",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": true,
+          "description": "Authentication token. Requires scope: `tokens.basic`"
+        },
+        {
+          "name": "users",
+          "type": "string",
+          "required": true,
+          "description": "A comma-separated list of user ids, up to 400 per request"
+        },
+        {
+          "name": "team_id",
+          "type": "string",
+          "required": false,
+          "description": "Specify team_id starts with `T` in case of Org Token"
+        },
+        {
+          "name": "to_old",
+          "type": "boolean",
+          "required": false,
+          "description": "Specify `true` to convert `W` global user IDs to workspace-specific `U` IDs. Defaults to `false`."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: migration"
+    },
+    {
+      "name": "oauth_access",
+      "summary": "Exchanges a temporary OAuth verifier code for an access token.",
+      "method": "GET",
+      "path": "/oauth.access",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "client_id",
+          "type": "string",
+          "required": false,
+          "description": "Issued when you created your application."
+        },
+        {
+          "name": "client_secret",
+          "type": "string",
+          "required": false,
+          "description": "Issued when you created your application."
+        },
+        {
+          "name": "code",
+          "type": "string",
+          "required": false,
+          "description": "The `code` param returned via the OAuth callback."
+        },
+        {
+          "name": "redirect_uri",
+          "type": "string",
+          "required": false,
+          "description": "This must match the originally submitted URI (if one was sent)."
+        },
+        {
+          "name": "single_channel",
+          "type": "boolean",
+          "required": false,
+          "description": "Request the user to add your app only to a single channel. Only valid with a [legacy workspace app](https://api.slack.com/legacy-workspace-apps)."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: oauth"
+    },
+    {
+      "name": "oauth_token",
+      "summary": "Exchanges a temporary OAuth verifier code for a workspace token.",
+      "method": "GET",
+      "path": "/oauth.token",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "client_id",
+          "type": "string",
+          "required": false,
+          "description": "Issued when you created your application."
+        },
+        {
+          "name": "client_secret",
+          "type": "string",
+          "required": false,
+          "description": "Issued when you created your application."
+        },
+        {
+          "name": "code",
+          "type": "string",
+          "required": false,
+          "description": "The `code` param returned via the OAuth callback."
+        },
+        {
+          "name": "redirect_uri",
+          "type": "string",
+          "required": false,
+          "description": "This must match the originally submitted URI (if one was sent)."
+        },
+        {
+          "name": "single_channel",
+          "type": "boolean",
+          "required": false,
+          "description": "Request the user to add your app only to a single channel."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: oauth"
+    },
+    {
+      "name": "oauth_v2_access",
+      "summary": "Exchanges a temporary OAuth verifier code for an access token.",
+      "method": "GET",
+      "path": "/oauth.v2.access",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "client_id",
+          "type": "string",
+          "required": false,
+          "description": "Issued when you created your application."
+        },
+        {
+          "name": "client_secret",
+          "type": "string",
+          "required": false,
+          "description": "Issued when you created your application."
+        },
+        {
+          "name": "code",
+          "type": "string",
+          "required": true,
+          "description": "The `code` param returned via the OAuth callback."
+        },
+        {
+          "name": "redirect_uri",
+          "type": "string",
+          "required": false,
+          "description": "This must match the originally submitted URI (if one was sent)."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: oauth.v2, oauth"
+    },
+    {
+      "name": "pins_add",
+      "summary": "Pins an item to a channel.",
+      "method": "POST",
+      "path": "/pins.add",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: pins"
+    },
+    {
+      "name": "pins_list",
+      "summary": "Lists items pinned to a channel.",
+      "method": "GET",
+      "path": "/pins.list",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": true,
+          "description": "Authentication token. Requires scope: `pins:read`"
+        },
+        {
+          "name": "channel",
+          "type": "string",
+          "required": true,
+          "description": "Channel to get pinned items for."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: pins"
+    },
+    {
+      "name": "pins_remove",
+      "summary": "Un-pins an item from a channel.",
+      "method": "POST",
+      "path": "/pins.remove",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: pins"
+    },
+    {
+      "name": "reactions_add",
+      "summary": "Adds a reaction to an item.",
+      "method": "POST",
+      "path": "/reactions.add",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: reactions"
+    },
+    {
+      "name": "reactions_get",
+      "summary": "Gets reactions for an item.",
+      "method": "GET",
+      "path": "/reactions.get",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": true,
+          "description": "Authentication token. Requires scope: `reactions:read`"
+        },
+        {
+          "name": "channel",
+          "type": "string",
+          "required": false,
+          "description": "Channel where the message to get reactions for was posted."
+        },
+        {
+          "name": "file",
+          "type": "string",
+          "required": false,
+          "description": "File to get reactions for."
+        },
+        {
+          "name": "file_comment",
+          "type": "string",
+          "required": false,
+          "description": "File comment to get reactions for."
+        },
+        {
+          "name": "full",
+          "type": "boolean",
+          "required": false,
+          "description": "If true always return the complete reaction list."
+        },
+        {
+          "name": "timestamp",
+          "type": "string",
+          "required": false,
+          "description": "Timestamp of the message to get reactions for."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: reactions"
+    },
+    {
+      "name": "reactions_list",
+      "summary": "Lists reactions made by a user.",
+      "method": "GET",
+      "path": "/reactions.list",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": true,
+          "description": "Authentication token. Requires scope: `reactions:read`"
+        },
+        {
+          "name": "user",
+          "type": "string",
+          "required": false,
+          "description": "Show reactions made by this user. Defaults to the authed user."
+        },
+        {
+          "name": "full",
+          "type": "boolean",
+          "required": false,
+          "description": "If true always return the complete reaction list."
+        },
+        {
+          "name": "count",
+          "type": "number",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "page",
+          "type": "number",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "Parameter for pagination. Set `cursor` equal to the `next_cursor` attribute returned by the previous request's `response_metadata`. This parameter is optional, but pagination is mandatory: the default value simply fetches the first \"page\" of the collection. See [pagination](/docs/pagination) for more details."
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "required": false,
+          "description": "The maximum number of items to return. Fewer than the requested number of items may be returned, even if the end of the list hasn't been reached."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: reactions"
+    },
+    {
+      "name": "reactions_remove",
+      "summary": "Removes a reaction from an item.",
+      "method": "POST",
+      "path": "/reactions.remove",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: reactions"
+    },
+    {
+      "name": "reminders_add",
+      "summary": "Creates a reminder.",
+      "method": "POST",
+      "path": "/reminders.add",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: reminders"
+    },
+    {
+      "name": "reminders_complete",
+      "summary": "Marks a reminder as complete.",
+      "method": "POST",
+      "path": "/reminders.complete",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: reminders"
+    },
+    {
+      "name": "reminders_delete",
+      "summary": "Deletes a reminder.",
+      "method": "POST",
+      "path": "/reminders.delete",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: reminders"
+    },
+    {
+      "name": "reminders_info",
+      "summary": "Gets information about a reminder.",
+      "method": "GET",
+      "path": "/reminders.info",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": false,
+          "description": "Authentication token. Requires scope: `reminders:read`"
+        },
+        {
+          "name": "reminder",
+          "type": "string",
+          "required": false,
+          "description": "The ID of the reminder"
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: reminders"
+    },
+    {
+      "name": "reminders_list",
+      "summary": "Lists all reminders created by or for a given user.",
+      "method": "GET",
+      "path": "/reminders.list",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": false,
+          "description": "Authentication token. Requires scope: `reminders:read`"
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: reminders"
+    },
+    {
+      "name": "rtm_connect",
+      "summary": "Starts a Real Time Messaging session.",
+      "method": "GET",
+      "path": "/rtm.connect",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": true,
+          "description": "Authentication token. Requires scope: `rtm:stream`"
+        },
+        {
+          "name": "batch_presence_aware",
+          "type": "boolean",
+          "required": false,
+          "description": "Batch presence deliveries via subscription. Enabling changes the shape of `presence_change` events. See [batch presence](/docs/presence-and-status#batching)."
+        },
+        {
+          "name": "presence_sub",
+          "type": "boolean",
+          "required": false,
+          "description": "Only deliver presence events when requested by subscription. See [presence subscriptions](/docs/presence-and-status#subscriptions)."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: rtm"
+    },
+    {
+      "name": "search_messages",
+      "summary": "Searches for messages matching a query.",
+      "method": "GET",
+      "path": "/search.messages",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": true,
+          "description": "Authentication token. Requires scope: `search:read`"
+        },
+        {
+          "name": "count",
+          "type": "number",
+          "required": false,
+          "description": "Pass the number of results you want per \"page\". Maximum of `100`."
+        },
+        {
+          "name": "highlight",
+          "type": "boolean",
+          "required": false,
+          "description": "Pass a value of `true` to enable query highlight markers (see below)."
+        },
+        {
+          "name": "page",
+          "type": "number",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "query",
+          "type": "string",
+          "required": true,
+          "description": "Search query."
+        },
+        {
+          "name": "sort",
+          "type": "string",
+          "required": false,
+          "description": "Return matches sorted by either `score` or `timestamp`."
+        },
+        {
+          "name": "sort_dir",
+          "type": "string",
+          "required": false,
+          "description": "Change sort direction to ascending (`asc`) or descending (`desc`)."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: search"
+    },
+    {
+      "name": "stars_add",
+      "summary": "Adds a star to an item.",
+      "method": "POST",
+      "path": "/stars.add",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: stars"
+    },
+    {
+      "name": "stars_list",
+      "summary": "Lists stars for a user.",
+      "method": "GET",
+      "path": "/stars.list",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": false,
+          "description": "Authentication token. Requires scope: `stars:read`"
+        },
+        {
+          "name": "count",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "page",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "Parameter for pagination. Set `cursor` equal to the `next_cursor` attribute returned by the previous request's `response_metadata`. This parameter is optional, but pagination is mandatory: the default value simply fetches the first \"page\" of the collection. See [pagination](/docs/pagination) for more details."
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "required": false,
+          "description": "The maximum number of items to return. Fewer than the requested number of items may be returned, even if the end of the list hasn't been reached."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: stars"
+    },
+    {
+      "name": "stars_remove",
+      "summary": "Removes a star from an item.",
+      "method": "POST",
+      "path": "/stars.remove",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: stars"
+    },
+    {
+      "name": "team_access_logs",
+      "summary": "Gets the access logs for the current team.",
+      "method": "GET",
+      "path": "/team.accessLogs",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": true,
+          "description": "Authentication token. Requires scope: `admin`"
+        },
+        {
+          "name": "before",
+          "type": "string",
+          "required": false,
+          "description": "End of time range of logs to include in results (inclusive)."
+        },
+        {
+          "name": "count",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "page",
+          "type": "string",
+          "required": false,
+          "description": ""
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: team"
+    },
+    {
+      "name": "team_billable_info",
+      "summary": "Gets billable users information for the current team.",
+      "method": "GET",
+      "path": "/team.billableInfo",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": true,
+          "description": "Authentication token. Requires scope: `admin`"
+        },
+        {
+          "name": "user",
+          "type": "string",
+          "required": false,
+          "description": "A user to retrieve the billable information for. Defaults to all users."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: team"
+    },
+    {
+      "name": "team_info",
+      "summary": "Gets information about the current team.",
+      "method": "GET",
+      "path": "/team.info",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": true,
+          "description": "Authentication token. Requires scope: `team:read`"
+        },
+        {
+          "name": "team",
+          "type": "string",
+          "required": false,
+          "description": "Team to get info on, if omitted, will return information about the current team. Will only return team that the authenticated token is allowed to see through external shared channels"
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: team"
+    },
+    {
+      "name": "team_integration_logs",
+      "summary": "Gets the integration logs for the current team.",
+      "method": "GET",
+      "path": "/team.integrationLogs",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": true,
+          "description": "Authentication token. Requires scope: `admin`"
+        },
+        {
+          "name": "app_id",
+          "type": "string",
+          "required": false,
+          "description": "Filter logs to this Slack app. Defaults to all logs."
+        },
+        {
+          "name": "change_type",
+          "type": "string",
+          "required": false,
+          "description": "Filter logs with this change type. Defaults to all logs."
+        },
+        {
+          "name": "count",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "page",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "service_id",
+          "type": "string",
+          "required": false,
+          "description": "Filter logs to this service. Defaults to all logs."
+        },
+        {
+          "name": "user",
+          "type": "string",
+          "required": false,
+          "description": "Filter logs generated by this user’s actions. Defaults to all logs."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: team"
+    },
+    {
+      "name": "team_profile_get",
+      "summary": "Retrieve a team's profile.",
+      "method": "GET",
+      "path": "/team.profile.get",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": true,
+          "description": "Authentication token. Requires scope: `users.profile:read`"
+        },
+        {
+          "name": "visibility",
+          "type": "string",
+          "required": false,
+          "description": "Filter by visibility."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: team.profile, team"
+    },
+    {
+      "name": "usergroups_create",
+      "summary": "Create a User Group",
+      "method": "POST",
+      "path": "/usergroups.create",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: usergroups"
+    },
+    {
+      "name": "usergroups_disable",
+      "summary": "Disable an existing User Group",
+      "method": "POST",
+      "path": "/usergroups.disable",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: usergroups"
+    },
+    {
+      "name": "usergroups_enable",
+      "summary": "Enable a User Group",
+      "method": "POST",
+      "path": "/usergroups.enable",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: usergroups"
+    },
+    {
+      "name": "usergroups_list",
+      "summary": "List all User Groups for a team",
+      "method": "GET",
+      "path": "/usergroups.list",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "include_users",
+          "type": "boolean",
+          "required": false,
+          "description": "Include the list of users for each User Group."
+        },
+        {
+          "name": "token",
+          "type": "string",
+          "required": true,
+          "description": "Authentication token. Requires scope: `usergroups:read`"
+        },
+        {
+          "name": "include_count",
+          "type": "boolean",
+          "required": false,
+          "description": "Include the number of users in each User Group."
+        },
+        {
+          "name": "include_disabled",
+          "type": "boolean",
+          "required": false,
+          "description": "Include disabled User Groups."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: usergroups"
+    },
+    {
+      "name": "usergroups_update",
+      "summary": "Update an existing User Group",
+      "method": "POST",
+      "path": "/usergroups.update",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: usergroups"
+    },
+    {
+      "name": "usergroups_users_list",
+      "summary": "List all users in a User Group",
+      "method": "GET",
+      "path": "/usergroups.users.list",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": true,
+          "description": "Authentication token. Requires scope: `usergroups:read`"
+        },
+        {
+          "name": "include_disabled",
+          "type": "boolean",
+          "required": false,
+          "description": "Allow results that involve disabled User Groups."
+        },
+        {
+          "name": "usergroup",
+          "type": "string",
+          "required": true,
+          "description": "The encoded ID of the User Group to update."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: usergroups.users, usergroups"
+    },
+    {
+      "name": "usergroups_users_update",
+      "summary": "Update the list of users for a User Group",
+      "method": "POST",
+      "path": "/usergroups.users.update",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: usergroups.users, usergroups"
+    },
+    {
+      "name": "users_conversations",
+      "summary": "List conversations the calling user may access.",
+      "method": "GET",
+      "path": "/users.conversations",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": false,
+          "description": "Authentication token. Requires scope: `conversations:read`"
+        },
+        {
+          "name": "user",
+          "type": "string",
+          "required": false,
+          "description": "Browse conversations by a specific user ID's membership. Non-public channels are restricted to those where the calling user shares membership."
+        },
+        {
+          "name": "types",
+          "type": "string",
+          "required": false,
+          "description": "Mix and match channel types by providing a comma-separated list of any combination of `public_channel`, `private_channel`, `mpim`, `im`"
+        },
+        {
+          "name": "exclude_archived",
+          "type": "boolean",
+          "required": false,
+          "description": "Set to `true` to exclude archived channels from the list"
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "required": false,
+          "description": "The maximum number of items to return. Fewer than the requested number of items may be returned, even if the end of the list hasn't been reached. Must be an integer no larger than 1000."
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "Paginate through collections of data by setting the `cursor` parameter to a `next_cursor` attribute returned by a previous request's `response_metadata`. Default value fetches the first \"page\" of the collection. See [pagination](/docs/pagination) for more detail."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: users"
+    },
+    {
+      "name": "users_delete_photo",
+      "summary": "Delete the user profile photo",
+      "method": "POST",
+      "path": "/users.deletePhoto",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: users"
+    },
+    {
+      "name": "users_get_presence",
+      "summary": "Gets user presence information.",
+      "method": "GET",
+      "path": "/users.getPresence",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": true,
+          "description": "Authentication token. Requires scope: `users:read`"
+        },
+        {
+          "name": "user",
+          "type": "string",
+          "required": false,
+          "description": "User to get presence info on. Defaults to the authed user."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: users"
+    },
+    {
+      "name": "users_identity",
+      "summary": "Get a user's identity.",
+      "method": "GET",
+      "path": "/users.identity",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": false,
+          "description": "Authentication token. Requires scope: `identity.basic`"
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: users"
+    },
+    {
+      "name": "users_info",
+      "summary": "Gets information about a user.",
+      "method": "GET",
+      "path": "/users.info",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": true,
+          "description": "Authentication token. Requires scope: `users:read`"
+        },
+        {
+          "name": "include_locale",
+          "type": "boolean",
+          "required": false,
+          "description": "Set this to `true` to receive the locale for this user. Defaults to `false`"
+        },
+        {
+          "name": "user",
+          "type": "string",
+          "required": false,
+          "description": "User to get info on"
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: users"
+    },
+    {
+      "name": "users_list",
+      "summary": "Lists all users in a Slack team.",
+      "method": "GET",
+      "path": "/users.list",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": false,
+          "description": "Authentication token. Requires scope: `users:read`"
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "required": false,
+          "description": "The maximum number of items to return. Fewer than the requested number of items may be returned, even if the end of the users list hasn't been reached. Providing no `limit` value will result in Slack attempting to deliver you the entire result set. If the collection is too large you may experience `limit_required` or HTTP 500 errors."
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "description": "Paginate through collections of data by setting the `cursor` parameter to a `next_cursor` attribute returned by a previous request's `response_metadata`. Default value fetches the first \"page\" of the collection. See [pagination](/docs/pagination) for more detail."
+        },
+        {
+          "name": "include_locale",
+          "type": "boolean",
+          "required": false,
+          "description": "Set this to `true` to receive the locale for users. Defaults to `false`"
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: users"
+    },
+    {
+      "name": "users_lookup_by_email",
+      "summary": "Find a user with an email address.",
+      "method": "GET",
+      "path": "/users.lookupByEmail",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": true,
+          "description": "Authentication token. Requires scope: `users:read.email`"
+        },
+        {
+          "name": "email",
+          "type": "string",
+          "required": true,
+          "description": "An email address belonging to a user in the workspace"
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: users"
+    },
+    {
+      "name": "users_profile_get",
+      "summary": "Retrieves a user's profile information.",
+      "method": "GET",
+      "path": "/users.profile.get",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "token",
+          "type": "string",
+          "required": true,
+          "description": "Authentication token. Requires scope: `users.profile:read`"
+        },
+        {
+          "name": "include_labels",
+          "type": "boolean",
+          "required": false,
+          "description": "Include labels for each ID in custom profile fields"
+        },
+        {
+          "name": "user",
+          "type": "string",
+          "required": false,
+          "description": "User to retrieve profile info for"
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: users.profile, users"
+    },
+    {
+      "name": "users_profile_set",
+      "summary": "Set the profile information for a user.",
+      "method": "POST",
+      "path": "/users.profile.set",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: users.profile, users"
+    },
+    {
+      "name": "users_set_active",
+      "summary": "Marked a user as active. Deprecated and non-functional.",
+      "method": "POST",
+      "path": "/users.setActive",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: users"
+    },
+    {
+      "name": "users_set_photo",
+      "summary": "Set the user profile photo",
+      "method": "POST",
+      "path": "/users.setPhoto",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: users"
+    },
+    {
+      "name": "users_set_presence",
+      "summary": "Manually sets user presence.",
+      "method": "POST",
+      "path": "/users.setPresence",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: users"
+    },
+    {
+      "name": "views_open",
+      "summary": "Open a view for a user.",
+      "method": "GET",
+      "path": "/views.open",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "trigger_id",
+          "type": "string",
+          "required": true,
+          "description": "Exchange a trigger to post to the user."
+        },
+        {
+          "name": "view",
+          "type": "string",
+          "required": true,
+          "description": "A [view payload](/reference/surfaces/views). This must be a JSON-encoded string."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: views"
+    },
+    {
+      "name": "views_publish",
+      "summary": "Publish a static view for a User.",
+      "method": "GET",
+      "path": "/views.publish",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "user_id",
+          "type": "string",
+          "required": true,
+          "description": "`id` of the user you want publish a view to."
+        },
+        {
+          "name": "view",
+          "type": "string",
+          "required": true,
+          "description": "A [view payload](/reference/surfaces/views). This must be a JSON-encoded string."
+        },
+        {
+          "name": "hash",
+          "type": "string",
+          "required": false,
+          "description": "A string that represents view state to protect against possible race conditions."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: views"
+    },
+    {
+      "name": "views_push",
+      "summary": "Push a view onto the stack of a root view.",
+      "method": "GET",
+      "path": "/views.push",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "trigger_id",
+          "type": "string",
+          "required": true,
+          "description": "Exchange a trigger to post to the user."
+        },
+        {
+          "name": "view",
+          "type": "string",
+          "required": true,
+          "description": "A [view payload](/reference/surfaces/views). This must be a JSON-encoded string."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: views"
+    },
+    {
+      "name": "views_update",
+      "summary": "Update an existing view.",
+      "method": "GET",
+      "path": "/views.update",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "view_id",
+          "type": "string",
+          "required": false,
+          "description": "A unique identifier of the view to be updated. Either `view_id` or `external_id` is required."
+        },
+        {
+          "name": "external_id",
+          "type": "string",
+          "required": false,
+          "description": "A unique identifier of the view set by the developer. Must be unique for all views on a team. Max length of 255 characters. Either `view_id` or `external_id` is required."
+        },
+        {
+          "name": "view",
+          "type": "string",
+          "required": false,
+          "description": "A [view object](/reference/surfaces/views). This must be a JSON-encoded string."
+        },
+        {
+          "name": "hash",
+          "type": "string",
+          "required": false,
+          "description": "A string that represents view state to protect against possible race conditions."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: views"
+    },
+    {
+      "name": "workflows_step_completed",
+      "summary": "Indicate that an app's step in a workflow completed execution.",
+      "method": "GET",
+      "path": "/workflows.stepCompleted",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "workflow_step_execute_id",
+          "type": "string",
+          "required": true,
+          "description": "Context identifier that maps to the correct workflow step execution."
+        },
+        {
+          "name": "outputs",
+          "type": "string",
+          "required": false,
+          "description": "Key-value object of outputs from your step. Keys of this object reflect the configured `key` properties of your [`outputs`](/reference/workflows/workflow_step#output) array from your `workflow_step` object."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: workflows"
+    },
+    {
+      "name": "workflows_step_failed",
+      "summary": "Indicate that an app's step in a workflow failed to execute.",
+      "method": "GET",
+      "path": "/workflows.stepFailed",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "workflow_step_execute_id",
+          "type": "string",
+          "required": true,
+          "description": "Context identifier that maps to the correct workflow step execution."
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "required": true,
+          "description": "A JSON-based object with a `message` property that should contain a human readable error message."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: workflows"
+    },
+    {
+      "name": "workflows_update_step",
+      "summary": "Update the configuration for a workflow extension step.",
+      "method": "GET",
+      "path": "/workflows.updateStep",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "workflow_step_edit_id",
+          "type": "string",
+          "required": true,
+          "description": "A context identifier provided with `view_submission` payloads used to call back to `workflows.updateStep`."
+        },
+        {
+          "name": "inputs",
+          "type": "string",
+          "required": false,
+          "description": "A JSON key-value map of inputs required from a user during configuration. This is the data your app expects to receive when the workflow step starts. **Please note**: the embedded variable format is set and replaced by the workflow system. You cannot create custom variables that will be replaced at runtime. [Read more about variables in workflow steps here](/workflows/steps#variables)."
+        },
+        {
+          "name": "outputs",
+          "type": "string",
+          "required": false,
+          "description": "An JSON array of output objects used during step execution. This is the data your app agrees to provide when your workflow step was executed."
+        },
+        {
+          "name": "step_name",
+          "type": "string",
+          "required": false,
+          "description": "An optional field that can be used to override the step name that is shown in the Workflow Builder."
+        },
+        {
+          "name": "step_image_url",
+          "type": "string",
+          "required": false,
+          "description": "An optional field that can be used to override app image that is shown in the Workflow Builder."
+        }
+      ],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: workflows"
+    }
+  ],
+  "response_noise": []
+}

@@ -1,0 +1,751 @@
+{
+  "api_name": "Swagger Petstore - OpenAPI 3.0",
+  "base_url": "/api/v3",
+  "auth": {
+    "type": "oauth2",
+    "location": "header",
+    "header_name": "Authorization",
+    "format": "Bearer {token}",
+    "extra_headers": [],
+    "confidence": 1
+  },
+  "endpoints": [
+    {
+      "name": "add_pet",
+      "summary": "Add a new pet to the store.",
+      "method": "POST",
+      "path": "/pet",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "id",
+          "type": "number",
+          "required": false,
+          "description": "",
+          "example": 10
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "",
+          "example": "doggie"
+        },
+        {
+          "name": "category",
+          "type": "object",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "photoUrls",
+          "type": "string[]",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "tags",
+          "type": "array",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "required": false,
+          "description": "pet status in the store",
+          "enum": [
+            "available",
+            "pending",
+            "sold"
+          ]
+        }
+      ],
+      "error_codes": [
+        {
+          "code": 400,
+          "meaning": "Invalid input"
+        },
+        {
+          "code": 422,
+          "meaning": "Validation exception"
+        }
+      ],
+      "confidence": 1,
+      "notes": "tags: pet"
+    },
+    {
+      "name": "update_pet",
+      "summary": "Update an existing pet.",
+      "method": "PUT",
+      "path": "/pet",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "id",
+          "type": "number",
+          "required": false,
+          "description": "",
+          "example": 10
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "",
+          "example": "doggie"
+        },
+        {
+          "name": "category",
+          "type": "object",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "photoUrls",
+          "type": "string[]",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "tags",
+          "type": "array",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "required": false,
+          "description": "pet status in the store",
+          "enum": [
+            "available",
+            "pending",
+            "sold"
+          ]
+        }
+      ],
+      "error_codes": [
+        {
+          "code": 400,
+          "meaning": "Invalid ID supplied"
+        },
+        {
+          "code": 404,
+          "meaning": "Pet not found"
+        },
+        {
+          "code": 422,
+          "meaning": "Validation exception"
+        }
+      ],
+      "confidence": 1,
+      "notes": "tags: pet"
+    },
+    {
+      "name": "find_pets_by_status",
+      "summary": "Finds Pets by status.",
+      "method": "GET",
+      "path": "/pet/findByStatus",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "status",
+          "type": "string",
+          "required": true,
+          "description": "Status values that need to be considered for filter",
+          "enum": [
+            "available",
+            "pending",
+            "sold"
+          ]
+        }
+      ],
+      "body_params": [],
+      "error_codes": [
+        {
+          "code": 400,
+          "meaning": "Invalid status value"
+        }
+      ],
+      "confidence": 1,
+      "notes": "tags: pet"
+    },
+    {
+      "name": "find_pets_by_tags",
+      "summary": "Finds Pets by tags.",
+      "method": "GET",
+      "path": "/pet/findByTags",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "tags",
+          "type": "string[]",
+          "required": true,
+          "description": "Tags to filter by"
+        }
+      ],
+      "body_params": [],
+      "error_codes": [
+        {
+          "code": 400,
+          "meaning": "Invalid tag value"
+        }
+      ],
+      "confidence": 1,
+      "notes": "tags: pet"
+    },
+    {
+      "name": "get_pet_by_id",
+      "summary": "Find pet by ID.",
+      "method": "GET",
+      "path": "/pet/{petId}",
+      "operation": "read",
+      "path_params": [
+        {
+          "name": "petId",
+          "type": "number",
+          "required": true,
+          "description": "ID of pet to return"
+        }
+      ],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [
+        {
+          "code": 400,
+          "meaning": "Invalid ID supplied"
+        },
+        {
+          "code": 404,
+          "meaning": "Pet not found"
+        }
+      ],
+      "confidence": 1,
+      "notes": "tags: pet"
+    },
+    {
+      "name": "update_pet_with_form",
+      "summary": "Updates a pet in the store with form data.",
+      "method": "POST",
+      "path": "/pet/{petId}",
+      "operation": "write",
+      "path_params": [
+        {
+          "name": "petId",
+          "type": "number",
+          "required": true,
+          "description": "ID of pet that needs to be updated"
+        }
+      ],
+      "query_params": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "description": "Name of pet that needs to be updated"
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "required": false,
+          "description": "Status of pet that needs to be updated"
+        }
+      ],
+      "body_params": [],
+      "error_codes": [
+        {
+          "code": 400,
+          "meaning": "Invalid input"
+        }
+      ],
+      "confidence": 1,
+      "notes": "tags: pet"
+    },
+    {
+      "name": "delete_pet",
+      "summary": "Deletes a pet.",
+      "method": "DELETE",
+      "path": "/pet/{petId}",
+      "operation": "write",
+      "path_params": [
+        {
+          "name": "petId",
+          "type": "number",
+          "required": true,
+          "description": "Pet id to delete"
+        }
+      ],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [
+        {
+          "code": 400,
+          "meaning": "Invalid pet value"
+        }
+      ],
+      "confidence": 1,
+      "notes": "tags: pet"
+    },
+    {
+      "name": "upload_file",
+      "summary": "Uploads an image.",
+      "method": "POST",
+      "path": "/pet/{petId}/uploadImage",
+      "operation": "write",
+      "path_params": [
+        {
+          "name": "petId",
+          "type": "number",
+          "required": true,
+          "description": "ID of pet to update"
+        }
+      ],
+      "query_params": [
+        {
+          "name": "additionalMetadata",
+          "type": "string",
+          "required": false,
+          "description": "Additional Metadata"
+        }
+      ],
+      "body_params": [],
+      "error_codes": [
+        {
+          "code": 400,
+          "meaning": "No file uploaded"
+        },
+        {
+          "code": 404,
+          "meaning": "Pet not found"
+        }
+      ],
+      "confidence": 1,
+      "notes": "tags: pet"
+    },
+    {
+      "name": "get_inventory",
+      "summary": "Returns pet inventories by status.",
+      "method": "GET",
+      "path": "/store/inventory",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: store"
+    },
+    {
+      "name": "place_order",
+      "summary": "Place an order for a pet.",
+      "method": "POST",
+      "path": "/store/order",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "id",
+          "type": "number",
+          "required": false,
+          "description": "",
+          "example": 10
+        },
+        {
+          "name": "petId",
+          "type": "number",
+          "required": false,
+          "description": "",
+          "example": 198772
+        },
+        {
+          "name": "quantity",
+          "type": "number",
+          "required": false,
+          "description": "",
+          "example": 7
+        },
+        {
+          "name": "shipDate",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "required": false,
+          "description": "Order Status",
+          "enum": [
+            "placed",
+            "approved",
+            "delivered"
+          ],
+          "example": "approved"
+        },
+        {
+          "name": "complete",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        }
+      ],
+      "error_codes": [
+        {
+          "code": 400,
+          "meaning": "Invalid input"
+        },
+        {
+          "code": 422,
+          "meaning": "Validation exception"
+        }
+      ],
+      "confidence": 1,
+      "notes": "tags: store"
+    },
+    {
+      "name": "get_order_by_id",
+      "summary": "Find purchase order by ID.",
+      "method": "GET",
+      "path": "/store/order/{orderId}",
+      "operation": "read",
+      "path_params": [
+        {
+          "name": "orderId",
+          "type": "number",
+          "required": true,
+          "description": "ID of order that needs to be fetched"
+        }
+      ],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [
+        {
+          "code": 400,
+          "meaning": "Invalid ID supplied"
+        },
+        {
+          "code": 404,
+          "meaning": "Order not found"
+        }
+      ],
+      "confidence": 1,
+      "notes": "tags: store"
+    },
+    {
+      "name": "delete_order",
+      "summary": "Delete purchase order by identifier.",
+      "method": "DELETE",
+      "path": "/store/order/{orderId}",
+      "operation": "write",
+      "path_params": [
+        {
+          "name": "orderId",
+          "type": "number",
+          "required": true,
+          "description": "ID of the order that needs to be deleted"
+        }
+      ],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [
+        {
+          "code": 400,
+          "meaning": "Invalid ID supplied"
+        },
+        {
+          "code": 404,
+          "meaning": "Order not found"
+        }
+      ],
+      "confidence": 1,
+      "notes": "tags: store"
+    },
+    {
+      "name": "create_user",
+      "summary": "Create user.",
+      "method": "POST",
+      "path": "/user",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "id",
+          "type": "number",
+          "required": false,
+          "description": "",
+          "example": 10
+        },
+        {
+          "name": "username",
+          "type": "string",
+          "required": false,
+          "description": "",
+          "example": "theUser"
+        },
+        {
+          "name": "firstName",
+          "type": "string",
+          "required": false,
+          "description": "",
+          "example": "John"
+        },
+        {
+          "name": "lastName",
+          "type": "string",
+          "required": false,
+          "description": "",
+          "example": "James"
+        },
+        {
+          "name": "email",
+          "type": "string",
+          "required": false,
+          "description": "",
+          "example": "john@email.com"
+        },
+        {
+          "name": "password",
+          "type": "string",
+          "required": false,
+          "description": "",
+          "example": "12345"
+        },
+        {
+          "name": "phone",
+          "type": "string",
+          "required": false,
+          "description": "",
+          "example": "12345"
+        },
+        {
+          "name": "userStatus",
+          "type": "number",
+          "required": false,
+          "description": "User Status",
+          "example": 1
+        }
+      ],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: user"
+    },
+    {
+      "name": "create_users_with_list_input",
+      "summary": "Creates list of users with given input array.",
+      "method": "POST",
+      "path": "/user/createWithList",
+      "operation": "write",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "body",
+          "type": "array",
+          "required": false,
+          "description": "Request body."
+        }
+      ],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: user"
+    },
+    {
+      "name": "login_user",
+      "summary": "Logs user into the system.",
+      "method": "GET",
+      "path": "/user/login",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "username",
+          "type": "string",
+          "required": false,
+          "description": "The user name for login"
+        },
+        {
+          "name": "password",
+          "type": "string",
+          "required": false,
+          "description": "The password for login in clear text"
+        }
+      ],
+      "body_params": [],
+      "error_codes": [
+        {
+          "code": 400,
+          "meaning": "Invalid username/password supplied"
+        }
+      ],
+      "confidence": 1,
+      "notes": "tags: user"
+    },
+    {
+      "name": "logout_user",
+      "summary": "Logs out current logged in user session.",
+      "method": "GET",
+      "path": "/user/logout",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "tags: user"
+    },
+    {
+      "name": "get_user_by_name",
+      "summary": "Get user by user name.",
+      "method": "GET",
+      "path": "/user/{username}",
+      "operation": "read",
+      "path_params": [
+        {
+          "name": "username",
+          "type": "string",
+          "required": true,
+          "description": "The name that needs to be fetched. Use user1 for testing"
+        }
+      ],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [
+        {
+          "code": 400,
+          "meaning": "Invalid username supplied"
+        },
+        {
+          "code": 404,
+          "meaning": "User not found"
+        }
+      ],
+      "confidence": 1,
+      "notes": "tags: user"
+    },
+    {
+      "name": "update_user",
+      "summary": "Update user resource.",
+      "method": "PUT",
+      "path": "/user/{username}",
+      "operation": "write",
+      "path_params": [
+        {
+          "name": "username",
+          "type": "string",
+          "required": true,
+          "description": "name that need to be deleted"
+        }
+      ],
+      "query_params": [],
+      "body_params": [
+        {
+          "name": "id",
+          "type": "number",
+          "required": false,
+          "description": "",
+          "example": 10
+        },
+        {
+          "name": "username",
+          "type": "string",
+          "required": false,
+          "description": "",
+          "example": "theUser"
+        },
+        {
+          "name": "firstName",
+          "type": "string",
+          "required": false,
+          "description": "",
+          "example": "John"
+        },
+        {
+          "name": "lastName",
+          "type": "string",
+          "required": false,
+          "description": "",
+          "example": "James"
+        },
+        {
+          "name": "email",
+          "type": "string",
+          "required": false,
+          "description": "",
+          "example": "john@email.com"
+        },
+        {
+          "name": "password",
+          "type": "string",
+          "required": false,
+          "description": "",
+          "example": "12345"
+        },
+        {
+          "name": "phone",
+          "type": "string",
+          "required": false,
+          "description": "",
+          "example": "12345"
+        },
+        {
+          "name": "userStatus",
+          "type": "number",
+          "required": false,
+          "description": "User Status",
+          "example": 1
+        }
+      ],
+      "error_codes": [
+        {
+          "code": 400,
+          "meaning": "bad request"
+        },
+        {
+          "code": 404,
+          "meaning": "user not found"
+        }
+      ],
+      "confidence": 1,
+      "notes": "tags: user"
+    },
+    {
+      "name": "delete_user",
+      "summary": "Delete user resource.",
+      "method": "DELETE",
+      "path": "/user/{username}",
+      "operation": "write",
+      "path_params": [
+        {
+          "name": "username",
+          "type": "string",
+          "required": true,
+          "description": "The name that needs to be deleted"
+        }
+      ],
+      "query_params": [],
+      "body_params": [],
+      "error_codes": [
+        {
+          "code": 400,
+          "meaning": "Invalid username supplied"
+        },
+        {
+          "code": 404,
+          "meaning": "User not found"
+        }
+      ],
+      "confidence": 1,
+      "notes": "tags: user"
+    }
+  ],
+  "response_noise": []
+}

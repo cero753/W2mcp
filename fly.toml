@@ -14,7 +14,7 @@ primary_region = "iad"
   force_https = true
   auto_stop_machines = "stop"
   auto_start_machines = true
-  min_machines_running = 0   # scale to zero when idle
+  min_machines_running = 1   # DEMO DAY: keep 1 warm to avoid cold-start stall on stage (revert to 0 after)
 
 [env]
   PORT = "8080"

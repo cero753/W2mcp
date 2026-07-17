@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>anymcp — any API → a working MCP server</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <header class="nav">
+    <div class="brand"><span class="logo">◆</span> anymcp <span class="badge">w2mcp</span></div>
+    <nav class="nav-links">
+      <a href="#build">Build</a><a href="#call">Call</a><a href="#install">Install</a>
+      <span class="gw">gateway <code id="gwbadge">localhost:8080</code></span>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="eyebrow">DOCS URL · OPENAPI · SWAGGER → MCP</div>
+    <h1>Turn <span class="grad">any API</span> into a working MCP server</h1>
+    <p class="sub">Have an OpenAPI/Swagger spec? We use it directly — complete and free. No spec? We read the HTML
+      docs like a developer would. Either way your agent gets typed tools, auth, error handling, and a hosted endpoint.</p>
+    <div class="pipe-mini">
+      <span>docs URL <i>or</i> spec</span> <b>→</b> <span>crawl / parse</span> <b>→</b>
+      <span>model</span> <b>→</b> <span>generate</span> <b>→</b> <span class="hot">MCP server</span>
+    </div>
+  </section>
+
+  <!-- capabilities -->
+  <section class="caps">
+    <div class="cap"><div class="cap-i">🔗</div><h3>Spec-optional</h3><p>No OpenAPI, no Swagger, no problem — we read the HTML docs the long tail only publishes.</p></div>
+    <div class="cap"><div class="cap-i">📐</div><h3>Spec-native</h3><p>Got OpenAPI/Swagger (JSON <i>or</i> YAML)? Converted directly — deterministic, complete, zero LLM.</p></div>
+    <div class="cap"><div class="cap-i">✅</div><h3>Verified, not vibes</h3><p>Every tool is live-probed against the real API before we ever call it "verified".</p></div>
+    <div class="cap"><div class="cap-i">🔒</div><h3>Hosted &amp; encrypted</h3><p>Multi-tenant gateway injects each tenant's credential per request; AES-256-GCM at rest.</p></div>
+    <div class="cap"><div class="cap-i">🧩</div><h3>Any MCP client</h3><p>Drop it into Claude Desktop, Cursor, Claude Code, or run it over stdio. One config away.</p></div>
+    <div class="cap"><div class="cap-i">⚙️</div><h3>Model-pluggable</h3><p>The one AI step is comprehension only — swap Gemini, OpenAI, or Anthropic freely.</p></div>
+  </section>
+
+  <main class="grid">
+    <!-- BUILD -->
+    <section class="card" id="build">
+      <div class="card-h"><span class="step-n">1</span> Generate a server<span class="sub-h">from a docs URL or an OpenAPI/Swagger spec</span></div>
+      <textarea id="urls" rows="3" placeholder="https://api.chucknorris.io/  ·  or an openapi.json / .yaml URL  ·  or paste a spec">https://api.chucknorris.io/</textarea>
+      <div class="row">
+        <label class="chk"><input type="checkbox" id="render" checked /> Render JS docs</label>
+        <div class="examples">
+          <button class="ex" data-urls="https://api.chucknorris.io/">Docs: Chuck Norris</button>
+          <button class="ex" data-urls="https://docs.coingecko.com/reference/introduction|https://docs.coingecko.com/reference/coins-markets|https://docs.coingecko.com/reference/simple-price">Docs: CoinGecko</button>
+          <button class="ex" data-urls="https://httpbin.org/spec.json">Spec: httpbin</button>
+        </div>
+        <button id="gen" class="primary">Generate →</button>
+      </div>
+
+      <div id="pipe" class="pipe hidden">
+        <div class="stages"></div>
+        <div class="bar"><div id="barfill"></div></div>
+        <div id="log" class="log"></div>
+      </div>
+      <div id="result" class="result hidden"></div>
+    </section>
+
+    <!-- CALL -->
+    <section class="card" id="call">
+      <div class="card-h"><span class="step-n">2</span> Call it live<span class="hosted-tag">hosted · multi-tenant · encrypted</span></div>
+      <p class="muted">Exactly what your agent does — a real call through the hosted gateway, credential injected server-side.</p>
+      <div class="row">
+        <select id="server"></select>
+        <select id="tool"></select>
+      </div>
+      <div id="argform" class="argform"></div>
+      <button id="call" class="primary wide">▶ Call live</button>
+      <div id="callout" class="callout"></div>
+    </section>
+  </main>
+
+  <!-- INSTALL -->
+  <section class="install" id="install">
+    <div class="card-h"><span class="step-n">3</span> Install it into your tools<span class="sub-h">add a hosted server to any MCP client in one paste</span></div>
+    <div class="install-top">
+      <label class="ilabel">Server <select id="installServer"></select></label>
+      <div class="tabs">
+        <button class="tab active" data-c="Claude Desktop">Claude Desktop</button>
+        <button class="tab" data-c="Cursor">Cursor</button>
+        <button class="tab" data-c="Claude Code">Claude Code (CLI)</button>
+        <button class="tab" data-c="Local (stdio)">Local (stdio)</button>
+      </div>
+    </div>
+    <div class="codewrap">
+      <button id="copy" class="copy">Copy</button>
+      <pre id="installcode"></pre>
+    </div>
+    <div class="path-hint" id="pathHint"></div>
+
+    <div class="cli-strip">
+      <div class="cli-h">Or generate from the command line</div>
+      <pre># from a docs URL (LLM reads the HTML)
+npx tsx src/cli.ts https://your-api.com/docs --out ./out/myapi --render
+
+# from an OpenAPI / Swagger spec (JSON or YAML — no LLM)
+npx tsx src/import-cli.ts https://your-api.com/openapi.json --out ./out/myapi
+
+# verify it against the live API, then host it
+npx tsx src/verify-cli.ts ./out/myapi
+npx tsx src/gateway-cli.ts        # serves every server in registry.json</pre>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <div>anymcp · demo · <code>ak_demo_w2mcp_2026</code></div>
+    <div class="muted">Verified, not vibes — every server is probed against the live API before we call it "verified".</div>
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>

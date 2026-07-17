@@ -17,7 +17,7 @@ const registry = Object.fromEntries(Object.entries(raw).map(([api, p]) => [api, 
 const port = Number(process.env.PORT) || 8080;
 
 const store = await makeStore(masterKeyFromEnv());
-const gw = await startGateway({ store, registry, port });
+const gw = await startGateway({ store, registry, port, registryPath: resolve(registryPath) });
 console.error(`registry: ${Object.keys(registry).join(", ") || "(empty)"} | store: ${process.env.DATABASE_URL ? "postgres" : "file"}`);
 
 for (const sig of ["SIGTERM", "SIGINT"] as const) process.on(sig, () => { gw.close(); process.exit(0); });

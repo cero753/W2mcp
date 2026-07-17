@@ -1,0 +1,305 @@
+{
+  "api_name": "CoinGecko API",
+  "base_url": "https://api.coingecko.com/api/v3",
+  "auth": {
+    "type": "none",
+    "confidence": 1
+  },
+  "endpoints": [
+    {
+      "name": "coins_list_with_market_data",
+      "summary": "To query all the supported coins with price, market cap, volume and market related data",
+      "method": "GET",
+      "path": "/coins/markets",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "vs_currency",
+          "type": "string",
+          "required": true,
+          "description": "Target currency of coins and market data. *refers to /simple/supported_vs_currencies"
+        },
+        {
+          "name": "ids",
+          "type": "string",
+          "required": false,
+          "description": "Coins' IDs, comma-separated if querying more than 1 coin. *refers to /coins/list"
+        },
+        {
+          "name": "names",
+          "type": "string",
+          "required": false,
+          "description": "Coins' names, comma-separated if querying more than 1 coin."
+        },
+        {
+          "name": "symbols",
+          "type": "string",
+          "required": false,
+          "description": "Coins' symbols, comma-separated if querying more than 1 coin."
+        },
+        {
+          "name": "include_tokens",
+          "type": "string",
+          "required": false,
+          "description": "For symbols lookups, specify all to include all matching tokens. Default top returns top-ranked tokens by market cap or volume.",
+          "enum": [
+            "top",
+            "all"
+          ]
+        },
+        {
+          "name": "category",
+          "type": "string",
+          "required": false,
+          "description": "Filter based on coins' category. *refers to /coins/categories/list"
+        },
+        {
+          "name": "order",
+          "type": "string",
+          "required": false,
+          "description": "Sort result by field. Default: market_cap_desc",
+          "enum": [
+            "market_cap_asc",
+            "market_cap_desc",
+            "volume_asc",
+            "volume_desc",
+            "id_asc",
+            "id_desc"
+          ]
+        },
+        {
+          "name": "per_page",
+          "type": "integer",
+          "required": false,
+          "description": "Total results per page. Default: 100 Valid values: 1...250"
+        },
+        {
+          "name": "page",
+          "type": "integer",
+          "required": false,
+          "description": "Page through results. Default: 1"
+        },
+        {
+          "name": "sparkline",
+          "type": "boolean",
+          "required": false,
+          "description": "Include sparkline 7-day data. Default: false"
+        },
+        {
+          "name": "price_change_percentage",
+          "type": "string",
+          "required": false,
+          "description": "Include price change percentage timeframe, comma-separated if querying more than 1 timeframe. Valid values: 1h, 24h, 7d, 14d, 30d, 200d, 1y"
+        },
+        {
+          "name": "locale",
+          "type": "string",
+          "required": false,
+          "description": "Language background. Default: en",
+          "enum": [
+            "ar",
+            "bg",
+            "cs",
+            "da",
+            "de",
+            "el",
+            "en",
+            "es",
+            "fi",
+            "fr",
+            "he",
+            "hi",
+            "hr",
+            "hu",
+            "id",
+            "it",
+            "ja",
+            "ko",
+            "lt",
+            "nl",
+            "no",
+            "pl",
+            "pt",
+            "ro",
+            "ru",
+            "sk",
+            "sl",
+            "sv",
+            "th",
+            "tr",
+            "uk",
+            "vi",
+            "zh",
+            "zh-tw"
+          ]
+        },
+        {
+          "name": "precision",
+          "type": "string",
+          "required": false,
+          "description": "Decimal places for currency price value",
+          "enum": [
+            "full",
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18"
+          ]
+        },
+        {
+          "name": "include_rehypothecated",
+          "type": "boolean",
+          "required": false,
+          "description": "Include rehypothecated tokens in results. When true, returns market_cap_rank_with_rehypothecated field. Default: false"
+        }
+      ],
+      "body_params": [],
+      "example_request": {
+        "method": "GET",
+        "url": "https://pro-api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin&names=Bitcoin&symbols=btc",
+        "headers": {
+          "x-cg-pro-api-key": "<api-key>"
+        },
+        "query_params": {
+          "vs_currency": "usd",
+          "ids": "bitcoin",
+          "names": "Bitcoin",
+          "symbols": "btc"
+        }
+      },
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "Filter by ids, names, symbols, or category. When multiple are provided, priority is: category > ids > names > symbols. URL-encode spaces in names (e.g. Binance%20Coin). include_tokens=all only works with symbols lookups, limited to 50 symbols per request. Maximum of 250 IDs per request. Wildcard searches are not supported. Use per_page and page to paginate results. Filter by category using the category param \u00e2\u20ac\u201d refer to Coins Categories List (/reference/coins-categories-list) for available values. Cache / Update Frequency: Every 30 seconds (Paid API), Every 60 seconds (Demo / Keyless API)."
+    },
+    {
+      "name": "coin_price_by_ids_symbols_or_names",
+      "summary": "To query the prices of one or more coins by using their unique Coin API IDs, symbols, or names",
+      "method": "GET",
+      "path": "/simple/price",
+      "operation": "read",
+      "path_params": [],
+      "query_params": [
+        {
+          "name": "vs_currencies",
+          "type": "string",
+          "required": true,
+          "description": "Target currency of coins, comma-separated if querying more than 1 currency. *refers to /simple/supported_vs_currencies"
+        },
+        {
+          "name": "ids",
+          "type": "string",
+          "required": false,
+          "description": "Coins' IDs, comma-separated if querying more than 1 coin. *refers to /coins/list"
+        },
+        {
+          "name": "names",
+          "type": "string",
+          "required": false,
+          "description": "Coins' names, comma-separated if querying more than 1 coin."
+        },
+        {
+          "name": "symbols",
+          "type": "string",
+          "required": false,
+          "description": "Coins' symbols, comma-separated if querying more than 1 coin."
+        },
+        {
+          "name": "include_tokens",
+          "type": "string",
+          "required": false,
+          "description": "For symbols lookups, specify all to include all matching tokens. Default top returns top-ranked tokens by market cap or volume.",
+          "enum": [
+            "top",
+            "all"
+          ]
+        },
+        {
+          "name": "include_market_cap",
+          "type": "boolean",
+          "required": false,
+          "description": "Include market capitalization. Default: false"
+        },
+        {
+          "name": "include_24hr_vol",
+          "type": "boolean",
+          "required": false,
+          "description": "Include 24-hour trading volume. Default: false"
+        },
+        {
+          "name": "include_24hr_change",
+          "type": "boolean",
+          "required": false,
+          "description": "Include 24-hour change percentage. Default: false"
+        },
+        {
+          "name": "include_last_updated_at",
+          "type": "boolean",
+          "required": false,
+          "description": "Include last updated price time as a UNIX timestamp. Default: false"
+        },
+        {
+          "name": "precision",
+          "type": "string",
+          "required": false,
+          "description": "Decimal places for currency price value",
+          "enum": [
+            "full",
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18"
+          ]
+        }
+      ],
+      "body_params": [],
+      "example_request": {
+        "method": "GET",
+        "url": "https://pro-api.coingecko.com/api/v3/simple/price?vs_currencies=usd&ids=bitcoin&names=Bitcoin&symbols=btc",
+        "headers": {
+          "x-cg-pro-api-key": "<api-key>"
+        },
+        "query_params": {
+          "vs_currencies": "usd",
+          "ids": "bitcoin",
+          "names": "Bitcoin",
+          "symbols": "btc"
+        }
+      },
+      "error_codes": [],
+      "confidence": 1,
+      "notes": "You can look up coins by ids, names, or symbols. When multiple are provided, priority is: ids > names > symbols. Find a coin\u00e2\u20ac\u2122s API ID on its CoinGecko (https://www.coingecko.com) page, via Coins List (/reference/coins-list), or this Google Sheet (https://docs.google.com/spreadsheets/d/1wTTuxXt8n9q7C4NDXqQpI3wpKu1_5bGVmP9Xz0XGSyU/edit?usp=sharing). Use include_last_updated_at=true or include_24hr_change=true (returns null if stale) to verify price freshness. include_tokens=all only works with symbols lookups, limited to 50 symbols per request. Maximum of 515 IDs per request. Wildcard searches are not supported. URL-encode spaces in names (e.g. Binance%20Coin). Cross-check prices on CoinGecko (https://www.coingecko.com) and learn about the price methodology (https://www.coingecko.com/en/methodology). Cache / Update Frequency: Every 20 seconds (Paid API), Every 60 seconds (Demo / Keyless API)."
+    }
+  ],
+  "response_noise": []
+}

@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>anymcp — pitch deck</title>
+<style>
+  :root{--bg:#0a0f1c;--fg:#e8eef7;--mut:#8ea0bd;--accent:#5b8cff;--accent2:#7dd3fc;--line:#1e2a44;--card:#0f1626}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{background:var(--bg);color:var(--fg);font:18px/1.5 -apple-system,Segoe UI,Roboto,sans-serif;overflow:hidden}
+  .grad{background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  #stage{height:100vh;display:flex;align-items:center;justify-content:center;padding:6vh 8vw}
+  .slide{display:none;width:100%;max-width:1000px;animation:fade .35s ease}
+  .slide.on{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .eyebrow{color:var(--accent2);font-size:14px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:14px}
+  h1{font-size:52px;line-height:1.08;margin-bottom:18px;letter-spacing:-.02em}
+  h2{font-size:38px;line-height:1.12;margin-bottom:22px;letter-spacing:-.01em}
+  p.lead{font-size:22px;color:var(--mut);max-width:760px}
+  ul{list-style:none;margin-top:10px}
+  li{padding:12px 0 12px 34px;position:relative;font-size:21px;border-bottom:1px solid var(--line)}
+  li:before{content:"→";position:absolute;left:0;color:var(--accent)}
+  .cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:26px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+  .card h3{font-size:18px;margin-bottom:8px}
+  .card p{font-size:15px;color:var(--mut)}
+  .flow{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:26px}
+  .node{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 16px;font-size:16px}
+  .arw{color:var(--accent)}
+  code{background:#07101f;border:1px solid var(--line);border-radius:8px;padding:3px 8px;color:var(--accent2);font-size:16px}
+  pre{background:#07101f;border:1px solid var(--line);border-radius:12px;padding:18px;margin-top:20px;overflow:auto;color:#cfe0ff;font-size:16px}
+  .big{font-size:30px;line-height:1.35;max-width:840px}
+  .tag{display:inline-block;background:#12203c;color:var(--accent2);border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:13px;margin-right:8px}
+  #nav{position:fixed;bottom:18px;right:24px;color:var(--mut);font-size:13px}
+  #bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .3s}
+  .kbd{color:var(--mut);font-size:12px;position:fixed;bottom:18px;left:24px}
+  .metrics{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:26px}
+  .metric{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px}
+  .metric b{display:block;font-size:34px;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .metric span{color:var(--mut);font-size:15px}
+  @media print {
+    html,body{height:auto;overflow:visible;background:#0a0f1c}
+    #stage{display:block;height:auto;padding:0}
+    .slide{display:block !important;page-break-after:always;max-width:none;min-height:96vh;padding:9vh 8vw}
+    #nav,.kbd,#bar{display:none}
+    @page{size:1280px 720px;margin:0}
+  }
+</style>
+</head>
+<body>
+<div id="bar"></div>
+<div id="stage">
+
+  <section class="slide on">
+    <div class="eyebrow">DOCS · OPENAPI · SWAGGER → MCP</div>
+    <h1>Any API becomes<br><span class="grad">agent-ready</span> — from just its docs.</h1>
+    <p class="lead">No spec required. And one hub connection gives an agent every API you've wired in.</p>
+    <div style="margin-top:28px"><span class="tag">spec-optional</span><span class="tag">standard MCP</span><span class="tag">self-serve or hosted</span></div>
+  </section>
+
+  <section class="slide">
+    <div class="eyebrow">The problem</div>
+    <h2>Agents can reason. They can't <span class="grad">act</span>.</h2>
+    <p class="big">Most APIs have no MCP server — and most don't even have an OpenAPI spec, just docs.
+    Wiring each one up is a custom engineering project. That's the wall between agents and real work.</p>
+  </section>
+
+  <section class="slide">
+    <div class="eyebrow">What anymcp does</div>
+    <h2>Docs in → <span class="grad">working MCP server</span> out.</h2>
+    <div class="flow">
+      <span class="node">docs URL / OpenAPI / Swagger</span><span class="arw">→</span>
+      <span class="node">crawl + read</span><span class="arw">→</span>
+      <span class="node">extract API model</span><span class="arw">→</span>
+      <span class="node">generate</span><span class="arw">→</span>
+      <span class="node">MCP server</span>
+    </div>
+    <div class="cards">
+      <div class="card"><h3>Spec-optional</h3><p>No swagger.json? We read the HTML docs like a developer.</p></div>
+      <div class="card"><h3>Spec-native</h3><p>Have OpenAPI/Swagger? Used directly — deterministic, no LLM.</p></div>
+      <div class="card"><h3>Typed & verified</h3><p>Typed tools, auth, error handling — not vibes.</p></div>
+    </div>
+  </section>
+
+  <section class="slide">
+    <div class="eyebrow">The differentiator</div>
+    <h2>The <span class="grad">hub</span>: one connection, every API.</h2>
+    <p class="lead">Point an agent at a single MCP endpoint. It instantly sees the tools of every API you've
+    added — namespaced by source. Add more; the one connection just gets more powerful.</p>
+    <div class="flow">
+      <span class="node">your agent</span><span class="arw">→</span>
+      <span class="node"><b>anymcp hub</b> (1 endpoint)</span><span class="arw">→</span>
+      <span class="node">coingecko · frankfurter · httpbin · …</span>
+    </div>
+  </section>
+
+  <section class="slide">
+    <div class="eyebrow">Any MCP client — no custom code</div>
+    <h2>It's a <span class="grad">standard</span> MCP server.</h2>
+    <ul>
+      <li>Official <b>MCP Inspector</b> drives it — proof it's real protocol, not a private trick</li>
+      <li><b>Cursor</b> / <b>Claude Desktop</b> connect via a few lines of config</li>
+      <li>Your own runtime, or the <b>anymcp CLI</b>, over stdio or HTTP</li>
+    </ul>
+    <p class="lead" style="margin-top:22px">Any agent, any API, one connection.</p>
+  </section>
+
+  <section class="slide">
+    <div class="eyebrow">Enterprise use case</div>
+    <h2>Your agents, wired into <span class="grad">every system</span>.</h2>
+    <p class="lead">Point anymcp at the APIs your business already runs on — most have docs, few have an MCP server.</p>
+    <div class="cards">
+      <div class="card"><h3>Google Calendar → MCP</h3><p>37 tools in seconds. Agents schedule meetings, check availability, book rooms.</p></div>
+      <div class="card"><h3>Slack → MCP</h3><p>174 tools. Agents post updates, triage channels, notify on-call.</p></div>
+      <div class="card"><h3>Jira / CRM / internal APIs</h3><p>Ticketing, pipeline, your own services — the long tail no vendor will build an MCP for.</p></div>
+    </div>
+    <p class="lead" style="margin-top:20px">Generated live from docs or spec — verified end-to-end on Calendar & Slack.</p>
+  </section>
+
+  <section class="slide">
+    <div class="eyebrow">Why enterprises buy this</div>
+    <h2>Weeks of integration → <span class="grad">seconds</span>.</h2>
+    <div class="metrics">
+      <div class="metric"><b>days→sec</b><span>Each API wrapped for agents used to be a days-to-weeks eng project. Now it's one command.</span></div>
+      <div class="metric"><b>1 connection</b><span>The hub gives every agent all your APIs at once — no per-API integration, no glue code to maintain.</span></div>
+      <div class="metric"><b>90% tail</b><span>Most internal & vendor APIs will never get an official MCP server. We cover them — spec or not.</span></div>
+    </div>
+    <ul style="margin-top:20px">
+      <li><b>Agent operability</b> — more systems reachable = more work your agents can actually complete</li>
+      <li><b>Governance & security</b> — credentials encrypted at rest, injected server-side, never seen by the agent; each API sandboxed</li>
+      <li><b>Low maintenance</b> — docs change, regenerate; no brittle hand-written connectors rotting in a repo</li>
+      <li><b>Standard layer</b> — one MCP surface your whole agent fleet builds on, instead of N bespoke integrations</li>
+    </ul>
+  </section>
+
+  <section class="slide">
+    <div class="eyebrow">How customers run it</div>
+    <h2>Self-serve <span class="grad">or</span> hosted.</h2>
+    <div class="cards" style="grid-template-columns:1fr 1fr">
+      <div class="card"><h3>Local / self-serve</h3><p>Install the CLI (Node), point it at your docs, your agent
+      connects over stdio. Nothing leaves your machine.</p></div>
+      <div class="card"><h3>Hosted (SaaS)</h3><p>We run the hub; you get an API key and a URL. Credentials
+      encrypted at rest, each API sandboxed per customer.</p></div>
+    </div>
+  </section>
+
+  <section class="slide">
+    <div class="eyebrow">The ask</div>
+    <h2>Turn the <span class="grad">long tail</span> of APIs into agent tools — today.</h2>
+    <p class="big">Any API — docs, OpenAPI, or Swagger — becomes an agent-ready MCP server in seconds, and one
+    hub connection gives an agent all of them.</p>
+    <p class="lead" style="margin-top:22px">Design partners / pilot / let's talk.</p>
+  </section>
+
+</div>
+<div id="nav"></div>
+<div class="kbd">← → or Space to navigate · F fullscreen</div>
+<script>
+  const slides=[...document.querySelectorAll('.slide')]; let i=0;
+  const nav=document.getElementById('nav'), bar=document.getElementById('bar');
+  function show(n){i=Math.max(0,Math.min(slides.length-1,n));slides.forEach((s,k)=>s.classList.toggle('on',k===i));
+    nav.textContent=`${i+1} / ${slides.length}`; bar.style.width=((i+1)/slides.length*100)+'%';}
+  document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight'||e.key===' ')show(i+1);
+    else if(e.key==='ArrowLeft')show(i-1);
+    else if(e.key==='f'||e.key==='F'){if(!document.fullscreenElement)document.documentElement.requestFullscreen();else document.exitFullscreen();}
+  });
+  document.addEventListener('click',()=>show(i+1));
+  show(0);
+</script>
+</body>
+</html>
