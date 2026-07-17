@@ -6,9 +6,9 @@
 import { PgCredentialStore } from "./src/store.ts";
 
 const url = process.env.DATABASE_URL;
-const keyHex = process.env.ANYMCP_MASTER_KEY;
+const keyHex = process.env.W2MCP_MASTER_KEY;
 if (!url || url.includes("PASTE")) { console.error("Set DATABASE_URL in .env first (it still has the placeholder)."); process.exit(1); }
-if (!keyHex) { console.error("ANYMCP_MASTER_KEY missing from .env"); process.exit(1); }
+if (!keyHex) { console.error("W2MCP_MASTER_KEY missing from .env"); process.exit(1); }
 
 console.log("connecting to Postgres:", url.replace(/:[^:@/]+@/, ":***@"));
 const store = await PgCredentialStore.create(url, Buffer.from(keyHex, "hex"));

@@ -1,6 +1,6 @@
 /**
- * anymcp verify <serverDir>
- * Live-verifies a generated server. Set <API>_TOKEN (e.g. NOTION_API_TOKEN) or ANYMCP_TEST_TOKEN
+ * w2mcp verify <serverDir>
+ * Live-verifies a generated server. Set <API>_TOKEN (e.g. NOTION_API_TOKEN) or W2MCP_TEST_TOKEN
  * to enable the live probe; without a token it falls back to structural checks only.
  */
 import { writeFileSync } from "node:fs";
@@ -8,7 +8,7 @@ import { join } from "node:path";
 import { verify } from "./verify.js";
 
 const dir = process.argv[2];
-if (!dir) { console.error("Usage: anymcp verify <serverDir>"); process.exit(1); }
+if (!dir) { console.error("Usage: w2mcp verify <serverDir>"); process.exit(1); }
 
 const icon: Record<string, string> = {
   "live-verified": "✅", "unverified-write": "⚠️ ", "structurally-checked": "○",

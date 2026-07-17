@@ -1,8 +1,8 @@
-# anymcp
+# w2mcp
 
 **Turn any API's documentation URL into a working MCP server — no OpenAPI spec required.**
 
-Every other generator needs a `swagger.json`. `anymcp` only needs a URL: it reads the API's
+Every other generator needs a `swagger.json`. `w2mcp` only needs a URL: it reads the API's
 human-facing HTML docs the way a developer would, and emits a runnable [MCP](https://modelcontextprotocol.io)
 server your AI agent can call immediately — typed tools, auth, error handling, and response shaping included.
 
@@ -10,7 +10,7 @@ That unlocks the huge long tail of APIs that publish **HTML docs only** (fintech
 internal/enterprise APIs) — the ones spec-based tools can't touch.
 
 ```bash
-anymcp https://developers.notion.com/reference/intro \
+w2mcp https://developers.notion.com/reference/intro \
        https://developers.notion.com/reference/post-search \
        --out ./out/notion
 # → crawl → clean → extract (LLM) → generate → a working Notion MCP server
@@ -34,7 +34,7 @@ npm install
 
 # Generate a server from docs (set ONE provider key):
 GEMINI_API_KEY=...  npx tsx src/cli.ts <docs-url> [<more-urls>] --out ./out/myapi
-#   also supports OPENAI_API_KEY or ANTHROPIC_API_KEY; pick the model with ANYMCP_MODEL
+#   also supports OPENAI_API_KEY or ANTHROPIC_API_KEY; pick the model with W2MCP_MODEL
 #   add --render to use Playwright for JS-rendered doc sites
 
 # Verify the generated server (live-probes read endpoints with your creds):
@@ -50,7 +50,7 @@ MCP_TRANSPORT=http PORT=3000 node --import tsx ...     # Streamable HTTP (remote
 
 ## Verification
 
-`anymcp verify` reports three honest statuses — it never calls something "verified" without a real call:
+`w2mcp verify` reports three honest statuses — it never calls something "verified" without a real call:
 
 - **live-verified** — read endpoint actually called, returned 2xx + data
 - **unverified-write** — write endpoint, flagged, validated against the doc example only
@@ -61,15 +61,15 @@ MCP_TRANSPORT=http PORT=3000 node --import tsx ...     # Streamable HTTP (remote
 `src/gateway.ts` fronts the generated servers for hosted, multi-tenant use:
 
 - each API server runs as an **isolated subprocess** (a bad generated server can't crash the gateway)
-- customers authenticate with an anymcp API key; the gateway fetches **their** downstream
+- customers authenticate with an w2mcp API key; the gateway fetches **their** downstream
   credential from an **encrypted store** (AES-256-GCM at rest) and injects it **per request**
 - credentials persist in Postgres (Supabase / Neon) via `DATABASE_URL`, or a local file for dev
 
 ```bash
-ANYMCP_MASTER_KEY=$(openssl rand -hex 32) \
+W2MCP_MASTER_KEY=$(openssl rand -hex 32) \
 DATABASE_URL=postgres://...  \
 npx tsx src/gateway-cli.ts
-# POST /mcp/<api>  with  Authorization: Bearer <anymcp-key>
+# POST /mcp/<api>  with  Authorization: Bearer <w2mcp-key>
 ```
 
 Deploy with the included `Dockerfile` + `fly.toml`.
@@ -78,7 +78,7 @@ Deploy with the included `Dockerfile` + `fly.toml`.
 
 | Path | What |
 |---|---|
-| `src/cli.ts` | the `anymcp <url>` pipeline |
+| `src/cli.ts` | the `w2mcp <url>` pipeline |
 | `src/{crawl,clean,extract,generate}.ts` | the four pipeline stages |
 | `src/model.ts` | the `ApiModel` (structured intermediate) |
 | `src/verify.ts` · `verify-cli.ts` | live/structural verification |

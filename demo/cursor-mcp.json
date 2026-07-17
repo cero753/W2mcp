@@ -1,9 +1,9 @@
 {
-  "//": "anymcp MCP configs — proves a REAL agent (Cursor, not Claude Code) uses your servers with zero custom code.",
+  "//": "w2mcp MCP configs — proves a REAL agent (Cursor, not Claude Code) uses your servers with zero custom code.",
   "//how": "Copy into  %USERPROFILE%\\.cursor\\mcp.json  (global) or  <project>\\.cursor\\mcp.json, then Cursor > Settings > MCP and toggle a server on.",
-  "//the-hero": "'anymcp-hub' = ONE connection that exposes the tools of ALL registered APIs (coingecko/frankfurter/httpbin/chuck), namespaced. Turn it on and ask across APIs in one breath.",
+  "//the-hero": "'w2mcp-hub' = ONE connection that exposes the tools of ALL registered APIs (coingecko/frankfurter/httpbin/chuck), namespaced. Turn it on and ask across APIs in one breath.",
   "mcpServers": {
-    "anymcp-hub": {
+    "w2mcp-hub": {
       "command": "node",
       "args": ["--import", "tsx", "C:\\Users\\karti\\anymcp\\src\\hub.ts"]
     },

@@ -1,5 +1,5 @@
 /**
- * anymcp <url> [<more-urls>...] [--out <dir>] [--model-only]
+ * w2mcp <url> [<more-urls>...] [--out <dir>] [--model-only]
  * Full pipeline: crawl → clean → extract → generate → write a runnable MCP server.
  */
 import { mkdirSync, writeFileSync } from "node:fs";
@@ -25,7 +25,7 @@ async function main() {
     urls.push(a);
   }
   if (urls.length === 0) {
-    console.error("Usage: anymcp <docs-url> [<more-urls>...] [--out <dir>] [--model-only]");
+    console.error("Usage: w2mcp <docs-url> [<more-urls>...] [--out <dir>] [--model-only]");
     console.error("Tip: include the auth/intro page too — that's where the base URL usually lives.");
     process.exit(1);
   }

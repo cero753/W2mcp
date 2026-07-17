@@ -14,7 +14,7 @@ style: |
 ---
 
 <!-- Slide 1 — Title -->
-# anymcp
+# w2mcp
 
 ## Any API's docs URL → a working MCP server. No spec required.
 
@@ -58,7 +58,7 @@ The other **thousands** publish only human-facing HTML docs:
 
 <br>
 
-## anymcp is the only tool that can turn *those* into agent-ready servers.
+## w2mcp is the only tool that can turn *those* into agent-ready servers.
 
 ---
 
@@ -128,7 +128,7 @@ Three honest statuses on every server:
 # Hosted, multi-tenant, secure
 
 - Each API server runs as an **isolated subprocess** — a bad server can't crash the fleet
-- Customers authenticate with an **anymcp key**; we inject **their** downstream credential **per request**
+- Customers authenticate with an **w2mcp key**; we inject **their** downstream credential **per request**
 - Credentials **encrypted at rest** (AES-256-GCM) — never in the generated code, never on screen
 
 <br>

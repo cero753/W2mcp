@@ -1,4 +1,4 @@
-# anymcp — PITCH & DEMO SCRIPT (read-along)
+# w2mcp — PITCH & DEMO SCRIPT (read-along)
 
 Everything runs **locally on your laptop** — no wifi/cloud dependency. Every command below is copy-paste.
 Format: **[DO]** = what you do on screen · **[SAY]** = read this out loud. Read the SAY lines almost verbatim;
@@ -7,7 +7,7 @@ they're written to sound natural.
 ---
 
 ## THE ONE-LINE POSITIONING (memorize this)
-> **"anymcp turns any API into an agent-ready MCP server — from just its docs, no spec required — and hands your
+> **"w2mcp turns any API into an agent-ready MCP server — from just its docs, no spec required — and hands your
 > agent one connection that unlocks all of them."**
 
 The two things that make people lean in:
@@ -23,18 +23,18 @@ cd C:\Users\karti\anymcp
 # 1. load secrets + force local store, in THIS terminal:
 Get-Content .env | ? { $_ -match '^\s*[^#].*=' } | % { $kv=$_ -split '=',2; if ($kv[0].Trim() -ne 'DATABASE_URL'){ Set-Item Env:\$($kv[0].Trim()) $kv[1].Trim() } }; $env:DATABASE_URL=$null
 # 2. short command alias:
-function anymcp { npx tsx src\use-cli.ts @args }
+function w2mcp { npx tsx src\use-cli.ts @args }
 # 3. start the web UI + gateway (their own windows):
 Start-Process powershell -ArgumentList '-NoExit','-Command',"cd '$PWD'; npx tsx web\server.ts"
 Start-Process powershell -ArgumentList '-NoExit','-Command',"cd '$PWD'; npx tsx src\gateway-cli.ts"
 ```
 - Open **http://localhost:5173** in a browser tab (leave it ready).
-- Pre-warm once so first click is instant: `anymcp tools coingecko`
+- Pre-warm once so first click is instant: `w2mcp tools coingecko`
 - Pre-run the Inspector once so it's cached: `npx @modelcontextprotocol/inspector --cli node --import tsx src\hub.ts --method tools/list`
-- (Optional) In Cursor, pre-add `anymcp-hub` from `demo/cursor-mcp.json` and confirm it lists tools.
+- (Optional) In Cursor, pre-add `w2mcp-hub` from `demo/cursor-mcp.json` and confirm it lists tools.
 - Close noisy apps/notifications. **Share the specific window, not your whole desktop** (so your notes stay private).
 
-**Checklist before you talk:** browser tab on 5173 ✓ · one terminal with `anymcp` alias + env ✓ · gateway window up ✓ · Inspector cached ✓.
+**Checklist before you talk:** browser tab on 5173 ✓ · one terminal with `w2mcp` alias + env ✓ · gateway window up ✓ · Inspector cached ✓.
 
 ---
 
@@ -43,7 +43,7 @@ Start-Process powershell -ArgumentList '-NoExit','-Command',"cd '$PWD'; npx tsx 
 ### BEAT 1 — The problem (10 sec, no screen needed yet)
 **[SAY]** *"Every company wants agents that can actually DO things — call their APIs. But 90% of APIs have no
 MCP server, and most don't even have an OpenAPI spec — just documentation. Today, wiring each one up is a
-custom engineering project. anymcp removes that entirely."*
+custom engineering project. w2mcp removes that entirely."*
 
 ### BEAT 2 — Generate an MCP from nothing but docs (the visual "aha") → browser
 **[DO]** Switch to the browser tab (http://localhost:5173). In the left panel, the docs URL is pre-filled →
@@ -81,7 +81,7 @@ If it can drive our generated server, so can any agent: Claude, Cursor, anything
 npx @modelcontextprotocol/inspector --cli node --import tsx .\src\hub.ts --method tools/list
 ```
 Scroll the list — `coingecko__...`, `frankfurter__...`, `httpbin__...`, `chuck__...`.
-**[SAY]** *"This is the anymcp hub — a single MCP endpoint. Notice: with ONE connection, an agent now sees the
+**[SAY]** *"This is the w2mcp hub — a single MCP endpoint. Notice: with ONE connection, an agent now sees the
 tools of every API we've wired in — dozens of them, namespaced by source. Your agent connects once and can
 suddenly do everything."*
 **[DO]** Call one through the hub:
@@ -89,16 +89,16 @@ suddenly do everything."*
 npx @modelcontextprotocol/inspector --cli node --import tsx .\src\hub.ts --method tools/call --tool-name coingecko__coin_price_by_ids_symbols_or_names --tool-arg ids=bitcoin --tool-arg vs_currencies=usd
 ```
 **[SAY]** *"Live Bitcoin price — routed through the hub to the right API, in real time. For a user this means:
-point your agent at anymcp once, and every API you've ever added just works."*
+point your agent at w2mcp once, and every API you've ever added just works."*
 
 **[DO]** (Strong alternative to the two Inspector calls — if Cursor is set up) Switch to **Cursor** with
-`anymcp-hub` enabled, and type in chat: *"What's the price of Bitcoin, and tell me a Chuck Norris joke about science."*
+`w2mcp-hub` enabled, and type in chat: *"What's the price of Bitcoin, and tell me a Chuck Norris joke about science."*
 **[SAY]** *"A real AI IDE — not something I built — connected to the hub, using two different APIs in one
 request. Zero custom integration. That's the whole promise: any agent, any API, one connection."*
 
 **[DO]** (Terminal-only alternative to Cursor — an agent in your shell, verified working) Run:
 ```
-anymcp ask "What's the price of bitcoin, and give me a Chuck Norris joke about science?" --hub
+w2mcp ask "What's the price of bitcoin, and give me a Chuck Norris joke about science?" --hub
 ```
 It prints which tools it calls (`coingecko__…`, `chuck__…`) then answers.
 **[SAY]** *"Same thing from the command line — an agent, one hub connection, calling two different APIs to
@@ -108,16 +108,16 @@ answer one question."*  *(If it stalls, Ctrl-C and fall back to the two Inspecto
 **[SAY]** *"Let's make a brand-new one right now. Give me any public API with online docs."*
 **[DO]** Run (swap in their URL; multiple URLs if the base URL is on a separate page):
 ```
-anymcp new https://THEIR-API.com/docs
+w2mcp new https://THEIR-API.com/docs
 ```
 **[SAY]** *"One command: it's reading the docs, extracting the endpoints, generating the server, and listing the
 tools — and it's immediately usable."*
-**[DO]** Call a tool on it: `anymcp call --dir .\out\<name> <tool> key=value`
+**[DO]** Call a tool on it: `w2mcp call --dir .\out\<name> <tool> key=value`
 > **If it stalls or the base URL comes back empty:** don't fight it — *"here's one I made earlier"* and use
 > `.\out\chuck-demo` (or coingecko). Keep moving; never debug live.
 
 ### BEAT 6 — How a customer actually uses it (30 sec, talk over the terminal)
-**[SAY]** *"Two ways to run this. **Self-serve/local:** a developer installs anymcp, points it at their docs,
+**[SAY]** *"Two ways to run this. **Self-serve/local:** a developer installs w2mcp, points it at their docs,
 and their agent connects locally — nothing leaves their machine. **Hosted:** we run the hub in the cloud, they
 get an API key, and their agent connects to a URL — every credential encrypted at rest, every API sandboxed in
 its own process. Same product, their choice of deployment."*
@@ -139,7 +139,7 @@ streaming generation is visually convincing. **Investors:** show frontend + stor
 credibility. **Technical buyers:** lead with the terminal/hub (that's the substance), frontend is a nicety.
 
 **"How does it load on a user's PC / how do I host it?"**
-- **Local:** `npx anymcp …` (needs Node.js). Their agent connects over a stdio config — a few lines in
+- **Local:** `npx w2mcp …` (needs Node.js). Their agent connects over a stdio config — a few lines in
   Claude Desktop / Cursor / their runtime. Nothing hosted on our side; nothing leaves their machine.
 - **Hosted (SaaS):** we run the gateway/hub; the user gets an API key and points their agent at a URL
   (`Authorization: Bearer <key>`). Credentials are encrypted at rest (AES-256-GCM), each API runs sandboxed in

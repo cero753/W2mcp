@@ -4,9 +4,9 @@
  * Each API's generated server runs as its OWN subprocess (HTTP mode) — a crash, hang, or memory
  * blowup in generated code can't take down the gateway or other APIs. The gateway authenticates
  * the customer, fetches+decrypts THEIR credential, and proxies the MCP request to the right
- * subprocess, injecting the credential via the per-request `x-anymcp-credential` header.
+ * subprocess, injecting the credential via the per-request `x-w2mcp-credential` header.
  *
- *   agent ─POST /mcp/<api> (Bearer <anymcp-key>)→ gateway ─proxy +x-anymcp-credential→ subprocess(<api>)
+ *   agent ─POST /mcp/<api> (Bearer <w2mcp-key>)→ gateway ─proxy +x-w2mcp-credential→ subprocess(<api>)
  *
  * (In production, run each subprocess in a container/VM with egress allow-listed to that API's host.)
  */
@@ -31,7 +31,7 @@ export async function startGateway(cfg: GatewayConfig) {
   const backends = new Map<string, Backend>();
   let nextPort = basePort;
 
-  // Hot-reload: if an api isn't in the registry yet, re-read registry.json (APIs added by `anymcp new`
+  // Hot-reload: if an api isn't in the registry yet, re-read registry.json (APIs added by `w2mcp new`
   // or the hub's create tool at runtime become hostable without restarting the gateway).
   function resolvePath(api: string): string | undefined {
     if (cfg.registry[api]) return cfg.registry[api];
@@ -49,7 +49,7 @@ export async function startGateway(cfg: GatewayConfig) {
     if (!path) return null;
     const port = nextPort++;
     const child = spawn(process.execPath, ["--import", "tsx", path], {
-      env: { ...process.env, MCP_TRANSPORT: "http", PORT: String(port), ANYMCP_EMBEDDED: "" },
+      env: { ...process.env, MCP_TRANSPORT: "http", PORT: String(port), W2MCP_EMBEDDED: "" },
       stdio: ["ignore", "ignore", "pipe"],
     });
     const ready = new Promise<void>((resolve, reject) => {
@@ -78,7 +78,7 @@ export async function startGateway(cfg: GatewayConfig) {
     const auth = req.headers["authorization"];
     const key = typeof auth === "string" && auth.startsWith("Bearer ") ? auth.slice(7) : "";
     const customerId = await cfg.store.authenticate(key);
-    if (!customerId) return end(res, 401, "invalid or missing anymcp API key");
+    if (!customerId) return end(res, 401, "invalid or missing w2mcp API key");
 
     // 2. Resolve THIS customer's credential for THIS api. A public API generated at runtime may have no
     //    stored credential yet — inject an empty string so it's callable immediately (public servers ignore it).
@@ -97,7 +97,7 @@ export async function startGateway(cfg: GatewayConfig) {
           "content-type": req.headers["content-type"] ?? "application/json",
           "accept": req.headers["accept"] ?? "application/json, text/event-stream",
           "content-length": Buffer.byteLength(body),
-          "x-anymcp-credential": cred,                 // ← injected; never the customer's anymcp key
+          "x-w2mcp-credential": cred,                 // ← injected; never the customer's w2mcp key
         } },
       (proxyRes) => { res.writeHead(proxyRes.statusCode ?? 502, proxyRes.headers as any); proxyRes.pipe(res); }
     );
@@ -106,7 +106,7 @@ export async function startGateway(cfg: GatewayConfig) {
   });
 
   await new Promise<void>((resolve) => httpServer.listen(cfg.port, resolve));
-  console.error(`anymcp gateway on :${cfg.port}  (POST /mcp/<api>, Bearer <anymcp-key>; subprocess-isolated)`);
+  console.error(`w2mcp gateway on :${cfg.port}  (POST /mcp/<api>, Bearer <w2mcp-key>; subprocess-isolated)`);
 
   return {
     close() {

@@ -26,7 +26,7 @@ function deref(spec: Json, node: any, seen = new Set<string>()): any {
   return node;
 }
 
-/** OpenAPI schema → anymcp coarse type string (the flat v1 param model). */
+/** OpenAPI schema → w2mcp coarse type string (the flat v1 param model). */
 function schemaType(spec: Json, schemaIn: any): { type: string; enum?: any[] } {
   const s = deref(spec, schemaIn) || {};
   const enumVals = Array.isArray(s.enum) ? s.enum : undefined;

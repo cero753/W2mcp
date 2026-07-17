@@ -1,4 +1,4 @@
-# anymcp — CLI / TERMINAL DEMO  (no Claude Code)
+# w2mcp — CLI / TERMINAL DEMO  (no Claude Code)
 
 Show the **whole product in a terminal**: take an API the audience names, turn it into a real MCP server,
 and then use it — both from your CLI and from a *foreign* agent. No Claude Code anywhere.
@@ -11,11 +11,11 @@ Two sentences to land:
 
 ## THE TWO JOURNEYS (this is the story; the commands below act it out)
 
-### Journey A — the CREATOR (someone building an MCP server with anymcp)
-> paste an API's docs URL → anymcp crawls + reads the HTML → extracts a typed API model →
+### Journey A — the CREATOR (someone building an MCP server with w2mcp)
+> paste an API's docs URL → w2mcp crawls + reads the HTML → extracts a typed API model →
 > generates a runnable MCP server (typed tools, auth, errors) → optionally hosts it.
 
-- **Fast path (local, instant, works for ANY new API):** `anymcp new <url>` → a server on disk, tools listed, ready to call. No registry, no seeding, no restart.
+- **Fast path (local, instant, works for ANY new API):** `w2mcp new <url>` → a server on disk, tools listed, ready to call. No registry, no seeding, no restart.
 - **Hosted path (production):** register in `registry.json` + seed a credential + (re)start the gateway. The gateway reads `registry.json` at startup, so a *brand-new* API is hosted after a restart — for the live demo, host is best shown with the **pre-seeded** servers (coingecko/httpbin) and *new* APIs are shown via the instant local path.
 
 ### Journey B — the CONSUMER (an agent that wants to USE the server)
@@ -25,7 +25,7 @@ Two sentences to land:
 Three ways to prove it, strongest first:
 - **Cursor** (a real AI agent, not Claude Code) — `demo/cursor-mcp.json`.
 - **MCP Inspector (CLI)** — the official protocol client, in your terminal.
-- **`anymcp ask`** — your own terminal agent (convenience, not interop proof; keep as fallback).
+- **`w2mcp ask`** — your own terminal agent (convenience, not interop proof; keep as fallback).
 
 ---
 
@@ -35,12 +35,12 @@ Three ways to prove it, strongest first:
 cd C:\Users\karti\anymcp
 # load secrets (Gemini key) into THIS shell, force the file store:
 Get-Content .env | ? { $_ -match '^\s*[^#].*=' } | % { $kv=$_ -split '=',2; if ($kv[0].Trim() -ne 'DATABASE_URL'){ Set-Item Env:\$($kv[0].Trim()) $kv[1].Trim() } }; $env:DATABASE_URL=$null
-# make `anymcp` a real command in this terminal:
-function anymcp { npx tsx src\use-cli.ts @args }
+# make `w2mcp` a real command in this terminal:
+function w2mcp { npx tsx src\use-cli.ts @args }
 # start the gateway in its own window (needed for the HOSTED acts):
 Start-Process powershell -ArgumentList '-NoExit','-Command',"cd '$PWD'; npx tsx src\gateway-cli.ts"
 ```
-Pre-warm once so the first hosted click is instant: `anymcp tools coingecko`.
+Pre-warm once so the first hosted click is instant: `w2mcp tools coingecko`.
 Pre-run the Inspector once (first run downloads it): see Act 3.
 
 ---
@@ -51,10 +51,10 @@ Pre-run the Inspector once (first run downloads it): see Act 3.
 Or offer a shortlist: *CoinGecko, Chuck Norris, Dog CEO, Open-Meteo, REST Countries.*
 
 ```
-anymcp new https://api.example.com/docs
+w2mcp new https://api.example.com/docs
 ```
 - Renders JS docs by default; pass **multiple URLs** if the base URL lives on a separate intro/auth page:
-  `anymcp new https://api.example.com/docs https://api.example.com/authentication`
+  `w2mcp new https://api.example.com/docs https://api.example.com/authentication`
 - Streams `crawl → clean → extract → generate`, then prints the typed tool list.
 
 Say while it runs: *"It's reading the HTML like a developer would — there was never an OpenAPI spec."*
@@ -72,17 +72,17 @@ Say while it runs: *"It's reading the HTML like a developer would — there was 
 
 ### 2a. Call the server you just made — no gateway, no Claude Code
 ```
-anymcp tools --dir ./out/<the-new-api>
-anymcp call  --dir ./out/<the-new-api> <tool> key=value ...
+w2mcp tools --dir ./out/<the-new-api>
+w2mcp call  --dir ./out/<the-new-api> <tool> key=value ...
 ```
-Example (Chuck fallback): `anymcp call --dir ./out/chuck-demo get_random_joke_by_category category=science`
+Example (Chuck fallback): `w2mcp call --dir ./out/chuck-demo get_random_joke_by_category category=science`
 Say: *"That's the **official MCP client** spawning the generated server over stdio — the exact protocol an agent runtime speaks."*
 
 ### 2b. The production story — through the hosted gateway
 ```
-anymcp servers
-anymcp tools coingecko
-anymcp call  coingecko coin_price_by_ids_symbols_or_names ids=bitcoin,ethereum vs_currencies=usd include_24hr_change=true
+w2mcp servers
+w2mcp tools coingecko
+w2mcp call  coingecko coin_price_by_ids_symbols_or_names ids=bitcoin,ethereum vs_currencies=usd include_24hr_change=true
 ```
 Say: *"Same protocol, now multi-tenant: the customer is authenticated, their API credential is fetched, decrypted, and injected server-side, and each API runs sandboxed in its own subprocess."*
 
@@ -106,21 +106,21 @@ Say: *"A mainstream AI IDE, zero custom integration — it just spoke MCP to the
 
 ---
 
-## ACT 4 (optional) — an agent IN your terminal (`anymcp ask`)
+## ACT 4 (optional) — an agent IN your terminal (`w2mcp ask`)
 
 A convenience for a pure-terminal room. Honest framing: *this is our model driving the tools* — the interop
 proof is Act 3; this shows the developer ergonomics.
 ```
-anymcp ask "What's the price of bitcoin and ethereum in USD?" coingecko
-anymcp ask "Tell me a Chuck Norris joke about science." --dir ./out/chuck-demo
+w2mcp ask "What's the price of bitcoin and ethereum in USD?" coingecko
+w2mcp ask "Tell me a Chuck Norris joke about science." --dir ./out/chuck-demo
 ```
-If it hangs or misfires, drop instantly to the deterministic `anymcp call` (Act 2). Don't debug on stage.
+If it hangs or misfires, drop instantly to the deterministic `w2mcp call` (Act 2). Don't debug on stage.
 
 ---
 
 ## Exact answer to "can I demo the whole product in a terminal without Claude Code?"
 
-**Yes, fully.** Journey A: `anymcp new <url>` turns any API into a standard MCP server, live. Journey B: use it
+**Yes, fully.** Journey A: `w2mcp new <url>` turns any API into a standard MCP server, live. Journey B: use it
 from your CLI (`call`/`tools`), from a foreign agent (Inspector/Cursor), or from a terminal agent (`ask`).
 Claude Code/Desktop are just *examples* of MCP clients; your CLI and Cursor are others — the point is that ANY
 of them works with zero custom code, which is the whole pitch.
@@ -128,10 +128,10 @@ of them works with zero custom code, which is the whole pitch.
 ## Fallback ladder
 | Fails | Do |
 |---|---|
-| `anymcp` not defined | `npm run use -- <args>` |
-| `anymcp new` stalls / base_url `(none!)` | pivot to a pre-generated server (chuck-demo / coingecko / httpbin) |
-| `anymcp new` extract fails | Gemini key not loaded → re-run the `.env` loader in step 0 |
+| `w2mcp` not defined | `npm run use -- <args>` |
+| `w2mcp new` stalls / base_url `(none!)` | pivot to a pre-generated server (chuck-demo / coingecko / httpbin) |
+| `w2mcp new` extract fails | Gemini key not loaded → re-run the `.env` loader in step 0 |
 | Hosted call 401/403 | gateway down or store unseeded → `npx tsx demo\seed-store.mjs`, restart gateway |
-| `anymcp ask` hangs | Ctrl-C, use `anymcp call` (Act 2) |
+| `w2mcp ask` hangs | Ctrl-C, use `w2mcp call` (Act 2) |
 | Cursor won't connect | use Inspector (3a) or the CLI (2) instead |
 | Everything | browser demo (DEMO-RUNBOOK.md) |

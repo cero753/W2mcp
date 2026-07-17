@@ -1,10 +1,10 @@
-# Fly.io config for the anymcp hosting gateway.
+# Fly.io config for the w2mcp hosting gateway.
 # Deploy:
 #   fly launch --no-deploy           # creates the app
-#   fly secrets set ANYMCP_MASTER_KEY=$(openssl rand -hex 32)
+#   fly secrets set W2MCP_MASTER_KEY=$(openssl rand -hex 32)
 #   fly secrets set DATABASE_URL="postgres://...supabase or neon..."
 #   fly deploy
-app = "anymcp-gateway"
+app = "w2mcp-gateway"
 primary_region = "iad"
 
 [build]
@@ -18,4 +18,4 @@ primary_region = "iad"
 
 [env]
   PORT = "8080"
-  ANYMCP_REGISTRY = "./registry.json"
+  W2MCP_REGISTRY = "./registry.json"

@@ -1,5 +1,5 @@
 /**
- * anymcp — demo web app (frontend + backend).
+ * w2mcp — demo web app (frontend + backend).
  *
  *   GET  /                      → the single-page product UI
  *   POST /api/generate  (SSE)   → run the real pipeline (crawl→clean→extract→generate),
@@ -23,7 +23,7 @@ import YAML from "yaml";
 
 const PORT = Number(process.env.WEB_PORT || 5173);
 const GATEWAY = process.env.GATEWAY_URL || "http://localhost:8080";
-const DEMO_KEY = process.env.ANYMCP_DEMO_KEY || "ak_demo_w2mcp_2026";
+const DEMO_KEY = process.env.W2MCP_DEMO_KEY || "ak_demo_w2mcp_2026";
 const PUBLIC = join(import.meta.dirname, "public");
 const ROOT = join(import.meta.dirname, "..");
 
@@ -203,4 +203,4 @@ const server = createServer(async (req, res) => {
   res.writeHead(404); res.end("not found");
 });
 
-server.listen(PORT, () => console.error(`anymcp web UI → http://localhost:${PORT}  (gateway: ${GATEWAY})`));
+server.listen(PORT, () => console.error(`w2mcp web UI → http://localhost:${PORT}  (gateway: ${GATEWAY})`));

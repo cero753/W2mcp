@@ -5,8 +5,9 @@
 # Dependencies
 node_modules/
 
-# Generated MCP servers (produced by `anymcp <url>`) + test artifacts
+# Generated MCP servers (produced by `w2mcp <url>`) + test artifacts
 out/
 anymcp-store.json
+w2mcp-store.json
 .test-store.json
 *.log

@@ -1,6 +1,6 @@
 /**
  * Verification layer — turns "generated a server" into "generated a TRUSTWORTHY server".
- * Opt-in (anymcp verify <dir>), kept OUT of generate so generation stays pure + cred-free.
+ * Opt-in (w2mcp verify <dir>), kept OUT of generate so generation stays pure + cred-free.
  *
  * Three HONEST statuses (never call a thing "verified" unless a real call happened):
  *   live-verified       read endpoint actually called → 2xx + non-empty   (strong proof)
@@ -8,7 +8,7 @@
  *   structurally-checked no creds / needs args we can't synthesize — guardrail, NOT proof
  * Plus failures: live-failed, structural-issue.
  *
- * Live probe is viable because the dev running anymcp uses the API they're wiring → has its key.
+ * Live probe is viable because the dev running w2mcp uses the API they're wiring → has its key.
  */
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -25,7 +25,7 @@ const toSnakeUpper = (s: string) => s.toUpperCase().replace(/[^A-Z0-9]+/g, "_").
 export async function verify(dir: string): Promise<VerifyReport> {
   const model = parseApiModel(readFileSync(join(dir, "apimodel.json"), "utf8"));
   const tokenEnv = toSnakeUpper(model.api_name) + "_TOKEN";
-  const token = process.env[tokenEnv] || process.env.ANYMCP_TEST_TOKEN;
+  const token = process.env[tokenEnv] || process.env.W2MCP_TEST_TOKEN;
 
   const reports: EndpointReport[] = [];
 
@@ -90,7 +90,7 @@ async function liveProbe(dir: string, model: ApiModel, tokenEnv: string, token?:
     args: ["--import", "tsx", join(dir, "server.ts")],
     env,
   });
-  const client = new Client({ name: "anymcp-verify", version: "0.1.0" });
+  const client = new Client({ name: "w2mcp-verify", version: "0.1.0" });
   await client.connect(transport);
   try {
     for (const ep of model.endpoints) {

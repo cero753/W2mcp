@@ -12,7 +12,7 @@ export async function crawl(url: string, opts: CrawlOpts = {}): Promise<{ url: s
 
 async function crawlFetch(url: string): Promise<{ url: string; html: string }> {
   const res = await fetch(url, {
-    headers: { "User-Agent": "anymcp/0.1 (+docs reader)", Accept: "text/html,*/*" },
+    headers: { "User-Agent": "w2mcp/0.1 (+docs reader)", Accept: "text/html,*/*" },
     redirect: "follow",
   });
   if (!res.ok) throw new Error(`crawl: ${url} returned ${res.status}`);
@@ -26,7 +26,7 @@ async function crawlRendered(url: string): Promise<{ url: string; html: string }
   const { chromium } = await import("playwright");
   const browser = await chromium.launch({ headless: true });
   try {
-    const page = await browser.newPage({ userAgent: "anymcp/0.1 (+docs reader)" });
+    const page = await browser.newPage({ userAgent: "w2mcp/0.1 (+docs reader)" });
     await page.goto(url, { waitUntil: "domcontentloaded", timeout: 30000 });
     await page.waitForTimeout(1500); // let client-side docs hydrate
     const html = await page.content();

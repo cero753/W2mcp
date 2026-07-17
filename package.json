@@ -1,13 +1,13 @@
 {
-  "name": "anymcp",
+  "name": "w2mcp",
   "version": "0.1.0",
   "description": "Turn any API's docs URL into a working MCP server — no OpenAPI spec required.",
   "type": "module",
   "bin": {
-    "anymcp": "src/cli.ts"
+    "w2mcp": "src/cli.ts"
   },
   "scripts": {
-    "anymcp": "tsx src/cli.ts",
+    "w2mcp": "tsx src/cli.ts",
     "use": "tsx src/use-cli.ts",
     "hub": "tsx src/hub.ts",
     "verify": "tsx src/verify-cli.ts",

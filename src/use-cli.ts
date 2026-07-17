@@ -1,18 +1,18 @@
 /**
- * anymcp client CLI — list and call the tools of a generated MCP server, straight from a terminal.
+ * w2mcp client CLI — list and call the tools of a generated MCP server, straight from a terminal.
  * No Claude Code, no browser, no desktop app. Two modes:
  *
  *   Local (stdio) — spawns a freshly-generated server.ts directly via the official MCP client.
  *                   Works for ANY server you just generated (no registry, no gateway, no seeding).
- *       anymcp tools --dir ./out/myapi
- *       anymcp call  --dir ./out/myapi <tool> key=value ...
+ *       w2mcp tools --dir ./out/myapi
+ *       w2mcp call  --dir ./out/myapi <tool> key=value ...
  *
  *   Hosted (gateway) — talks to the multi-tenant gateway; credential injected server-side.
- *       anymcp servers
- *       anymcp tools coingecko
- *       anymcp call  coingecko <tool> ids=bitcoin,ethereum vs_currencies=usd
+ *       w2mcp servers
+ *       w2mcp tools coingecko
+ *       w2mcp call  coingecko <tool> ids=bitcoin,ethereum vs_currencies=usd
  *
- * Env: ANYMCP_GATEWAY (default http://localhost:8080), ANYMCP_KEY (default demo key).
+ * Env: W2MCP_GATEWAY (default http://localhost:8080), W2MCP_KEY (default demo key).
  */
 import { readFileSync, mkdirSync, writeFileSync } from "node:fs";
 import { join, isAbsolute, resolve } from "node:path";
@@ -24,8 +24,8 @@ import { extract, describeProvider } from "./extract.js";
 import { generateServer } from "./generate.js";
 import OpenAI from "openai";
 
-const GATEWAY = process.env.ANYMCP_GATEWAY || "http://localhost:8080";
-const KEY = process.env.ANYMCP_KEY || "ak_demo_w2mcp_2026";
+const GATEWAY = process.env.W2MCP_GATEWAY || "http://localhost:8080";
+const KEY = process.env.W2MCP_KEY || "ak_demo_w2mcp_2026";
 
 // ── small helpers ────────────────────────────────────────────────────────────
 const c = { dim: (s: string) => `\x1b[2m${s}\x1b[0m`, b: (s: string) => `\x1b[1m${s}\x1b[0m`,
@@ -82,9 +82,9 @@ async function withStdioFile<T>(serverFile: string, fn: (client: Client) => Prom
   const transport = new StdioClientTransport({
     command: process.execPath,
     args: ["--import", "tsx", serverFile],
-    env: { ...process.env, MCP_TRANSPORT: "", ANYMCP_EMBEDDED: "" } as Record<string, string>,
+    env: { ...process.env, MCP_TRANSPORT: "", W2MCP_EMBEDDED: "" } as Record<string, string>,
   });
-  const client = new Client({ name: "anymcp-cli", version: "0.1.0" }, { capabilities: {} });
+  const client = new Client({ name: "w2mcp-cli", version: "0.1.0" }, { capabilities: {} });
   await client.connect(transport);
   try { return await fn(client); } finally { await client.close(); }
 }
@@ -130,7 +130,7 @@ async function main() {
     const noRender = argv.includes("--no-render");
     const urls = rest.filter((a) => /^https?:\/\//.test(a));
     const outDir = dir || `./out/${(urls[0] || "server").replace(/^https?:\/\//, "").replace(/[^\w]+/g, "-").slice(0, 40)}`;
-    if (!urls.length) { console.error(c.r("usage: anymcp new <docs-url> [<more-urls>...] [--dir <out>] [--no-render]")); process.exit(1); }
+    if (!urls.length) { console.error(c.r("usage: w2mcp new <docs-url> [<more-urls>...] [--dir <out>] [--no-render]")); process.exit(1); }
     console.error(c.dim(`[1/4] crawl   ${urls.length} page(s)${noRender ? "" : " (render)"}`));
     const parts: string[] = [];
     for (const u of urls) { const { html } = await crawl(u, { render: !noRender }); parts.push(`# Source: ${u}\n\n${clean(html)}`); console.error(c.dim(`      ✓ ${u} (${html.length} bytes)`)); }
@@ -145,16 +145,16 @@ async function main() {
     const tools = await withStdio(outDir, async (cl) => (await cl.listTools()).tools);
     console.log(c.b(`\n${tools.length} tools ready:`));
     for (const t of tools) console.log(`  ${c.g(t.name)}${t.description ? "  " + c.dim(String(t.description).split("\n")[0].slice(0, 70)) : ""}`);
-    console.log(c.dim(`\nnow call one:  anymcp call --dir ${outDir} <tool> key=value ...`));
+    console.log(c.dim(`\nnow call one:  w2mcp call --dir ${outDir} <tool> key=value ...`));
     return;
   }
 
   if (cmd === "servers") {
     const names = registryNames();
     console.log(c.b("hosted servers (registry.json):"));
-    for (const n of names) console.log(`  ${c.g(n)}   ${c.dim(`anymcp tools ${n}`)}`);
+    for (const n of names) console.log(`  ${c.g(n)}   ${c.dim(`w2mcp tools ${n}`)}`);
     console.log(c.dim(`\ngateway ${GATEWAY} · key ${KEY.slice(0, 12)}…`));
-    console.log(c.dim(`local:  anymcp tools --dir ./out/<yourapi>`));
+    console.log(c.dim(`local:  w2mcp tools --dir ./out/<yourapi>`));
     return;
   }
 
@@ -174,16 +174,16 @@ async function main() {
   if (cmd === "ask") {
     // Terminal agent: an LLM reads the server's tools, calls the right one(s), and answers in plain language.
     // NOTE (demo): this is your-model-driving-your-server — a convenience, NOT proof of standard MCP interop.
-    // For interop proof use MCP Inspector or Cursor. Keep `anymcp call` as the instant fallback if this stalls.
+    // For interop proof use MCP Inspector or Cursor. Keep `w2mcp call` as the instant fallback if this stalls.
     if (!process.env.GEMINI_API_KEY && !process.env.OPENAI_API_KEY) {
-      console.error(c.r("anymcp ask needs GEMINI_API_KEY or OPENAI_API_KEY (openai-compat). Falling back: use `anymcp call`.")); process.exit(1);
+      console.error(c.r("w2mcp ask needs GEMINI_API_KEY or OPENAI_API_KEY (openai-compat). Falling back: use `w2mcp call`.")); process.exit(1);
     }
     const question = rest[0];
     const hosted = (hub || dir) ? null : rest[1];
-    if (!question) { console.error(c.r('usage: anymcp ask "<question>" <server>   |   anymcp ask "<question>" --dir <dir>   |   anymcp ask "<question>" --hub')); process.exit(1); }
+    if (!question) { console.error(c.r('usage: w2mcp ask "<question>" <server>   |   w2mcp ask "<question>" --dir <dir>   |   w2mcp ask "<question>" --hub')); process.exit(1); }
     const gemini = !!process.env.GEMINI_API_KEY;
     const llm = new OpenAI({ apiKey: (gemini ? process.env.GEMINI_API_KEY : process.env.OPENAI_API_KEY)!, baseURL: gemini ? "https://generativelanguage.googleapis.com/v1beta/openai/" : undefined });
-    const llmModel = process.env.ANYMCP_MODEL || (gemini ? "gemini-2.5-flash" : "gpt-4o");
+    const llmModel = process.env.W2MCP_MODEL || (gemini ? "gemini-2.5-flash" : "gpt-4o");
 
     await withRunner(dir, hosted, hub, async (run) => {
       const tools = await run.list();
@@ -208,7 +208,7 @@ async function main() {
           messages.push({ role: "tool", tool_call_id: tc.id, content: out.slice(0, 4000) });
         }
       }
-      console.log("\n" + c.y("agent hit the turn cap — try `anymcp call` directly."));
+      console.log("\n" + c.y("agent hit the turn cap — try `w2mcp call` directly."));
     });
     return;
   }
@@ -226,23 +226,23 @@ async function main() {
     return;
   }
 
-  console.log(`anymcp — generate and use MCP servers from your terminal
+  console.log(`w2mcp — generate and use MCP servers from your terminal
 
-  ${c.b("anymcp new <docs-url> [more-urls...]")}     generate a server from ANY API docs, then list its tools
+  ${c.b("w2mcp new <docs-url> [more-urls...]")}     generate a server from ANY API docs, then list its tools
                                           (render ON by default; --no-render to disable; --dir <out>)
 
-  ${c.b("anymcp servers")}                          list hosted servers
-  ${c.b("anymcp tools <server>")}                   list a hosted server's tools
-  ${c.b("anymcp call <server> <tool> k=v ...")}     call a hosted tool (via gateway)
+  ${c.b("w2mcp servers")}                          list hosted servers
+  ${c.b("w2mcp tools <server>")}                   list a hosted server's tools
+  ${c.b("w2mcp call <server> <tool> k=v ...")}     call a hosted tool (via gateway)
 
-  ${c.b("anymcp tools --dir <dir>")}                list tools of a freshly-generated server (stdio)
-  ${c.b("anymcp call --dir <dir> <tool> k=v ...")}  call it directly — no gateway, no Claude Code
+  ${c.b("w2mcp tools --dir <dir>")}                list tools of a freshly-generated server (stdio)
+  ${c.b("w2mcp call --dir <dir> <tool> k=v ...")}  call it directly — no gateway, no Claude Code
 
-  ${c.b('anymcp ask "<question>" <server>')}        let an LLM agent answer by calling the tools
-  ${c.b('anymcp ask "<question>" --dir <dir>')}     (same, against a local generated server)
-  ${c.b('anymcp ask "<question>" --hub')}           (same, but the agent gets EVERY API via the hub)
+  ${c.b('w2mcp ask "<question>" <server>')}        let an LLM agent answer by calling the tools
+  ${c.b('w2mcp ask "<question>" --dir <dir>')}     (same, against a local generated server)
+  ${c.b('w2mcp ask "<question>" --hub')}           (same, but the agent gets EVERY API via the hub)
 
-env: ANYMCP_GATEWAY (${GATEWAY}) · ANYMCP_KEY · GEMINI_API_KEY (for ask)`);
+env: W2MCP_GATEWAY (${GATEWAY}) · W2MCP_KEY · GEMINI_API_KEY (for ask)`);
 }
 
 main().catch((e) => { console.error(c.r("✗ " + (e?.message ?? e))); process.exit(1); });

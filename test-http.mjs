@@ -27,7 +27,7 @@ if (!ready) { console.error("server didn't start"); child.kill(); process.exit(1
 // 3. Connect over HTTP and call a tool.
 try {
   const transport = new StreamableHTTPClientTransport(new URL(`http://localhost:${PORT}/mcp`));
-  const client = new Client({ name: "anymcp-http-test", version: "0.1.0" });
+  const client = new Client({ name: "w2mcp-http-test", version: "0.1.0" });
   await client.connect(transport);
 
   const { tools } = await client.listTools();

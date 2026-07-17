@@ -1,4 +1,4 @@
-# anymcp / w2mcp — Demo Runbook (Wednesday)
+# w2mcp / w2mcp — Demo Runbook (Wednesday)
 
 **Audience:** enterprise buyers + investors.
 **Narrative:** Pain → Magic (URL → server) → Payoff (Claude calls it live, hosted & secure).
@@ -55,8 +55,8 @@ cd C:/Users/karti/anymcp
 
 # fly.toml demo tweak already applied: min_machines_running = 1 (no cold-start stall on stage)
 
-fly launch --no-deploy                                  # creates app 'anymcp-gateway'
-fly secrets set ANYMCP_MASTER_KEY=$(openssl rand -hex 32)
+fly launch --no-deploy                                  # creates app 'w2mcp-gateway'
+fly secrets set W2MCP_MASTER_KEY=$(openssl rand -hex 32)
 # (no DATABASE_URL — file store is the demo default)
 fly deploy
 fly status                                              # confirm 1 machine RUNNING
@@ -74,8 +74,8 @@ Register the hero servers in `registry.json`:
 Smoke-test the hosted endpoint:
 
 ```bash
-curl -X POST https://anymcp-gateway.fly.dev/mcp/coingecko \
-  -H "Authorization: Bearer <your-anymcp-key>" \
+curl -X POST https://w2mcp-gateway.fly.dev/mcp/coingecko \
+  -H "Authorization: Bearer <your-w2mcp-key>" \
   -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
 ```
@@ -89,9 +89,9 @@ Add to Claude Desktop MCP config (`%APPDATA%\Claude\claude_desktop_config.json`)
 ```json
 {
   "mcpServers": {
-    "coingecko-via-anymcp": {
-      "url": "https://anymcp-gateway.fly.dev/mcp/coingecko",
-      "headers": { "Authorization": "Bearer <your-anymcp-key>" }
+    "coingecko-via-w2mcp": {
+      "url": "https://w2mcp-gateway.fly.dev/mcp/coingecko",
+      "headers": { "Authorization": "Bearer <your-w2mcp-key>" }
     }
   }
 }

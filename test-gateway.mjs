@@ -1,6 +1,6 @@
 /**
  * End-to-end multi-tenant gateway test:
- *  - register customer "acme" with anymcp key + store their (encrypted) Notion token
+ *  - register customer "acme" with w2mcp key + store their (encrypted) Notion token
  *  - start the gateway in front of the generated Notion server
  *  - connect as acme over HTTP → gateway authenticates, injects acme's token → live Notion data
  *  - connect with a bad key → rejected (401)

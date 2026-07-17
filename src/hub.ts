@@ -1,13 +1,13 @@
 /**
- * anymcp HUB — one MCP endpoint that fronts EVERY registered API.
+ * w2mcp HUB — one MCP endpoint that fronts EVERY registered API.
  *
- * Connect any agent (Claude Desktop, Cursor, MCP Inspector, `anymcp ask`) to this ONE server and it
+ * Connect any agent (Claude Desktop, Cursor, MCP Inspector, `w2mcp ask`) to this ONE server and it
  * instantly sees the tools of ALL registered APIs, namespaced `<server>__<tool>`, and can call them.
  * Plus two management tools so an agent can grow its own toolbox:
- *   • anymcp__list_servers                 — what APIs are wired in
- *   • anymcp__create  {name, source}       — turn ANY docs URL / OpenAPI / Swagger into a new MCP and register it
+ *   • w2mcp__list_servers                 — what APIs are wired in
+ *   • w2mcp__create  {name, source}       — turn ANY docs URL / OpenAPI / Swagger into a new MCP and register it
  *
- * Downstream servers are the ones anymcp generated (registry.json → server.ts). The hub spawns each as a
+ * Downstream servers are the ones w2mcp generated (registry.json → server.ts). The hub spawns each as a
  * stdio subprocess via the official MCP client and proxies calls — so the hub is itself a standard MCP client
  * AND a standard MCP server. Transport: stdio by default, `MCP_TRANSPORT=http` for hosting (Streamable HTTP).
  */
@@ -27,7 +27,7 @@ import { specToApiModel } from "./openapi.js";
 import YAML from "yaml";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const REGISTRY = process.env.ANYMCP_REGISTRY || join(ROOT, "registry.json");
+const REGISTRY = process.env.W2MCP_REGISTRY || join(ROOT, "registry.json");
 const SEP = "__"; // namespace separator — tool names must match ^[a-zA-Z0-9_-]+$, so no dots.
 
 type Registry = Record<string, string>; // api name → generated server.ts path
@@ -44,9 +44,9 @@ async function connectDownstream(name: string, path: string): Promise<Down> {
   const transport = new StdioClientTransport({
     command: process.execPath,
     args: ["--import", "tsx", resolve(ROOT, path)],
-    env: { ...process.env, MCP_TRANSPORT: "", ANYMCP_EMBEDDED: "" } as Record<string, string>,
+    env: { ...process.env, MCP_TRANSPORT: "", W2MCP_EMBEDDED: "" } as Record<string, string>,
   });
-  const client = new Client({ name: "anymcp-hub", version: "0.1.0" }, { capabilities: {} });
+  const client = new Client({ name: "w2mcp-hub", version: "0.1.0" }, { capabilities: {} });
   await client.connect(transport);
   const tools = (await client.listTools()).tools;
   const down = { client, tools };
@@ -67,12 +67,12 @@ function aggregateTools() {
     }
   }
   out.push({
-    name: "anymcp__list_servers",
+    name: "w2mcp__list_servers",
     description: "List the APIs wired into this hub and how many tools each exposes.",
     inputSchema: { type: "object", properties: {} },
   });
   out.push({
-    name: "anymcp__create",
+    name: "w2mcp__create",
     description: "Turn ANY API into a new MCP and register it in this hub. Accepts HTML docs URL(s), an OpenAPI/Swagger URL, or a pasted OpenAPI/Swagger JSON/YAML. Returns the new tool names. (Reconnect to use them as native tools.)",
     inputSchema: {
       type: "object",
@@ -116,18 +116,18 @@ async function createServerFromSource(name: string, source: string): Promise<{ d
 
 // ── the hub MCP server ──
 function buildHub() {
-  const server = new Server({ name: "anymcp-hub", version: "0.1.0" }, { capabilities: { tools: { listChanged: true } } });
+  const server = new Server({ name: "w2mcp-hub", version: "0.1.0" }, { capabilities: { tools: { listChanged: true } } });
 
   server.setRequestHandler(ListToolsRequestSchema, async () => ({ tools: aggregateTools() }));
 
   server.setRequestHandler(CallToolRequestSchema, async (req) => {
     const { name, arguments: args } = req.params;
 
-    if (name === "anymcp__list_servers") {
+    if (name === "w2mcp__list_servers") {
       const rows = [...downstream.entries()].map(([n, d]) => ({ server: n, tools: d.tools.length }));
       return { content: [{ type: "text", text: JSON.stringify(rows, null, 2) }] };
     }
-    if (name === "anymcp__create") {
+    if (name === "w2mcp__create") {
       const { name: newName, source } = (args ?? {}) as any;
       if (!newName || !source) return { isError: true, content: [{ type: "text", text: "need { name, source }" }] };
       try {
@@ -176,9 +176,9 @@ async function boot() {
         await server.connect(transport);
         await transport.handleRequest(req, res, body);
       } catch (e) { if (!res.headersSent) res.writeHead(500).end(String(e)); }
-    }).listen(port, () => console.error(`anymcp hub (Streamable HTTP) on :${port}/mcp — ${names.length} servers, ${total} tools`));
+    }).listen(port, () => console.error(`w2mcp hub (Streamable HTTP) on :${port}/mcp — ${names.length} servers, ${total} tools`));
   } else {
-    console.error(`anymcp hub (stdio) — ${names.length} servers, ${total} tools`);
+    console.error(`w2mcp hub (stdio) — ${names.length} servers, ${total} tools`);
     await server.connect(new StdioServerTransport());
   }
 }

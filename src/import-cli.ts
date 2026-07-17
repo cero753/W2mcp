@@ -1,5 +1,5 @@
 /**
- * anymcp-import <spec-url-or-file> [--out <dir>] [--model-only]
+ * w2mcp-import <spec-url-or-file> [--out <dir>] [--model-only]
  * Fast-path for APIs that DO publish an OpenAPI/Swagger spec: fetch the spec JSON, convert it
  * directly to an ApiModel (no LLM), and generate the MCP server. Complete + deterministic.
  *
@@ -18,7 +18,7 @@ function parseSpec(txt: string): any {
 }
 async function loadSpec(src: string): Promise<any> {
   if (existsSync(src)) return parseSpec(readFileSync(src, "utf8"));
-  const res = await fetch(src, { headers: { "User-Agent": "anymcp-import", Accept: "application/json, text/yaml, */*" } });
+  const res = await fetch(src, { headers: { "User-Agent": "w2mcp-import", Accept: "application/json, text/yaml, */*" } });
   if (!res.ok) throw new Error(`fetch ${src} → HTTP ${res.status}`);
   return parseSpec(await res.text());
 }
@@ -33,7 +33,7 @@ async function main() {
     if (args[i] === "--model-only") modelOnly = true;
   }
   if (!src) {
-    console.error("Usage: anymcp-import <spec-url-or-file> [--out <dir>] [--model-only]");
+    console.error("Usage: w2mcp-import <spec-url-or-file> [--out <dir>] [--model-only]");
     process.exit(1);
   }
 

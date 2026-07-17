@@ -59,7 +59,7 @@ function userPrompt(docs: string, url: string, errorFeedback?: string): string {
 /** Provider is chosen by which key is present: Gemini → OpenAI → Anthropic. */
 interface Provider { kind: "openai-compat" | "anthropic"; apiKey?: string; baseURL?: string; model: string; }
 function pickProvider(): Provider {
-  const m = process.env.ANYMCP_MODEL;
+  const m = process.env.W2MCP_MODEL;
   if (process.env.GEMINI_API_KEY)
     return { kind: "openai-compat", apiKey: process.env.GEMINI_API_KEY, baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/", model: m || "gemini-2.5-flash" };
   if (process.env.OPENAI_API_KEY)
@@ -109,7 +109,7 @@ async function openaiExtract(user: string, p: Provider): Promise<string> {
 
 async function anthropicExtract(user: string): Promise<string> {
   const client = new Anthropic();
-  const model = process.env.ANYMCP_MODEL || "claude-opus-4-8";
+  const model = process.env.W2MCP_MODEL || "claude-opus-4-8";
   const msg = await client.messages.create({
     model,
     max_tokens: 8000,

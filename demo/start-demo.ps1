@@ -13,7 +13,7 @@ $load = "Get-Content .env | Where-Object { `$_ -match '^\s*[^#].*=' } | ForEach-
 
 # Seed the store once (idempotent) in THIS process.
 Invoke-Expression $load
-if (-not (Test-Path "anymcp-store.json")) {
+if (-not (Test-Path "w2mcp-store.json")) {
   Write-Host "seeding credential store..." -ForegroundColor Cyan
   npx tsx demo/seed-store.mjs
 }

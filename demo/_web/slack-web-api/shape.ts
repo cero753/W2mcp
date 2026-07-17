@@ -1,5 +1,5 @@
 /**
- * anymcp generic response shaper — emitted verbatim into every generated MCP server.
+ * w2mcp generic response shaper — emitted verbatim into every generated MCP server.
  * Structural, never silent: every elision leaves a marker. (See phase-1-response-shaping.md)
  * Validated on a live Notion response: maxDepth=8 preserves payload that maxDepth=6 ate.
  */
