@@ -107,6 +107,22 @@ const server = createServer(async (req, res) => {
     return;
   }
 
+  // remove a server from the registry (management). Keeps the generated files on disk — only
+  // un-registers it. NOTE: a running gateway/hub caches downstreams at boot, so this takes effect on
+  // the next gateway/hub (re)start, not for a live-serving process. registry.json stays BOM-free
+  // (writeFileSync on a string adds none) — a BOM would break JSON.parse across gateway/hub.
+  if (req.method === "POST" && path === "/api/registry/remove") {
+    const { name } = JSON.parse(await readBody(req) || "{}");
+    const regPath = join(ROOT, "registry.json");
+    let reg: Record<string, string> = {};
+    try { reg = JSON.parse(readFileSync(regPath, "utf8")); } catch {}
+    const existed = Object.prototype.hasOwnProperty.call(reg, name);
+    if (existed) { delete reg[name]; writeFileSync(regPath, JSON.stringify(reg, null, 2)); }
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ ok: existed, servers: Object.keys(reg), paths: reg }));
+    return;
+  }
+
   // tools/list for a hosted server
   if (req.method === "POST" && path === "/api/tools") {
     const { api } = JSON.parse(await readBody(req) || "{}");

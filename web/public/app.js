@@ -124,7 +124,30 @@ async function loadServers() {
   servers.forEach((s) => isel.append(el("option", null, s)));
   isel.onchange = renderInstall;
   renderInstall();
+  renderManage(servers, SERVER_PATHS);
   if (servers.length) await loadTools(servers[0]);
+}
+
+// ── Manage: list / un-register hosted servers ────────────────────────────────
+function renderManage(servers, paths) {
+  const list = $("#manageList");
+  if (!list) return;
+  list.innerHTML = "";
+  if (!servers.length) { list.append(el("div", "muted", "No servers registered.")); return; }
+  for (const s of servers) {
+    const row = el("div", "mrow");
+    row.append(el("span", "mname", s));
+    row.append(el("span", "mpath", paths[s] || ""));
+    const del = el("button", "mdel", "Remove");
+    del.onclick = async () => {
+      if (!confirm(`Un-register "${s}"? The generated files stay on disk; the gateway drops it on restart.`)) return;
+      del.disabled = true; del.textContent = "…";
+      await fetch("/api/registry/remove", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: s }) });
+      await loadServers();
+    };
+    row.append(del);
+    list.append(row);
+  }
 }
 async function selectServer(api) {
   $("#server").value = api; await loadTools(api);
