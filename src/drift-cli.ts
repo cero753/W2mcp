@@ -12,9 +12,9 @@ import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
 import { parseApiModel, type ApiModel, type Endpoint } from "./model.js";
 import { readManifest, writeManifest, hashSource } from "./manifest.js";
-import { crawl } from "./crawl.js";
-import { clean } from "./clean.js";
-import { extract } from "./extract.js";
+import { crawl, crawlSmart } from "./crawl.js";
+import { assembleSources } from "./clean.js";
+import { extractDocs } from "./extract.js";
 import { specToApiModel } from "./openapi.js";
 import { generateServer } from "./generate.js";
 import YAML from "yaml";
@@ -29,7 +29,11 @@ if (!dir) { console.error("Usage: w2mcp drift <serverDir> [--source <url>] [--fi
 
 const baseline = parseApiModel(readFileSync(join(dir, "apimodel.json"), "utf8"));
 const man = readManifest(dir);
-const source = flag("--source") || man?.sources?.[0];
+// Re-derive from the SAME source set the server was generated from, so drift matches `new`.
+// A --source override replaces the set; a single source auto-follows (as generation did).
+const override = flag("--source");
+const sources = override ? [override] : (man?.sources?.length ? man.sources : []);
+const source = sources[0];
 if (!source) { console.error(c.r("no source: pass --source <url> or generate with a manifest.json")); process.exit(1); }
 const mode = man?.mode || (/\.(json|ya?ml)(\?|$)|openapi|swagger|api-docs|\/spec/i.test(source) ? "openapi" : "docs");
 
@@ -40,9 +44,14 @@ async function deriveCurrent(): Promise<{ model: ApiModel; sourceText: string }>
     const txt = /^https?:/.test(source!) ? await (await fetch(source!)).text() : readFileSync(source!, "utf8");
     return { model: specToApiModel(parseSpec(txt), source), sourceText: txt };
   }
-  const { html } = await crawl(source!, { render: true });
-  const md = clean(html);
-  return { model: await extract(md, source!), sourceText: md };
+  // Docs mode: mirror `new` — a single source auto-follows related pages; multiple sources are all primary.
+  const doFollow = sources.length === 1;
+  const pages = doFollow
+    ? await crawlSmart(source!, { render: true, maxPages: 3 })
+    : await Promise.all(sources.map((u) => crawl(u, { render: true })));
+  const followFrom = doFollow ? 1 : pages.length;
+  const md = assembleSources(pages, { followFrom });
+  return { model: await extractDocs(pages, source!, { followFrom }), sourceText: md };
 }
 
 // Match endpoints by method+path (stable), NOT by the LLM-generated tool name (varies run-to-run).

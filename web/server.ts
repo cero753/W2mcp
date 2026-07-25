@@ -188,11 +188,13 @@ const server = createServer(async (req, res) => {
         ? await crawlSmart(list[0], { render: !!render, maxPages: 3 })
         : await Promise.all(list.map(async (u) => await crawl(u, { render: !!render })));
       for (const p of pages) send({ stage: "crawl", pct: 25, msg: `✓ ${p.url} (${(p.html.length / 1000) | 0} KB)` });
-      const md = assembleSources(pages);
+      // Only auto-followed pages get budget-truncated; explicit multi-URL inputs are all primary.
+      const followFrom = doFollow ? 1 : pages.length;
+      const md = assembleSources(pages, { followFrom });
       send({ stage: "clean", pct: 40, msg: `Cleaned → ${(md.length / 1000) | 0} KB of markdown` });
 
       send({ stage: "extract", pct: 55, msg: `Reading the docs with ${describeProvider()}…` });
-      const model = await extractDocs(pages, list[0]);
+      const model = await extractDocs(pages, list[0], { followFrom });
       send({ stage: "extract", pct: 80, msg: `✓ ${model.api_name}: ${model.endpoints.length} endpoints, auth=${model.auth.type}` });
 
       send({ stage: "generate", pct: 92, msg: "Generating the MCP server…" });

@@ -23,22 +23,26 @@ export function clean(html: string): string {
 }
 
 /**
- * Assemble multiple crawled pages into one markdown blob for the extractor, under a size budget.
- * The FIRST page (the entry/primary docs page) keeps priority; each FOLLOWED page is truncated to a
- * smaller excerpt — enough to surface base_url/auth (which sit near the top of intro/auth/reference
- * pages) without letting big reference pages balloon the model's output past its token limit.
+ * Assemble multiple crawled pages into one markdown blob for the extractor.
+ *
+ * Pages before `followFrom` are PRIMARY (the entry page, or user-chosen multi-URL inputs) and kept
+ * in full — this preserves the verified multi-URL flows. Pages from `followFrom` onward are
+ * AUTO-FOLLOWED supplements: truncated to `followBudget` so a big reference page can only contribute
+ * its top (where base_url/auth live), never dump an endpoint table that balloons the model's output.
+ *
+ * Default `followFrom: 1` = single entry page + followed pages. For explicit multi-URL, pass
+ * `followFrom: pages.length` so every user-chosen page is treated as primary (uncapped).
  */
 export function assembleSources(
   pages: Array<{ url: string; html: string }>,
-  opts: { entryBudget?: number; followBudget?: number } = {},
+  opts: { followFrom?: number; followBudget?: number } = {},
 ): string {
-  const entryBudget = opts.entryBudget ?? 45_000;
-  const followBudget = opts.followBudget ?? 8_000; // followed pages are for base_url/auth (top of page), not full endpoint dumps
+  const followFrom = opts.followFrom ?? 1;
+  const followBudget = opts.followBudget ?? 8_000;
   return pages
     .map((p, i) => {
       let md = clean(p.html);
-      const budget = i === 0 ? entryBudget : followBudget;
-      if (md.length > budget) md = md.slice(0, budget) + "\n\n…(truncated)";
+      if (i >= followFrom && md.length > followBudget) md = md.slice(0, followBudget) + "\n\n…(truncated)";
       return `# Source: ${p.url}\n\n${md}`;
     })
     .join("\n\n---\n\n");

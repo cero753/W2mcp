@@ -112,9 +112,13 @@ async function callWithBackoff(run: (u: string) => Promise<string>, prompt: stri
  * model overflow/misfire, fall back to the entry page alone. This guarantees that smart-crawl's
  * page-following can only help — never turn a working single-page extract into a failure.
  */
-export async function extractDocs(pages: Array<{ url: string; html: string }>, sourceUrl: string): Promise<ApiModel> {
+export async function extractDocs(
+  pages: Array<{ url: string; html: string }>,
+  sourceUrl: string,
+  opts: { followFrom?: number } = {},
+): Promise<ApiModel> {
   try {
-    return await extract(assembleSources(pages), sourceUrl);
+    return await extract(assembleSources(pages, opts), sourceUrl);
   } catch (e) {
     if (pages.length <= 1) throw e;
     console.error("        ↩ multi-page extract failed; retrying with the entry page only…");

@@ -143,8 +143,10 @@ async function main() {
     for (const p of pages) console.error(c.dim(`      ✓ ${p.url} (${p.html.length} bytes)`));
     console.error(c.dim(`[2/4] clean   → markdown`));
     console.error(c.dim(`[3/4] extract → ApiModel (${describeProvider()})`));
-    const md = assembleSources(pages); // for the drift baseline hash
-    const model = await extractDocs(pages, urls[0]);
+    // Only auto-followed pages get budget-truncated; explicit multi-URL inputs are all primary.
+    const followFrom = doFollow ? 1 : pages.length;
+    const md = assembleSources(pages, { followFrom }); // for the drift baseline hash
+    const model = await extractDocs(pages, urls[0], { followFrom });
     console.error(c.dim(`      → ${model.api_name}: ${model.endpoints.length} endpoints, auth=${model.auth.type}, base=${model.base_url ?? c.r("(none!)")}`));
     console.error(c.dim(`[4/4] generate → ${outDir}`));
     mkdirSync(outDir, { recursive: true });
