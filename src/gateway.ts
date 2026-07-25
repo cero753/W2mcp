@@ -69,6 +69,8 @@ export async function startGateway(cfg: GatewayConfig) {
   }
 
   const httpServer = createHttpServer(async (req: IncomingMessage, res: ServerResponse) => {
+    // Health check for hosting platforms (Render/Railway/Fly) — a plain 200 so probes pass.
+    if (req.method === "GET" && (req.url === "/healthz" || req.url === "/")) return end(res, 200, "ok");
     const m = req.url?.match(/^\/mcp\/([\w-]+)$/);
     if (!m) return end(res, 404, "not found");
     if (req.method !== "POST") return end(res, 405, "POST /mcp/<api> only");

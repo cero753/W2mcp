@@ -1,0 +1,24 @@
+# Render.com Blueprint for the w2mcp hosting gateway.
+# Deploy WITHOUT any CLI login: push this repo to GitHub, then in the Render dashboard
+#   New → Blueprint → pick this repo. Render reads this file and builds from ./Dockerfile.
+# Set the two secret env vars (marked sync:false) in the dashboard when prompted.
+#
+# See demo/DEPLOY.md for the full walkthrough (and Railway / Fly.io alternatives).
+services:
+  - type: web
+    name: w2mcp-gateway
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: starter            # always-on; the Free plan sleeps and cold-starts
+    region: oregon
+    healthCheckPath: /healthz
+    autoDeploy: true
+    envVars:
+      - key: PORT
+        value: "8080"
+      - key: W2MCP_REGISTRY
+        value: ./registry.json
+      - key: W2MCP_MASTER_KEY   # 64 hex chars — `openssl rand -hex 32`. Credential-encryption key.
+        sync: false             # set as a secret in the dashboard; never commit it
+      - key: DATABASE_URL       # Postgres (Supabase/Neon). Omit to use the in-image file store (ephemeral).
+        sync: false
