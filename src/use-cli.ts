@@ -18,9 +18,9 @@ import { readFileSync, mkdirSync, writeFileSync } from "node:fs";
 import { join, isAbsolute, resolve } from "node:path";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
-import { crawl } from "./crawl.js";
-import { clean } from "./clean.js";
-import { extract, describeProvider } from "./extract.js";
+import { crawl, crawlSmart } from "./crawl.js";
+import { assembleSources } from "./clean.js";
+import { extractDocs, describeProvider } from "./extract.js";
 import { generateServer } from "./generate.js";
 import { writeManifest, hashSource } from "./manifest.js";
 import OpenAI from "openai";
@@ -129,21 +129,28 @@ async function main() {
     // Render ON by default (JS-rendered docs are common); --no-render to disable. Pass multiple URLs so the
     // base URL (often on the intro/auth page, not the endpoint page) is captured.
     const noRender = argv.includes("--no-render");
+    const noFollow = argv.includes("--no-follow");
     const urls = rest.filter((a) => /^https?:\/\//.test(a));
     const outDir = dir || `./out/${(urls[0] || "server").replace(/^https?:\/\//, "").replace(/[^\w]+/g, "-").slice(0, 40)}`;
-    if (!urls.length) { console.error(c.r("usage: w2mcp new <docs-url> [<more-urls>...] [--dir <out>] [--no-render]")); process.exit(1); }
-    console.error(c.dim(`[1/4] crawl   ${urls.length} page(s)${noRender ? "" : " (render)"}`));
-    const parts: string[] = [];
-    for (const u of urls) { const { html } = await crawl(u, { render: !noRender }); parts.push(`# Source: ${u}\n\n${clean(html)}`); console.error(c.dim(`      ✓ ${u} (${html.length} bytes)`)); }
+    if (!urls.length) { console.error(c.r("usage: w2mcp new <docs-url> [<more-urls>...] [--dir <out>] [--no-render] [--no-follow]")); process.exit(1); }
+    // Single URL: auto-follow a few related pages so base_url (often on a separate auth/intro page)
+    // is captured — unless --no-follow. Multiple URLs: crawl exactly what was given.
+    const doFollow = !noFollow && urls.length === 1;
+    console.error(c.dim(`[1/4] crawl   ${doFollow ? "+ related pages" : `${urls.length} page(s)`}${noRender ? "" : " (render)"}`));
+    const pages = doFollow
+      ? await crawlSmart(urls[0], { render: !noRender, maxPages: 3 })
+      : await Promise.all(urls.map((u) => crawl(u, { render: !noRender })));
+    for (const p of pages) console.error(c.dim(`      ✓ ${p.url} (${p.html.length} bytes)`));
     console.error(c.dim(`[2/4] clean   → markdown`));
     console.error(c.dim(`[3/4] extract → ApiModel (${describeProvider()})`));
-    const model = await extract(parts.join("\n\n---\n\n"), urls[0]);
+    const md = assembleSources(pages); // for the drift baseline hash
+    const model = await extractDocs(pages, urls[0]);
     console.error(c.dim(`      → ${model.api_name}: ${model.endpoints.length} endpoints, auth=${model.auth.type}, base=${model.base_url ?? c.r("(none!)")}`));
     console.error(c.dim(`[4/4] generate → ${outDir}`));
     mkdirSync(outDir, { recursive: true });
     for (const [name, content] of Object.entries(generateServer(model))) writeFileSync(join(outDir, name), content);
     writeFileSync(join(outDir, "apimodel.json"), JSON.stringify(model, null, 2));
-    writeManifest(outDir, { api_name: model.api_name, mode: "docs", sources: urls, source_hash: hashSource(parts), endpoint_count: model.endpoints.length });
+    writeManifest(outDir, { api_name: model.api_name, mode: "docs", sources: urls, source_hash: hashSource(md), endpoint_count: model.endpoints.length });
     console.log(c.g(`\n✓ ${model.api_name} — ${model.endpoints.length}-tool MCP server → ${outDir}`));
     const tools = await withStdio(outDir, async (cl) => (await cl.listTools()).tools);
     console.log(c.b(`\n${tools.length} tools ready:`));

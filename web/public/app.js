@@ -6,6 +6,7 @@ $("#gen").onclick = async () => {
   const urls = $("#urls").value.split(/\s+/).map((s) => s.trim()).filter(Boolean);
   if (!urls.length) return;
   const render = $("#render").checked;
+  const follow = $("#follow") ? $("#follow").checked : true;
 
   $("#pipe").classList.remove("hidden");
   $("#result").classList.add("hidden");
@@ -16,7 +17,7 @@ $("#gen").onclick = async () => {
 
   const resp = await fetch("/api/generate", {
     method: "POST", headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ urls, render }),
+    body: JSON.stringify({ urls, render, follow }),
   });
   const reader = resp.body.getReader();
   const dec = new TextDecoder();

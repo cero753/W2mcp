@@ -19,9 +19,8 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 import { ListToolsRequestSchema, CallToolRequestSchema } from "@modelcontextprotocol/sdk/types.js";
-import { crawl } from "./crawl.js";
-import { clean } from "./clean.js";
-import { extract } from "./extract.js";
+import { crawlSmart } from "./crawl.js";
+import { extractDocs } from "./extract.js";
 import { generateServer } from "./generate.js";
 import { specToApiModel } from "./openapi.js";
 import YAML from "yaml";
@@ -97,9 +96,9 @@ async function sourceToModel(source: string) {
   if (/\.(json|ya?ml)(\?|$)|openapi|swagger|api-docs|\/spec/i.test(t)) {
     try { const r = await fetch(t, { headers: { Accept: "application/json, text/yaml, */*" } }); const j = parseSpec(await r.text()); if (j && (j.openapi || j.swagger)) return specToApiModel(j, t); } catch {}
   }
-  // HTML docs → crawl + LLM extract
-  const { html } = await crawl(t, { render: true });
-  return extract(clean(html), t);
+  // HTML docs → crawl (entry + a few related pages, to capture base_url) + LLM extract (entry-only fallback)
+  const pages = await crawlSmart(t, { render: true, maxPages: 3 });
+  return extractDocs(pages, t);
 }
 
 async function createServerFromSource(name: string, source: string): Promise<{ dir: string; tools: string[]; api: string }> {

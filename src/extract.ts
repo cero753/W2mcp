@@ -6,6 +6,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import OpenAI from "openai";
 import { parseApiModel, type ApiModel } from "./model.js";
+import { assembleSources } from "./clean.js";
 import { learnHint } from "./learn.js";
 
 const SYSTEM = `You are an API documentation extractor. You convert human-written API docs into a strict, machine-readable API model. You NEVER invent endpoints, parameters, or fields. If the docs do not state something, mark it accordingly and lower confidence. You output ONLY valid JSON. Accuracy and honesty about uncertainty are the entire job.`;
@@ -104,6 +105,21 @@ async function callWithBackoff(run: (u: string) => Promise<string>, prompt: stri
     }
   }
   throw new Error("unreachable");
+}
+
+/**
+ * Extract from one or more crawled doc pages, with a safety net: if following extra pages makes the
+ * model overflow/misfire, fall back to the entry page alone. This guarantees that smart-crawl's
+ * page-following can only help — never turn a working single-page extract into a failure.
+ */
+export async function extractDocs(pages: Array<{ url: string; html: string }>, sourceUrl: string): Promise<ApiModel> {
+  try {
+    return await extract(assembleSources(pages), sourceUrl);
+  } catch (e) {
+    if (pages.length <= 1) throw e;
+    console.error("        ↩ multi-page extract failed; retrying with the entry page only…");
+    return await extract(assembleSources([pages[0]]), sourceUrl);
+  }
 }
 
 export async function extract(docsMarkdown: string, sourceUrl: string): Promise<ApiModel> {

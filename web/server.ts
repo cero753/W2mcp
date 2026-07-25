@@ -14,9 +14,9 @@
 import { createServer } from "node:http";
 import { readFileSync, existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { join, extname } from "node:path";
-import { crawl } from "../src/crawl.js";
-import { clean } from "../src/clean.js";
-import { extract, describeProvider } from "../src/extract.js";
+import { crawl, crawlSmart } from "../src/crawl.js";
+import { assembleSources } from "../src/clean.js";
+import { extractDocs, describeProvider } from "../src/extract.js";
 import { generateServer } from "../src/generate.js";
 import { specToApiModel } from "../src/openapi.js";
 import YAML from "yaml";
@@ -129,7 +129,7 @@ const server = createServer(async (req, res) => {
 
   // generate (SSE) — the live pipeline
   if (req.method === "POST" && path === "/api/generate") {
-    const { urls, render } = JSON.parse(await readBody(req) || "{}");
+    const { urls, render, follow } = JSON.parse(await readBody(req) || "{}");
     res.writeHead(200, { "Content-Type": "text/event-stream", "Cache-Control": "no-cache", "Connection": "keep-alive" });
     const send = (o: any) => res.write(`data: ${JSON.stringify(o)}\n\n`);
     try {
@@ -163,18 +163,20 @@ const server = createServer(async (req, res) => {
 
       // ── DOCS-PATH: HTML docs → LLM extract ──
       send({ stage: "meta", mode: "docs", stages: ["Crawl", "Clean", "Extract", "Generate"], pct: 5, msg: "No spec — reading the HTML docs." });
-      send({ stage: "crawl", pct: 10, msg: `Crawling ${list.length} page(s)${render ? " (rendered)" : ""}…` });
-      const parts: string[] = [];
-      for (const u of list) {
-        const { html } = await crawl(u, { render: !!render });
-        parts.push(`# Source: ${u}\n\n${clean(html)}`);
-        send({ stage: "crawl", pct: 25, msg: `✓ ${u} (${(html.length / 1000) | 0} KB)` });
-      }
-      const md = parts.join("\n\n---\n\n");
+      // A single docs URL often omits base_url (it lives on an auth/intro page). When `follow` is on
+      // (default), fan out to a few related same-origin pages so base_url is captured. Multiple URLs
+      // or follow:false → crawl exactly what was given.
+      const doFollow = follow !== false && list.length === 1;
+      send({ stage: "crawl", pct: 10, msg: doFollow ? `Crawling ${list[0]} + related pages${render ? " (rendered)" : ""}…` : `Crawling ${list.length} page(s)${render ? " (rendered)" : ""}…` });
+      const pages = doFollow
+        ? await crawlSmart(list[0], { render: !!render, maxPages: 3 })
+        : await Promise.all(list.map(async (u) => await crawl(u, { render: !!render })));
+      for (const p of pages) send({ stage: "crawl", pct: 25, msg: `✓ ${p.url} (${(p.html.length / 1000) | 0} KB)` });
+      const md = assembleSources(pages);
       send({ stage: "clean", pct: 40, msg: `Cleaned → ${(md.length / 1000) | 0} KB of markdown` });
 
       send({ stage: "extract", pct: 55, msg: `Reading the docs with ${describeProvider()}…` });
-      const model = await extract(md, list[0]);
+      const model = await extractDocs(pages, list[0]);
       send({ stage: "extract", pct: 80, msg: `✓ ${model.api_name}: ${model.endpoints.length} endpoints, auth=${model.auth.type}` });
 
       send({ stage: "generate", pct: 92, msg: "Generating the MCP server…" });
