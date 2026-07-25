@@ -6,6 +6,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import OpenAI from "openai";
 import { parseApiModel, type ApiModel } from "./model.js";
+import { learnHint } from "./learn.js";
 
 const SYSTEM = `You are an API documentation extractor. You convert human-written API docs into a strict, machine-readable API model. You NEVER invent endpoints, parameters, or fields. If the docs do not state something, mark it accordingly and lower confidence. You output ONLY valid JSON. Accuracy and honesty about uncertainty are the entire job.`;
 
@@ -53,26 +54,57 @@ function userPrompt(docs: string, url: string, errorFeedback?: string): string {
   const repair = errorFeedback
     ? `\n\nYOUR PREVIOUS OUTPUT FAILED VALIDATION. Fix exactly these problems and output ONLY corrected JSON:\n${errorFeedback}`
     : "";
-  return `Docs source: ${url}\n\n<docs>\n${docs}\n</docs>\n\n${SCHEMA}${repair}`;
+  // Advisory, verified-only, opt-in (W2MCP_LEARN=1). Empty otherwise — no effect on the default path.
+  return `Docs source: ${url}\n\n<docs>\n${docs}\n</docs>\n\n${SCHEMA}${learnHint(url)}${repair}`;
 }
 
-/** Provider is chosen by which key is present: Gemini → OpenAI → Anthropic. */
-interface Provider { kind: "openai-compat" | "anthropic"; apiKey?: string; baseURL?: string; model: string; }
+/**
+ * Provider selection. Default order by which key is present: Gemini → OpenAI → Anthropic.
+ * Override with W2MCP_PROVIDER = "openai" | "gemini" | "anthropic" (e.g. to force OpenAI when the
+ * Gemini free-tier quota is exhausted). Model override: W2MCP_MODEL.
+ */
+interface Provider { kind: "openai-compat" | "anthropic"; name: string; apiKey?: string; baseURL?: string; model: string; }
+const GEMINI = () => ({ kind: "openai-compat" as const, name: "gemini", apiKey: process.env.GEMINI_API_KEY, baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/", model: process.env.W2MCP_MODEL || "gemini-2.5-flash" });
+const OPENAI = () => ({ kind: "openai-compat" as const, name: "openai", apiKey: process.env.OPENAI_API_KEY, model: process.env.W2MCP_MODEL || "gpt-4o" });
+const ANTHROPIC = () => ({ kind: "anthropic" as const, name: "anthropic", model: process.env.W2MCP_MODEL || "claude-opus-4-8" });
+
 function pickProvider(): Provider {
-  const m = process.env.W2MCP_MODEL;
-  if (process.env.GEMINI_API_KEY)
-    return { kind: "openai-compat", apiKey: process.env.GEMINI_API_KEY, baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/", model: m || "gemini-2.5-flash" };
-  if (process.env.OPENAI_API_KEY)
-    return { kind: "openai-compat", apiKey: process.env.OPENAI_API_KEY, model: m || "gpt-4o" };
-  return { kind: "anthropic", model: m || "claude-opus-4-8" };
+  const force = (process.env.W2MCP_PROVIDER || "").toLowerCase();
+  if (force === "openai") return OPENAI();
+  if (force === "gemini") return GEMINI();
+  if (force === "anthropic") return ANTHROPIC();
+  if (process.env.GEMINI_API_KEY) return GEMINI();
+  if (process.env.OPENAI_API_KEY) return OPENAI();
+  return ANTHROPIC();
 }
 
 export function describeProvider(): string {
   const p = pickProvider();
-  return `${process.env.GEMINI_API_KEY ? "gemini" : p.kind === "anthropic" ? "anthropic" : "openai"}: ${p.model}`;
+  return `${p.name}: ${p.model}`;
 }
 
 const MAX_ATTEMPTS = 3;
+
+/** Retry the model call on transient rate-limit / overload errors (429, 503) with exponential backoff. */
+async function callWithBackoff(run: (u: string) => Promise<string>, prompt: string): Promise<string> {
+  let delay = 2000;
+  for (let i = 0; i < 4; i++) {
+    try {
+      return await run(prompt);
+    } catch (e: any) {
+      const status = e?.status ?? e?.statusCode;
+      const transient = status === 429 || status === 503 || /\b(429|503)\b|rate.?limit|quota|overloaded|too many requests/i.test(String(e?.message ?? e));
+      if (!transient || i === 3) {
+        if (transient) throw new Error(`model rate-limited (${status ?? "429"}) after retries — wait a minute and retry, use a spec URL (no LLM), or set a fresh GEMINI_API_KEY/OPENAI_API_KEY.`);
+        throw e;
+      }
+      console.error(`        ⏳ model rate-limited (${status ?? "429"}); retrying in ${delay / 1000}s…`);
+      await new Promise((r) => setTimeout(r, delay));
+      delay *= 2;
+    }
+  }
+  throw new Error("unreachable");
+}
 
 export async function extract(docsMarkdown: string, sourceUrl: string): Promise<ApiModel> {
   const p = pickProvider();
@@ -80,7 +112,7 @@ export async function extract(docsMarkdown: string, sourceUrl: string): Promise<
   let feedback: string | undefined;
   let lastErr: unknown;
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
-    const text = await run(userPrompt(docsMarkdown, sourceUrl, feedback));
+    const text = await callWithBackoff(run, userPrompt(docsMarkdown, sourceUrl, feedback));
     try {
       return parseApiModel(extractJson(text));
     } catch (e) {

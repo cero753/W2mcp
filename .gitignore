@@ -9,5 +9,6 @@ node_modules/
 out/
 anymcp-store.json
 w2mcp-store.json
+w2mcp-learnings.json
 .test-store.json
 *.log

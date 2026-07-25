@@ -10,7 +10,7 @@
   <header class="nav">
     <div class="brand"><span class="logo">◆</span> w2mcp <span class="badge">w2mcp</span></div>
     <nav class="nav-links">
-      <a href="#build">Build</a><a href="#call">Call</a><a href="#install">Install</a>
+      <a href="#connect">Connect</a><a href="#build">Build</a><a href="#call">Call</a><a href="#cli">Terminal</a><a href="#install">Install</a><a href="#pricing">Pricing</a>
       <span class="gw">gateway <code id="gwbadge">localhost:8080</code></span>
     </nav>
   </header>
@@ -34,6 +34,26 @@
     <div class="cap"><div class="cap-i">🔒</div><h3>Hosted &amp; encrypted</h3><p>Multi-tenant gateway injects each tenant's credential per request; AES-256-GCM at rest.</p></div>
     <div class="cap"><div class="cap-i">🧩</div><h3>Any MCP client</h3><p>Drop it into Claude Desktop, Cursor, Claude Code, or run it over stdio. One config away.</p></div>
     <div class="cap"><div class="cap-i">⚙️</div><h3>Model-pluggable</h3><p>The one AI step is comprehension only — swap Gemini, OpenAI, or Anthropic freely.</p></div>
+  </section>
+
+  <!-- CONNECTOR: the hub — one connection, every API -->
+  <section class="connector" id="connect">
+    <div class="card-h"><span class="step-n hero-n">◆</span> Connect your agent — <span class="grad">one connector</span><span class="sub-h">the w2mcp hub: a single MCP connection exposes the tools of ALL your APIs</span></div>
+    <div class="connect-grid">
+      <div class="connect-left">
+        <p class="connect-lead">Point any agent — Claude Desktop, Cursor, your own runtime — at <b>one endpoint</b>. It instantly sees every API you've wired in, namespaced <code>server__tool</code>. Add more APIs and the same connection just gets more powerful.</p>
+        <div class="tabs" id="connectTabs">
+          <button class="ctab active" data-c="Claude Desktop">Claude Desktop</button>
+          <button class="ctab" data-c="Cursor">Cursor</button>
+          <button class="ctab" data-c="HTTP (hosted)">HTTP (hosted)</button>
+        </div>
+        <div class="path-hint" id="connectHint"></div>
+      </div>
+      <div class="codewrap">
+        <button id="connectCopy" class="copy">Copy</button>
+        <pre id="connectCode"></pre>
+      </div>
+    </div>
   </section>
 
   <main class="grid">
@@ -103,6 +123,48 @@ npx tsx src/import-cli.ts https://your-api.com/openapi.json --out ./out/myapi
 npx tsx src/verify-cli.ts ./out/myapi
 npx tsx src/gateway-cli.ts        # serves every server in registry.json</pre>
     </div>
+  </section>
+
+  <!-- CLI: run w2mcp in your terminal -->
+  <section class="clirun" id="cli">
+    <div class="card-h"><span class="step-n hero-n">⌘</span> Run w2mcp in your <span class="grad">terminal</span><span class="sub-h">the whole product from a shell — no browser, no Claude Code</span></div>
+    <div class="cli-cards">
+      <div class="clicard"><div class="clih">1 · install</div><pre>npm i -g w2mcp   <span class="cmt"># or run any command with: npx w2mcp …</span></pre></div>
+      <div class="clicard"><div class="clih">2 · turn any API into an MCP server</div><pre>w2mcp new https://your-api.com/docs
+<span class="cmt"># HTML docs, OpenAPI or Swagger — all work</span></pre></div>
+      <div class="clicard"><div class="clih">3 · list &amp; call its tools, live</div><pre>w2mcp tools --dir ./out/your-api
+w2mcp call  --dir ./out/your-api &lt;tool&gt; key=value</pre></div>
+      <div class="clicard"><div class="clih">4 · one agent, every API (the hub)</div><pre>w2mcp ask "what's the price of bitcoin?" --hub</pre></div>
+      <div class="clicard"><div class="clih">5 · keep it fresh — drift maintenance</div><pre>w2mcp drift ./out/your-api        <span class="cmt"># detect API changes</span>
+w2mcp drift ./out/your-api --fix  <span class="cmt"># auto-regenerate</span></pre></div>
+      <div class="clicard"><div class="clih">6 · host it for your whole fleet</div><pre>w2mcp gateway   <span class="cmt"># serves every server in registry.json</span></pre></div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="pricing" id="pricing">
+    <div class="card-h"><span class="step-n hero-n">$</span> Simple, <span class="grad">affordable</span> pricing<span class="sub-h">priced on the work we remove — start free, expand as you wire in more APIs</span></div>
+    <div class="price-grid">
+      <div class="ptier">
+        <div class="pname">Free</div><div class="pprice">$0</div>
+        <ul><li>2 APIs (local)</li><li>10k hub calls/mo</li><li>docs + spec generation</li><li>community support</li></ul>
+      </div>
+      <div class="ptier">
+        <div class="pname">Developer</div><div class="pprice">$49<span>/mo</span></div>
+        <ul><li>5 hosted APIs</li><li>100k hub calls/mo</li><li>drift-maintenance</li><li>email support</li></ul>
+      </div>
+      <div class="ptier feat">
+        <div class="pbadge">most popular</div>
+        <div class="pname">Team</div><div class="pprice">$399<span>/mo</span></div>
+        <ul><li>20 APIs</li><li>1M hub calls/mo</li><li>5 seats · RBAC · regen alerts</li><li>priority support</li></ul>
+      </div>
+      <div class="ptier">
+        <div class="pname">Enterprise</div><div class="pprice">from ~$10k<span>/yr</span></div>
+        <ul><li>custom connectors + usage</li><li>VPC / on-prem · SSO · SCIM</li><li>drift-maintenance SLA</li><li>dedicated hub + success engineer</li></ul>
+        <a class="enquire" href="mailto:hello@w2mcp.dev?subject=w2mcp%20enterprise%20enquiry&body=Hi%20—%20we'd%20like%20a%20quote%20for%20w2mcp%20Enterprise.%20APIs%20we%20want%20to%20wire%20in%3A%20___">Request a quote →</a>
+      </div>
+    </div>
+    <div class="price-note">Enterprise is tentative &amp; quote-based — typically ~$10k–$30k/yr by connector count &amp; usage. We'd rather land your team early than gate you behind a six-figure contract. <a href="mailto:hello@w2mcp.dev?subject=w2mcp%20enquiry">Talk to us →</a></div>
   </section>
 
   <footer class="foot">

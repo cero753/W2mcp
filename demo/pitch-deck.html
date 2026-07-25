@@ -146,6 +146,32 @@
   </section>
 
   <section class="slide">
+    <div class="eyebrow">Why it's recurring, not one-time</div>
+    <h2>It stays correct, and it <span class="grad">compounds</span>.</h2>
+    <div class="cards" style="grid-template-columns:1fr 1fr">
+      <div class="card"><h3>Drift-maintenance</h3><p>APIs change; hand-built connectors rot. <code>w2mcp drift</code> diffs the live source against the baseline (by method+path) and <code>--fix</code> regenerates. We own "keeping the integration alive" — the reason iPaaS is sold annually.</p></div>
+      <div class="card"><h3>Self-improving generation</h3><p>Every <b>verified</b> generation caches that API's real base-URL &amp; auth, fed back as hints to future runs. The more APIs wired in, the better and faster generation gets — a data-compounding moat on top of spec-less extraction.</p></div>
+    </div>
+    <p class="lead" style="margin-top:20px">Guardrailed: learns only from live-verified runs, advisory not authoritative, kill-switch, spec path stays deterministic.</p>
+  </section>
+
+  <section class="slide">
+    <div class="eyebrow">Pricing</div>
+    <h2>Priced on the work we <span class="grad">eliminate</span>.</h2>
+    <div class="cards" style="grid-template-columns:1fr 1fr 1fr 1fr">
+      <div class="card"><h3>Free</h3><p><b>$0</b><br>2 APIs, local, 10k calls/mo</p></div>
+      <div class="card"><h3>Developer</h3><p><b>$49/mo</b><br>5 hosted APIs, 100k calls, drift</p></div>
+      <div class="card"><h3>Team</h3><p><b>$399/mo</b><br>20 APIs, 1M calls, 5 seats, RBAC</p></div>
+      <div class="card"><h3>Enterprise</h3><p><b>From ~$10k/yr</b><br>Request a quote · VPC/on-prem, SSO, drift-SLA, dedicated hub</p></div>
+    </div>
+    <ul style="margin-top:18px">
+      <li>Charge on <b>wired-in APIs</b> (the eng work removed) + metered hub calls — like Merge, Composio, Workato, but bundled</li>
+      <li>Enterprise starts <b>~$10k/yr</b> and scales with connectors/usage — land the team, prove ROI, expand (not a six-figure gate)</li>
+      <li>ROI: one integration = 1–4 eng-weeks ($3k–15k) — a ~$10k entry pays for itself against a single build you skip</li>
+    </ul>
+  </section>
+
+  <section class="slide">
     <div class="eyebrow">The ask</div>
     <h2>Turn the <span class="grad">long tail</span> of APIs into agent tools — today.</h2>
     <p class="big">Any API — docs, OpenAPI, or Swagger — becomes an agent-ready MCP server in seconds, and one

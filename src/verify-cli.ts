@@ -3,9 +3,11 @@
  * Live-verifies a generated server. Set <API>_TOKEN (e.g. NOTION_API_TOKEN) or W2MCP_TEST_TOKEN
  * to enable the live probe; without a token it falls back to structural checks only.
  */
-import { writeFileSync } from "node:fs";
+import { writeFileSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { verify } from "./verify.js";
+import { recordLearning, isLearningOn } from "./learn.js";
+import { readManifest } from "./manifest.js";
 
 const dir = process.argv[2];
 if (!dir) { console.error("Usage: w2mcp verify <serverDir>"); process.exit(1); }
@@ -28,6 +30,16 @@ console.log("\n  summary:", Object.entries(report.summary).map(([k, v]) => `${v}
 
 writeFileSync(join(dir, "verification.json"), JSON.stringify(report, null, 2));
 console.log(`  report → ${join(dir, "verification.json")}`);
+
+// Self-improving cache (opt-in W2MCP_LEARN=1): learn ONLY from a live-verified generation.
+if (isLearningOn() && report.endpoints.some((e) => e.status === "live-verified")) {
+  const src = readManifest(dir)?.sources?.[0];
+  if (src) {
+    const model = JSON.parse(readFileSync(join(dir, "apimodel.json"), "utf8"));
+    const host = recordLearning(src, model);
+    if (host) console.log(`  ✎ learned verified facts for ${host} → w2mcp-learnings.json`);
+  }
+}
 
 // Exit non-zero if anything actually failed (CI-friendly). Unverified/structural are not failures.
 const failed = report.endpoints.some((e) => e.status === "live-failed" || e.status === "structural-issue");

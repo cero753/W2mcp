@@ -10,6 +10,7 @@
     "w2mcp": "tsx src/cli.ts",
     "use": "tsx src/use-cli.ts",
     "hub": "tsx src/hub.ts",
+    "drift": "tsx src/drift-cli.ts",
     "verify": "tsx src/verify-cli.ts",
     "gen": "tsx src/gen-cli.ts",
     "typecheck": "tsc --noEmit"

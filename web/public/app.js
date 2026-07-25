@@ -206,4 +206,35 @@ $("#copy").onclick = async () => {
   setTimeout(() => { b.textContent = "Copy"; b.classList.remove("done"); }, 1500);
 };
 
+// ── Connector (the hub — one connection, every API) ─────────────────────────
+const HUB_FILE = "C:\\Users\\karti\\anymcp\\src\\hub.ts";
+let connectClient = "Claude Desktop";
+function connectSnippet(client) {
+  if (client === "HTTP (hosted)")
+    return JSON.stringify({ mcpServers: { w2mcp: { url: "http://localhost:9090/mcp" } } }, null, 2);
+  return JSON.stringify({ mcpServers: { w2mcp: { command: "node", args: ["--import", "tsx", HUB_FILE] } } }, null, 2);
+}
+function connectHint(client) {
+  return ({
+    "Claude Desktop": "→ %APPDATA%\\Claude\\claude_desktop_config.json   (restart Claude Desktop after saving)",
+    "Cursor": "→ ~/.cursor/mcp.json   (or .cursor/mcp.json inside a project)",
+    "HTTP (hosted)": "→ start it with:  MCP_TRANSPORT=http PORT=9090 npm run hub   then point any HTTP MCP client at /mcp",
+  })[client] || "";
+}
+function renderConnect() {
+  if (!$("#connectCode")) return;
+  $("#connectCode").textContent = connectSnippet(connectClient);
+  $("#connectHint").textContent = connectHint(connectClient);
+}
+document.querySelectorAll(".ctab").forEach((t) => t.onclick = () => {
+  document.querySelectorAll(".ctab").forEach((x) => x.classList.remove("active"));
+  t.classList.add("active"); connectClient = t.dataset.c; renderConnect();
+});
+if ($("#connectCopy")) $("#connectCopy").onclick = async () => {
+  try { await navigator.clipboard.writeText($("#connectCode").textContent); } catch {}
+  const b = $("#connectCopy"); b.textContent = "Copied ✓"; b.classList.add("done");
+  setTimeout(() => { b.textContent = "Copy"; b.classList.remove("done"); }, 1500);
+};
+renderConnect();
+
 loadServers();

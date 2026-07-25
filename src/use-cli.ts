@@ -22,6 +22,7 @@ import { crawl } from "./crawl.js";
 import { clean } from "./clean.js";
 import { extract, describeProvider } from "./extract.js";
 import { generateServer } from "./generate.js";
+import { writeManifest, hashSource } from "./manifest.js";
 import OpenAI from "openai";
 
 const GATEWAY = process.env.W2MCP_GATEWAY || "http://localhost:8080";
@@ -141,6 +142,8 @@ async function main() {
     console.error(c.dim(`[4/4] generate → ${outDir}`));
     mkdirSync(outDir, { recursive: true });
     for (const [name, content] of Object.entries(generateServer(model))) writeFileSync(join(outDir, name), content);
+    writeFileSync(join(outDir, "apimodel.json"), JSON.stringify(model, null, 2));
+    writeManifest(outDir, { api_name: model.api_name, mode: "docs", sources: urls, source_hash: hashSource(parts), endpoint_count: model.endpoints.length });
     console.log(c.g(`\n✓ ${model.api_name} — ${model.endpoints.length}-tool MCP server → ${outDir}`));
     const tools = await withStdio(outDir, async (cl) => (await cl.listTools()).tools);
     console.log(c.b(`\n${tools.length} tools ready:`));
