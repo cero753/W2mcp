@@ -94,4 +94,5 @@ process-level; no quotas/customer UI yet).
 
 ## License
 
-UNLICENSED — all rights reserved (for now).
+MIT — the CLI and generated servers are free and open source. The hosted gateway (multi-tenant,
+encrypted credential store, drift maintenance) is a paid service built on top of the same open core.

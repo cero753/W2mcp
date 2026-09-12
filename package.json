@@ -2,6 +2,7 @@
   "name": "w2mcp",
   "version": "0.1.0",
   "description": "Turn any API's docs URL into a working MCP server — no OpenAPI spec required.",
+  "license": "MIT",
   "type": "module",
   "bin": {
     "w2mcp": "src/cli.ts"
