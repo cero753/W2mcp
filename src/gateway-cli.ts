@@ -6,6 +6,7 @@
  *   W2MCP_REGISTRY     path to registry.json {api: serverPath} (default ./registry.json)
  *   PORT                listen port (default 8080)
  */
+import "./env.js";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { startGateway } from "./gateway.js";

@@ -23,7 +23,9 @@ import { assembleSources } from "./clean.js";
 import { extractDocs, describeProvider } from "./extract.js";
 import { generateServer } from "./generate.js";
 import { writeManifest, hashSource } from "./manifest.js";
-import OpenAI from "openai";
+import { llmConfig, llmClient, DEFAULT_BASE_URL, DEFAULT_MODEL } from "./llm.js";
+import { existsSync } from "node:fs";
+import { createInterface } from "node:readline/promises";
 
 const GATEWAY = process.env.W2MCP_GATEWAY || "http://localhost:8080";
 const KEY = process.env.W2MCP_KEY || "ak_demo_w2mcp_2026";
@@ -124,6 +126,41 @@ async function main() {
   const hub = argv.includes("--hub");
   const rest = argv.slice(1).filter((a, i, arr) => a !== "--dir" && a !== "--hub" && arr[i - 1] !== "--dir");
 
+  if (cmd === "init") {
+    // Write LLM_API_KEY / LLM_BASE_URL / LLM_MODEL to .env. Interactive, or --key/--base-url/--model for scripts.
+    const envPath = resolve(process.cwd(), ".env");
+    let key = flag(argv, "--key");
+    let baseUrl = flag(argv, "--base-url");
+    let model = flag(argv, "--model");
+    if (!key) {
+      const rl = createInterface({ input: process.stdin, output: process.stdout });
+      console.log(c.b("w2mcp init") + c.dim(" — point w2mcp at any OpenAI-compatible LLM endpoint\n"));
+      key = (await rl.question("LLM API key: ")).trim();
+      baseUrl = (await rl.question(`Base URL [${DEFAULT_BASE_URL}]: `)).trim() || DEFAULT_BASE_URL;
+      model = (await rl.question(`Model [${DEFAULT_MODEL}]: `)).trim() || DEFAULT_MODEL;
+      rl.close();
+    }
+    if (!key) { console.error(c.r("an API key is required (or pass --key <key>)")); process.exit(1); }
+    baseUrl ||= DEFAULT_BASE_URL; model ||= DEFAULT_MODEL;
+    // Keep any other lines (e.g. gateway secrets); replace only the LLM_* ones.
+    const keep = existsSync(envPath)
+      ? readFileSync(envPath, "utf8").split(/\r?\n/).filter((l) => !/^\s*LLM_(API_KEY|BASE_URL|MODEL)\s*=/.test(l))
+      : [];
+    const body = [...keep.filter((l, i, a) => !(l.trim() === "" && i === a.length - 1)), "", `LLM_API_KEY=${key}`, `LLM_BASE_URL=${baseUrl}`, `LLM_MODEL=${model}`, ""].join("\n").replace(/^\n+/, "");
+    writeFileSync(envPath, body);
+    console.log(c.g(`✓ wrote ${envPath}`) + c.dim(`  (${new URL(baseUrl).host} · ${model})`));
+    console.log(c.dim("\nnext:  w2mcp new https://api.chucknorris.io/ --dir ./out/chuck"));
+    return;
+  }
+
+  if (cmd === "verify") {
+    // Delegate to verify-cli (live-probes read endpoints; structural checks without creds).
+    if (!rest[0]) { console.error(c.r("usage: w2mcp verify <dir>")); process.exit(1); }
+    process.argv = [process.argv[0], process.argv[1], resolve(process.cwd(), rest[0])];
+    await import("./verify-cli.js");
+    return;
+  }
+
   if (cmd === "new") {
     // Generate a server from ANY docs URL(s), then immediately list its tools — the live brand-new-API flow.
     // Render ON by default (JS-rendered docs are common); --no-render to disable. Pass multiple URLs so the
@@ -133,6 +170,7 @@ async function main() {
     const urls = rest.filter((a) => /^https?:\/\//.test(a));
     const outDir = dir || `./out/${(urls[0] || "server").replace(/^https?:\/\//, "").replace(/[^\w]+/g, "-").slice(0, 40)}`;
     if (!urls.length) { console.error(c.r("usage: w2mcp new <docs-url> [<more-urls>...] [--dir <out>] [--no-render] [--no-follow]")); process.exit(1); }
+    llmConfig(); // fail fast (before crawling) if the LLM isn't configured
     // Single URL: auto-follow a few related pages so base_url (often on a separate auth/intro page)
     // is captured — unless --no-follow. Multiple URLs: crawl exactly what was given.
     const doFollow = !noFollow && urls.length === 1;
@@ -187,15 +225,12 @@ async function main() {
     // Terminal agent: an LLM reads the server's tools, calls the right one(s), and answers in plain language.
     // NOTE (demo): this is your-model-driving-your-server — a convenience, NOT proof of standard MCP interop.
     // For interop proof use MCP Inspector or Cursor. Keep `w2mcp call` as the instant fallback if this stalls.
-    if (!process.env.GEMINI_API_KEY && !process.env.OPENAI_API_KEY) {
-      console.error(c.r("w2mcp ask needs GEMINI_API_KEY or OPENAI_API_KEY (openai-compat). Falling back: use `w2mcp call`.")); process.exit(1);
-    }
     const question = rest[0];
     const hosted = (hub || dir) ? null : rest[1];
     if (!question) { console.error(c.r('usage: w2mcp ask "<question>" <server>   |   w2mcp ask "<question>" --dir <dir>   |   w2mcp ask "<question>" --hub')); process.exit(1); }
-    const gemini = !!process.env.GEMINI_API_KEY;
-    const llm = new OpenAI({ apiKey: (gemini ? process.env.GEMINI_API_KEY : process.env.OPENAI_API_KEY)!, baseURL: gemini ? "https://generativelanguage.googleapis.com/v1beta/openai/" : undefined });
-    const llmModel = process.env.W2MCP_MODEL || (gemini ? "gemini-2.5-flash" : "gpt-4o");
+    const cfg = llmConfig(); // same LLM_* config as generation; throws a clear message if unset
+    const llm = llmClient(cfg);
+    const llmModel = cfg.model;
 
     await withRunner(dir, hosted, hub, async (run) => {
       const tools = await run.list();
@@ -238,10 +273,12 @@ async function main() {
     return;
   }
 
-  console.log(`w2mcp — generate and use MCP servers from your terminal
+  console.log(`w2mcp — turn any API's docs URL into a working MCP server, then use it from your terminal
 
+  ${c.b("w2mcp init")}                             set your LLM API key / base URL / model (writes .env)
   ${c.b("w2mcp new <docs-url> [more-urls...]")}     generate a server from ANY API docs, then list its tools
                                           (render ON by default; --no-render to disable; --dir <out>)
+  ${c.b("w2mcp verify <dir>")}                     live-probe the generated server's read endpoints
 
   ${c.b("w2mcp servers")}                          list hosted servers
   ${c.b("w2mcp tools <server>")}                   list a hosted server's tools
@@ -254,7 +291,8 @@ async function main() {
   ${c.b('w2mcp ask "<question>" --dir <dir>')}     (same, against a local generated server)
   ${c.b('w2mcp ask "<question>" --hub')}           (same, but the agent gets EVERY API via the hub)
 
-env: W2MCP_GATEWAY (${GATEWAY}) · W2MCP_KEY · GEMINI_API_KEY (for ask)`);
+env (.env is loaded automatically): LLM_API_KEY · LLM_BASE_URL · LLM_MODEL · W2MCP_GATEWAY (${GATEWAY}) · W2MCP_KEY`);
 }
 
-main().catch((e) => { console.error(c.r("✗ " + (e?.message ?? e))); process.exit(1); });
+// exitCode (not process.exit) so Playwright/stdio handles tear down cleanly on Windows.
+main().catch((e) => { console.error(c.r("✗ " + (e?.message ?? e))); process.exitCode = 1; });

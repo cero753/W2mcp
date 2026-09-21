@@ -98,7 +98,7 @@ URL(s) ─▶ crawl ─▶ clean ─▶ extract ─▶ generate ─▶ MCP serve
 
 **5 of 6 stages are deterministic.** The LLM only does *comprehension* — docs → a structured API model.
 
-That makes the engine **model-pluggable** (Anthropic · Gemini · OpenAI) and provider-agnostic.
+That makes the engine **model-pluggable** (any OpenAI-compatible endpoint: OpenAI · Gemini · Anthropic · OpenRouter · Ollama) and provider-agnostic.
 
 **Have an OpenAPI/Swagger spec?** We skip the LLM entirely and convert it directly — complete & free.
 We're a **superset**: spec-optional, not spec-required.

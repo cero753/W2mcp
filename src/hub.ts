@@ -11,6 +11,7 @@
  * stdio subprocess via the official MCP client and proxies calls — so the hub is itself a standard MCP client
  * AND a standard MCP server. Transport: stdio by default, `MCP_TRANSPORT=http` for hosting (Streamable HTTP).
  */
+import "./env.js";
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { resolve, join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";

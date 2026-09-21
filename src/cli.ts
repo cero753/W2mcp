@@ -1,6 +1,6 @@
 /**
- * w2mcp <url> [<more-urls>...] [--out <dir>] [--model-only]
- * Full pipeline: crawl → clean → extract → generate → write a runnable MCP server.
+ * Low-level pipeline: `npm run pipeline -- <url> [<more-urls>...] [--out <dir>] [--model-only] [--render]`
+ * crawl → clean → extract → generate → write a runnable MCP server. (Most users want `w2mcp new` instead.)
  */
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
@@ -25,7 +25,7 @@ async function main() {
     urls.push(a);
   }
   if (urls.length === 0) {
-    console.error("Usage: w2mcp <docs-url> [<more-urls>...] [--out <dir>] [--model-only]");
+    console.error("Usage: npm run pipeline -- <docs-url> [<more-urls>...] [--out <dir>] [--model-only] [--render]");
     console.error("Tip: include the auth/intro page too — that's where the base URL usually lives.");
     process.exit(1);
   }

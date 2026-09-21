@@ -1,11 +1,12 @@
 /**
  * Stage 3 — EXTRACT (the moat). Cleaned docs → validated ApiModel via an LLM.
- * Provider-pluggable: uses OpenAI if OPENAI_API_KEY is set, else Anthropic/Claude.
- * Validates with zod, retries once on invalid JSON.
+ * Model-agnostic: talks to whatever OpenAI-compatible endpoint LLM_API_KEY / LLM_BASE_URL / LLM_MODEL
+ * point at (see llm.ts). Validates with zod, feeds the exact validation error back on retry.
  */
-import Anthropic from "@anthropic-ai/sdk";
-import OpenAI from "openai";
+import { llmConfig, llmClient, describeProvider, type LlmConfig } from "./llm.js";
 import { parseApiModel, type ApiModel } from "./model.js";
+
+export { describeProvider };
 import { assembleSources } from "./clean.js";
 import { learnHint } from "./learn.js";
 
@@ -59,31 +60,6 @@ function userPrompt(docs: string, url: string, errorFeedback?: string): string {
   return `Docs source: ${url}\n\n<docs>\n${docs}\n</docs>\n\n${SCHEMA}${learnHint(url)}${repair}`;
 }
 
-/**
- * Provider selection. Default order by which key is present: Gemini → OpenAI → Anthropic.
- * Override with W2MCP_PROVIDER = "openai" | "gemini" | "anthropic" (e.g. to force OpenAI when the
- * Gemini free-tier quota is exhausted). Model override: W2MCP_MODEL.
- */
-interface Provider { kind: "openai-compat" | "anthropic"; name: string; apiKey?: string; baseURL?: string; model: string; }
-const GEMINI = () => ({ kind: "openai-compat" as const, name: "gemini", apiKey: process.env.GEMINI_API_KEY, baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/", model: process.env.W2MCP_MODEL || "gemini-2.5-flash" });
-const OPENAI = () => ({ kind: "openai-compat" as const, name: "openai", apiKey: process.env.OPENAI_API_KEY, model: process.env.W2MCP_MODEL || "gpt-4o" });
-const ANTHROPIC = () => ({ kind: "anthropic" as const, name: "anthropic", model: process.env.W2MCP_MODEL || "claude-opus-4-8" });
-
-function pickProvider(): Provider {
-  const force = (process.env.W2MCP_PROVIDER || "").toLowerCase();
-  if (force === "openai") return OPENAI();
-  if (force === "gemini") return GEMINI();
-  if (force === "anthropic") return ANTHROPIC();
-  if (process.env.GEMINI_API_KEY) return GEMINI();
-  if (process.env.OPENAI_API_KEY) return OPENAI();
-  return ANTHROPIC();
-}
-
-export function describeProvider(): string {
-  const p = pickProvider();
-  return `${p.name}: ${p.model}`;
-}
-
 const MAX_ATTEMPTS = 3;
 
 /** Retry the model call on transient rate-limit / overload errors (429, 503) with exponential backoff. */
@@ -96,7 +72,7 @@ async function callWithBackoff(run: (u: string) => Promise<string>, prompt: stri
       const status = e?.status ?? e?.statusCode;
       const transient = status === 429 || status === 503 || /\b(429|503)\b|rate.?limit|quota|overloaded|too many requests/i.test(String(e?.message ?? e));
       if (!transient || i === 3) {
-        if (transient) throw new Error(`model rate-limited (${status ?? "429"}) after retries — wait a minute and retry, use a spec URL (no LLM), or set a fresh GEMINI_API_KEY/OPENAI_API_KEY.`);
+        if (transient) throw new Error(`model rate-limited (${status ?? "429"}) after retries — wait a minute and retry, use a spec URL (no LLM), or point LLM_API_KEY / LLM_BASE_URL / LLM_MODEL at another provider.`);
         throw e;
       }
       console.error(`        ⏳ model rate-limited (${status ?? "429"}); retrying in ${delay / 1000}s…`);
@@ -127,8 +103,8 @@ export async function extractDocs(
 }
 
 export async function extract(docsMarkdown: string, sourceUrl: string): Promise<ApiModel> {
-  const p = pickProvider();
-  const run = p.kind === "anthropic" ? anthropicExtract : (u: string) => openaiExtract(u, p);
+  const cfg = llmConfig(); // fails fast with a clear message if LLM_API_KEY is missing
+  const run = (u: string) => openaiExtract(u, cfg);
   let feedback: string | undefined;
   let lastErr: unknown;
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
@@ -145,30 +121,33 @@ export async function extract(docsMarkdown: string, sourceUrl: string): Promise<
   throw new Error(`extract: no valid ApiModel after ${MAX_ATTEMPTS} attempts.\nLast error:\n` + String(lastErr));
 }
 
-async function openaiExtract(user: string, p: Provider): Promise<string> {
-  const client = new OpenAI({ apiKey: p.apiKey, baseURL: p.baseURL });
-  const res = await client.chat.completions.create({
-    model: p.model,
-    max_tokens: 8000,
-    response_format: { type: "json_object" },
-    messages: [
-      { role: "system", content: SYSTEM },
-      { role: "user", content: user },
-    ],
-  });
-  return res.choices[0]?.message?.content ?? "";
-}
+/** Some OpenAI-compatible servers reject `response_format`; remember that per process and drop it. */
+let jsonModeUnsupported = false;
 
-async function anthropicExtract(user: string): Promise<string> {
-  const client = new Anthropic();
-  const model = process.env.W2MCP_MODEL || "claude-opus-4-8";
-  const msg = await client.messages.create({
-    model,
+async function openaiExtract(user: string, cfg: LlmConfig): Promise<string> {
+  const client = llmClient(cfg);
+  const messages = [
+    { role: "system" as const, content: SYSTEM },
+    { role: "user" as const, content: user },
+  ];
+  const call = (jsonMode: boolean) => client.chat.completions.create({
+    model: cfg.model,
     max_tokens: 8000,
-    system: SYSTEM,
-    messages: [{ role: "user", content: user }],
+    ...(jsonMode ? { response_format: { type: "json_object" as const } } : {}),
+    messages,
   });
-  return msg.content.filter((b): b is Anthropic.TextBlock => b.type === "text").map((b) => b.text).join("");
+  try {
+    const res = await call(!jsonModeUnsupported);
+    return res.choices[0]?.message?.content ?? "";
+  } catch (e: any) {
+    // 400 mentioning response_format → endpoint doesn't support JSON mode; retry plain (extractJson tolerates prose/fences).
+    if (!jsonModeUnsupported && e?.status === 400 && /response_format|json_object/i.test(String(e?.message ?? e))) {
+      jsonModeUnsupported = true;
+      const res = await call(false);
+      return res.choices[0]?.message?.content ?? "";
+    }
+    throw e;
+  }
 }
 
 /** Pull the first JSON object out of model output (tolerates stray prose or fences). */

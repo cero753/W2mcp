@@ -8,7 +8,7 @@
 
 ## 0. Pre-flight (do Tuesday, re-check Wednesday AM)
 
-- [ ] LLM key set in `.env` (ONE of): `ANTHROPIC_API_KEY=` / `GEMINI_API_KEY=` / `OPENAI_API_KEY=`
+- [ ] LLM configured: `w2mcp init` (writes `LLM_API_KEY` / `LLM_BASE_URL` / `LLM_MODEL` to `.env`)
 - [ ] `npm install` clean, `node -v` = v24.x, `tsx` present
 - [ ] Phone hotspot on standby (assume venue wifi fails)
 - [ ] Full screen-recording of the whole demo saved as ultimate fallback

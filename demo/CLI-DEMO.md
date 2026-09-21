@@ -33,7 +33,7 @@ Three ways to prove it, strongest first:
 
 ```powershell
 cd C:\Users\karti\anymcp
-# load secrets (Gemini key) into THIS shell, force the file store:
+# load secrets (LLM_API_KEY etc.) into THIS shell, force the file store:
 Get-Content .env | ? { $_ -match '^\s*[^#].*=' } | % { $kv=$_ -split '=',2; if ($kv[0].Trim() -ne 'DATABASE_URL'){ Set-Item Env:\$($kv[0].Trim()) $kv[1].Trim() } }; $env:DATABASE_URL=$null
 # make `w2mcp` a real command in this terminal:
 function w2mcp { npx tsx src\use-cli.ts @args }
@@ -130,7 +130,7 @@ of them works with zero custom code, which is the whole pitch.
 |---|---|
 | `w2mcp` not defined | `npm run use -- <args>` |
 | `w2mcp new` stalls / base_url `(none!)` | pivot to a pre-generated server (chuck-demo / coingecko / httpbin) |
-| `w2mcp new` extract fails | Gemini key not loaded → re-run the `.env` loader in step 0 |
+| `w2mcp new` extract fails | `LLM_API_KEY` not set → run `w2mcp init` (writes .env) |
 | Hosted call 401/403 | gateway down or store unseeded → `npx tsx demo\seed-store.mjs`, restart gateway |
 | `w2mcp ask` hangs | Ctrl-C, use `w2mcp call` (Act 2) |
 | Cursor won't connect | use Inspector (3a) or the CLI (2) instead |
