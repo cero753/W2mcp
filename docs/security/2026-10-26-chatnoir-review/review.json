@@ -1,0 +1,253 @@
+{
+  "format": "chatnoir.report/v1",
+  "version": "0.4.1",
+  "mode": "verify",
+  "executive_summary": "Agent-permissions review of w2mcp (anymcp), a CLI and hub that generate MCP servers from API docs or OpenAPI specs. The review was run by a fresh, independent Claude Code 2.1.283 session (claude-opus-5-5) with ChatNoir v0.4.1 installed as a project skill and loaded by name. It confirmed three issues by source reading: an API title that becomes code in every generated server, tool output that could drive writes in the w2mcp ask loop without approval, and a hub tool that could silently replace a trusted server. Follow-up work reproduced the first two at runtime with synthetic inputs and a scripted model. Commit 340f83a fixes all three. Both runtime reproductions now fail to trigger and legitimate behavior is preserved. Two candidates remain unresolved. Four were dismissed in the review, two are recorded here.",
+  "target": {
+    "snapshot_sha256": "ac5aafbbb0601683935861c5311fb7d422cda47859183136f075ac5c275d3232",
+    "git_head": "340f83aa15e9c08892beffa54ecbc050c688a30d",
+    "dirty": false,
+    "dirty_reason": null,
+    "inventory_strategy": "Seven reviewed and fix-relevant files at the fix commit 340f83a. The review itself ran on 7672f5d.",
+    "files": [
+      {
+        "path": "src/generate.ts",
+        "sha256": "84c1f427f0e1e48b8a8908a7512fd191a078aafdd910947b8c286077f756448d",
+        "bytes": 13367
+      },
+      {
+        "path": "src/hub.ts",
+        "sha256": "ffc7caa87881931bcc9554254acfc1f951f8a51115431aa3c40a8af1486f0b32",
+        "bytes": 10415
+      },
+      {
+        "path": "src/model.ts",
+        "sha256": "656f908ac2b0fb17c3d4ced9c40de9baf9b8f5d6934fa7620e458901175ba450",
+        "bytes": 2772
+      },
+      {
+        "path": "src/openapi.ts",
+        "sha256": "21870fbdf458255839f8d7ae20fee8dd5d738a6b83caf0eb46dd00f5e8babd21",
+        "bytes": 9317
+      },
+      {
+        "path": "src/use-cli.ts",
+        "sha256": "66a796048ea8ceb37374b850975668762ebdf7b9e4ffbf18175b994f0856376b",
+        "bytes": 19444
+      },
+      {
+        "path": "test-agent-tool-output.mjs",
+        "sha256": "ee5778175936bd65107aa384e28bb114ba82422a83282712baf6e82ab400c942",
+        "bytes": 4657
+      },
+      {
+        "path": "test-api-name-injection.mjs",
+        "sha256": "c2433657df3ae5ed7feac88120d57ddde53f679e42c19d6363a38dacddf37a16",
+        "bytes": 1734
+      }
+    ],
+    "skipped": []
+  },
+  "coverage": {
+    "complete": false,
+    "reviewed": [
+      "src/generate.ts",
+      "src/openapi.ts",
+      "src/model.ts",
+      "src/use-cli.ts",
+      "src/hub.ts",
+      "test-api-name-injection.mjs",
+      "test-agent-tool-output.mjs"
+    ],
+    "deferred": [],
+    "limitations": [
+      "Scope: the agent-permissions focus of ChatNoir's guided first review. Authentication of the hub HTTP mode and web/server.ts was noted as out of scope and not assessed.",
+      "Method: a fresh headless Claude Code session did the source review with read-only tools (Read, Grep, Glob, python helper). Runtime reproductions and fixes were done afterwards in a separate session.",
+      "Runtime evidence uses synthetic local inputs and a scripted model. It does not measure how often real models follow injected text.",
+      "Not read by the review session: drift-cli.ts, gen-cli.ts, store.ts, clean.ts, render.yaml, fly.toml. No dependency or secret scanning.",
+      "The ChatNoir baseline scan returned 0 candidates on this TypeScript project. Its agent rule families are Python AST rules, so all findings came from the guided source review."
+    ]
+  },
+  "findings": [
+    {
+      "id": "W2MCP-01",
+      "rule_id": "CN001",
+      "title": "Untrusted API title becomes executable code in every generated server",
+      "cwe": "CWE-94",
+      "path": "src/generate.ts",
+      "line": 117,
+      "status": "fixed",
+      "severity": "high",
+      "confidence": "high",
+      "evidence": [
+        "Found by a fresh, independent Claude Code 2.1.283 session (claude-opus-5-5) that loaded ChatNoir v0.4.1 by name. It ran read-only and did not execute any code.",
+        "At 7672f5d, generateServer spliced model.api_name unescaped into a block comment, a double-quoted string and a template literal of server.ts. model.ts only checks that api_name is a string.",
+        "openapi.ts copies spec.info.title verbatim into api_name. The docs path takes it from LLM output.",
+        "Runtime reproduction (test-api-name-injection.mjs): a synthetic spec whose title closes the comment and calls process.getBuiltinModule('fs').writeFileSync wrote the marker file when the generated server started under tsx, as w2mcp starts servers. The same test on 340f83a wrote nothing."
+      ],
+      "attack_path": [
+        "An attacker publishes or controls an OpenAPI spec (or docs page) with a crafted title",
+        "A user or agent runs w2mcp import or new, or calls the hub tool w2mcp__create, on that source",
+        "generateServer writes the title into server.ts as code",
+        "The hub, verify step or gateway starts the server with the full process environment, and the payload runs"
+      ],
+      "counterevidence": [],
+      "proof_gaps": [],
+      "validation": {
+        "method": "runtime",
+        "result": "Before fix: payload executed on server start (marker written). After fix 340f83a: marker not written. The calendar demo server regenerates byte-identical (169,153 bytes), so legitimate names are unchanged."
+      },
+      "remediation": "Pass api_name through codeSafeName (letters, digits and a small punctuation set) before splicing it into generated code. Keep JSON.stringify for every other spliced value."
+    },
+    {
+      "id": "W2MCP-02",
+      "rule_id": "CN007",
+      "title": "Tool output can drive state-changing tool calls in w2mcp ask without approval",
+      "cwe": "CWE-862",
+      "path": "src/use-cli.ts",
+      "line": 253,
+      "status": "fixed",
+      "severity": "high",
+      "confidence": "high",
+      "evidence": [
+        "Found by the same fresh Claude Code session: w2mcp ask feeds tool results back to the model as role:tool messages and runs whatever call it proposes next, including [UNVERIFIED WRITE] tools and w2mcp__create.",
+        "Runtime reproduction (test-agent-tool-output.mjs): a local fake chat API returned a message instructing the assistant to archive #general. A scripted OpenAI-compatible model obeys such text. At 7672f5d the archive endpoint was hit 1 time. On 340f83a it was hit 0 times, while the legitimate read (1) and the final answer still happened. With --yes (explicit human pre-approval) the archive ran once, confirming the gate is what changed the outcome."
+      ],
+      "attack_path": [
+        "A tool's upstream API returns attacker-controlled text",
+        "w2mcp ask passes that text back to the model",
+        "The model proposes a write or w2mcp__create",
+        "At 7672f5d the call ran with no human check"
+      ],
+      "counterevidence": [],
+      "proof_gaps": [],
+      "validation": {
+        "method": "runtime",
+        "result": "Scripted model, synthetic local API: 1 injected write before, 0 after. Legitimate read and answer preserved. Real-model susceptibility was not measured."
+      },
+      "remediation": "Require a human yes at the terminal for [UNVERIFIED WRITE] tools, destructiveHint tools and w2mcp__create. Fail closed when stdin is not a TTY. --yes opts in explicitly."
+    },
+    {
+      "id": "W2MCP-03",
+      "rule_id": "CN008",
+      "title": "w2mcp__create silently replaced an existing registered server",
+      "cwe": "CWE-639",
+      "path": "src/hub.ts",
+      "line": 108,
+      "status": "fixed",
+      "severity": "medium",
+      "confidence": "medium",
+      "evidence": [
+        "Found by the same fresh session: createServerFromSource overwrote reg[name] and the live downstream connection with no existence check, so any connected agent could swap a trusted server, and the change persisted in registry.json.",
+        "340f83a throws before fetching the source when the name exists in the registry or among live downstream servers."
+      ],
+      "attack_path": [
+        "An agent connected to the hub (possibly steered by injected text) calls w2mcp__create with the name of an existing server",
+        "At 7672f5d the trusted server was replaced by one generated from the new source"
+      ],
+      "counterevidence": [],
+      "proof_gaps": [],
+      "validation": {
+        "method": "static",
+        "result": "Guard added before any fetch or write. Confirmed by source reading only. No runtime test was run because the hub module starts its transport on import."
+      },
+      "remediation": "Refuse to replace an existing name from a tool call. Replacement stays an operator action (edit registry.json)."
+    },
+    {
+      "id": "W2MCP-04",
+      "rule_id": "CN007",
+      "title": "Credential exposure through an attacker-specified base_url",
+      "cwe": "CWE-201",
+      "path": "src/openapi.ts",
+      "line": 129,
+      "status": "needs_review",
+      "severity": "medium",
+      "confidence": "low",
+      "evidence": [
+        "An attacker spec sets base_url from servers[0].url, and its title decides which *_TOKEN env var the server reads."
+      ],
+      "attack_path": [],
+      "counterevidence": [],
+      "proof_gaps": [
+        "Needs proof that a matching token exists in the hub's environment in a real deployment. The W2MCP-01 and W2MCP-03 fixes remove the code and replacement paths, not an attacker-chosen base_url for a new name."
+      ],
+      "validation": {
+        "method": "static",
+        "result": "Not reproduced."
+      },
+      "remediation": "Pin base_url to the spec or docs origin, or require confirmation when they differ. Never forward a token to a host the user has not confirmed."
+    },
+    {
+      "id": "W2MCP-05",
+      "rule_id": "CN006",
+      "title": "Docs path may let injected page text shape the generated model",
+      "cwe": "CWE-1427",
+      "path": "src/extract.ts",
+      "line": 1,
+      "status": "needs_review",
+      "severity": "low",
+      "confidence": "low",
+      "evidence": [
+        "w2mcp new <url> asks an LLM to extract api_name, base_url and endpoints from page text an attacker may control."
+      ],
+      "attack_path": [],
+      "counterevidence": [],
+      "proof_gaps": [
+        "Depends on a live model following injected text in the page. Not tested."
+      ],
+      "validation": {
+        "method": "not_run",
+        "result": "Not tested against a live model."
+      },
+      "remediation": "Treat extraction output as untrusted. Validate base_url against the docs origin and show a diff before generating."
+    },
+    {
+      "id": "W2MCP-06",
+      "rule_id": "CN001",
+      "title": "Path traversal through the create name",
+      "cwe": "CWE-22",
+      "path": "src/hub.ts",
+      "line": 110,
+      "status": "dismissed",
+      "severity": "info",
+      "confidence": "high",
+      "evidence": [
+        "Candidate: the name passed to w2mcp__create becomes a directory under out/."
+      ],
+      "attack_path": [],
+      "counterevidence": [
+        "The name is sanitized with [^\\w-]+ to '-' before joining the path, so separators and dots cannot traverse."
+      ],
+      "proof_gaps": [],
+      "validation": {
+        "method": "static",
+        "result": "Dismissed by source reading."
+      },
+      "remediation": "None."
+    },
+    {
+      "id": "W2MCP-07",
+      "rule_id": "CN001",
+      "title": "Code injection through endpoint names, paths, params, headers, error meanings or noise fields",
+      "cwe": "CWE-94",
+      "path": "src/generate.ts",
+      "line": 53,
+      "status": "dismissed",
+      "severity": "info",
+      "confidence": "high",
+      "evidence": [
+        "Candidate: other model fields are spliced into generated code too."
+      ],
+      "attack_path": [],
+      "counterevidence": [
+        "Every one of those values is emitted through JSON.stringify, tokenEnv is sanitized, and error codes are validated as numbers in model.ts."
+      ],
+      "proof_gaps": [],
+      "validation": {
+        "method": "static",
+        "result": "Dismissed by source reading."
+      },
+      "remediation": "None."
+    }
+  ]
+}
