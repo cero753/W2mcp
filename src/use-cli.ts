@@ -119,12 +119,30 @@ function flag(args: string[], name: string): string | undefined {
   return i >= 0 ? args[i + 1] : undefined;
 }
 
+/** Writes and hub server creation change state, so the agent loop asks before running them. */
+export function needsApproval(name: string, tool?: { description?: string; annotations?: { destructiveHint?: boolean; readOnlyHint?: boolean } }): boolean {
+  if (name === "w2mcp__create" || name.endsWith("__w2mcp__create")) return true;
+  if (tool?.annotations?.readOnlyHint === true) return false;
+  if (tool?.annotations?.destructiveHint === true) return true;
+  return /^\[UNVERIFIED WRITE\]/.test(String(tool?.description ?? ""));
+}
+
+async function confirmAction(name: string, args: unknown): Promise<boolean> {
+  if (!process.stdin.isTTY) return false; // no human at the terminal: fail closed
+  const rl = createInterface({ input: process.stdin, output: process.stderr });
+  try {
+    const ans = await rl.question(c.y(`  ? the agent wants to run ${name}(${JSON.stringify(args).slice(0, 300)}). Allow? [y/N] `));
+    return /^y(es)?$/i.test(ans.trim());
+  } finally { rl.close(); }
+}
+
 async function main() {
   const argv = process.argv.slice(2);
   const cmd = argv[0];
   const dir = flag(argv, "--dir");
   const hub = argv.includes("--hub");
-  const rest = argv.slice(1).filter((a, i, arr) => a !== "--dir" && a !== "--hub" && arr[i - 1] !== "--dir");
+  const autoApprove = argv.includes("--yes");
+  const rest = argv.slice(1).filter((a, i, arr) => a !== "--dir" && a !== "--hub" && a !== "--yes" && arr[i - 1] !== "--dir");
 
   if (cmd === "init") {
     // Write LLM_API_KEY / LLM_BASE_URL / LLM_MODEL to .env. Interactive, or --key/--base-url/--model for scripts.
@@ -251,6 +269,15 @@ async function main() {
           let a: any = {}; try { a = JSON.parse(tc.function.arguments || "{}"); } catch {}
           console.error(c.dim(`  ⚙ ${c.g(name)}(${JSON.stringify(a)})`));
           let out: string;
+          // Tool results go back to the model, so a write or create could be proposed because of injected
+          // text in an API response. Writes and server creation need a human yes (or --yes).
+          const tool = tools.find((t: any) => t.name === name);
+          if (needsApproval(name, tool) && !(autoApprove || await confirmAction(name, a))) {
+            out = "The user declined this action. Do not retry it; answer with what you have.";
+            console.error(c.y(`  ✗ declined ${name}`));
+            messages.push({ role: "tool", tool_call_id: tc.id, content: out });
+            continue;
+          }
           try { out = extractText(await run.call(name, a)); } catch (e: any) { out = "ERROR: " + (e?.message ?? e); }
           messages.push({ role: "tool", tool_call_id: tc.id, content: out.slice(0, 4000) });
         }

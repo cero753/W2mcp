@@ -103,6 +103,9 @@ async function sourceToModel(source: string) {
 }
 
 async function createServerFromSource(name: string, source: string): Promise<{ dir: string; tools: string[]; api: string }> {
+  // Refuse to replace a registered server: a tool call (possibly driven by injected text) must not be
+  // able to swap a trusted server for one generated from an attacker's spec.
+  if (loadRegistry()[name] || downstream.has(name)) throw new Error(`a server named '${name}' already exists; pick a new name (remove it from registry.json by hand to replace it)`);
   const model = await sourceToModel(source);
   const dir = join(ROOT, "out", name.replace(/[^\w-]+/g, "-"));
   mkdirSync(dir, { recursive: true });
