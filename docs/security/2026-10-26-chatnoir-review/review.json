@@ -6,8 +6,8 @@
   "target": {
     "snapshot_sha256": "ac5aafbbb0601683935861c5311fb7d422cda47859183136f075ac5c275d3232",
     "git_head": "340f83aa15e9c08892beffa54ecbc050c688a30d",
-    "dirty": false,
-    "dirty_reason": null,
+    "dirty": null,
+    "dirty_reason": "not checked: Git clean/process filters are configured",
     "inventory_strategy": "Seven reviewed and fix-relevant files at the fix commit 340f83a. The review itself ran on 7672f5d.",
     "files": [
       {
@@ -62,7 +62,7 @@
     "deferred": [],
     "limitations": [
       "Scope: the agent-permissions focus of ChatNoir's guided first review. Authentication of the hub HTTP mode and web/server.ts was noted as out of scope and not assessed.",
-      "Method: a fresh headless Claude Code session did the source review with read-only tools (Read, Grep, Glob, python helper). Runtime reproductions and fixes were done afterwards in a separate session.",
+      "Method: a fresh headless Claude Code session did the source review. It used Read, Grep, Glob, the Skill tool and four read-only PowerShell commands (git metadata, file listing, ChatNoir first-review). No permission denials occurred. Runtime reproductions and fixes were done afterwards in a separate session.",
       "Runtime evidence uses synthetic local inputs and a scripted model. It does not measure how often real models follow injected text.",
       "Not read by the review session: drift-cli.ts, gen-cli.ts, store.ts, clean.ts, render.yaml, fly.toml. No dependency or secret scanning.",
       "The ChatNoir baseline scan returned 0 candidates on this TypeScript project. Its agent rule families are Python AST rules, so all findings came from the guided source review."
@@ -71,7 +71,7 @@
   "findings": [
     {
       "id": "W2MCP-01",
-      "rule_id": "CN001",
+      "rule_id": "CODEGEN-INJECTION-001",
       "title": "Untrusted API title becomes executable code in every generated server",
       "cwe": "CWE-94",
       "path": "src/generate.ts",
@@ -80,7 +80,7 @@
       "severity": "high",
       "confidence": "high",
       "evidence": [
-        "Found by a fresh, independent Claude Code 2.1.283 session (claude-opus-5-5) that loaded ChatNoir v0.4.1 by name. It ran read-only and did not execute any code.",
+        "Found by a fresh, independent Claude Code 2.1.283 session (claude-opus-5-5) that loaded ChatNoir v0.4.1 by name. It ran no target code. Its only commands were read-only: git ls-files, rev-parse and status, a file listing, and ChatNoir's own first-review helper.",
         "At 7672f5d, generateServer spliced model.api_name unescaped into a block comment, a double-quoted string and a template literal of server.ts. model.ts only checks that api_name is a string.",
         "openapi.ts copies spec.info.title verbatim into api_name. The docs path takes it from LLM output.",
         "Runtime reproduction (test-api-name-injection.mjs): a synthetic spec whose title closes the comment and calls process.getBuiltinModule('fs').writeFileSync wrote the marker file when the generated server started under tsx, as w2mcp starts servers. The same test on 340f83a wrote nothing."
@@ -101,7 +101,7 @@
     },
     {
       "id": "W2MCP-02",
-      "rule_id": "CN007",
+      "rule_id": "AGENT-TOOL-DISPATCH-001",
       "title": "Tool output can drive state-changing tool calls in w2mcp ask without approval",
       "cwe": "CWE-862",
       "path": "src/use-cli.ts",
@@ -129,7 +129,7 @@
     },
     {
       "id": "W2MCP-03",
-      "rule_id": "CN008",
+      "rule_id": "AGENT-REGISTRY-001",
       "title": "w2mcp__create silently replaced an existing registered server",
       "cwe": "CWE-639",
       "path": "src/hub.ts",
@@ -155,7 +155,7 @@
     },
     {
       "id": "W2MCP-04",
-      "rule_id": "CN007",
+      "rule_id": "CREDENTIAL-EGRESS-001",
       "title": "Credential exposure through an attacker-specified base_url",
       "cwe": "CWE-201",
       "path": "src/openapi.ts",
@@ -179,7 +179,7 @@
     },
     {
       "id": "W2MCP-05",
-      "rule_id": "CN006",
+      "rule_id": "AGENT-RETRIEVED-CONTENT-001",
       "title": "Docs path may let injected page text shape the generated model",
       "cwe": "CWE-1427",
       "path": "src/extract.ts",
@@ -203,7 +203,7 @@
     },
     {
       "id": "W2MCP-06",
-      "rule_id": "CN001",
+      "rule_id": "PATH-001",
       "title": "Path traversal through the create name",
       "cwe": "CWE-22",
       "path": "src/hub.ts",
@@ -227,7 +227,7 @@
     },
     {
       "id": "W2MCP-07",
-      "rule_id": "CN001",
+      "rule_id": "CODEGEN-INJECTION-002",
       "title": "Code injection through endpoint names, paths, params, headers, error meanings or noise fields",
       "cwe": "CWE-94",
       "path": "src/generate.ts",

@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Tool | [ChatNoir](https://github.com/fhajjej-ship-it/ChatNoir) v0.4.1, installed with `scripts/install.py --harness claude` |
-| Host | Claude Code 2.1.283, model `claude-opus-5-5`, fresh headless session, read-only tools |
+| Host | Claude Code 2.1.283, model `claude-opus-5-5`, fresh headless session. It used Read, Grep, Glob, the Skill tool and four read-only PowerShell commands (git metadata, a file listing, ChatNoir's `first-review`). It ran no target code and hit no permission denials. |
 | Discovery | ChatNoir was loaded by name through the Skill tool, then `first-review.md`, `agent-security.md`, `review.md` and `evidence.md` |
 | Focus | Agent permissions |
 | Reviewed revision | `7672f5d` |

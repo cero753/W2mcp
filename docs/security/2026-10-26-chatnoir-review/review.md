@@ -24,7 +24,7 @@ fixed · high · src&#47;generate&#46;ts:117
 
 Evidence:
 
-- Found by a fresh&#44; independent Claude Code 2&#46;1&#46;283 session &#40;claude&#45;opus&#45;5&#45;5&#41; that loaded ChatNoir v0&#46;4&#46;1 by name&#46; It ran read&#45;only and did not execute any code&#46;
+- Found by a fresh&#44; independent Claude Code 2&#46;1&#46;283 session &#40;claude&#45;opus&#45;5&#45;5&#41; that loaded ChatNoir v0&#46;4&#46;1 by name&#46; It ran no target code&#46; Its only commands were read&#45;only&#58; git ls&#45;files&#44; rev&#45;parse and status&#44; a file listing&#44; and ChatNoir&#39;s own first&#45;review helper&#46;
 - At 7672f5d&#44; generateServer spliced model&#46;api&#95;name unescaped into a block comment&#44; a double&#45;quoted string and a template literal of server&#46;ts&#46; model&#46;ts only checks that api&#95;name is a string&#46;
 - openapi&#46;ts copies spec&#46;info&#46;title verbatim into api&#95;name&#46; The docs path takes it from LLM output&#46;
 - Runtime reproduction &#40;test&#45;api&#45;name&#45;injection&#46;mjs&#41;&#58; a synthetic spec whose title closes the comment and calls process&#46;getBuiltinModule&#40;&#39;fs&#39;&#41;&#46;writeFileSync wrote the marker file when the generated server started under tsx&#44; as w2mcp starts servers&#46; The same test on 340f83a wrote nothing&#46;
@@ -147,7 +147,7 @@ Remediation: None&#46;
 Reviewed by this mode: 7 files. Deferred: 0. Skipped: 0.
 
 - Scope&#58; the agent&#45;permissions focus of ChatNoir&#39;s guided first review&#46; Authentication of the hub HTTP mode and web&#47;server&#46;ts was noted as out of scope and not assessed&#46;
-- Method&#58; a fresh headless Claude Code session did the source review with read&#45;only tools &#40;Read&#44; Grep&#44; Glob&#44; python helper&#41;&#46; Runtime reproductions and fixes were done afterwards in a separate session&#46;
+- Method&#58; a fresh headless Claude Code session did the source review&#46; It used Read&#44; Grep&#44; Glob&#44; the Skill tool and four read&#45;only PowerShell commands &#40;git metadata&#44; file listing&#44; ChatNoir first&#45;review&#41;&#46; No permission denials occurred&#46; Runtime reproductions and fixes were done afterwards in a separate session&#46;
 - Runtime evidence uses synthetic local inputs and a scripted model&#46; It does not measure how often real models follow injected text&#46;
 - Not read by the review session&#58; drift&#45;cli&#46;ts&#44; gen&#45;cli&#46;ts&#44; store&#46;ts&#44; clean&#46;ts&#44; render&#46;yaml&#44; fly&#46;toml&#46; No dependency or secret scanning&#46;
 - The ChatNoir baseline scan returned 0 candidates on this TypeScript project&#46; Its agent rule families are Python AST rules&#44; so all findings came from the guided source review&#46;
