@@ -13,3 +13,4 @@ w2mcp-store.json
 w2mcp-learnings.json
 .test-store.json
 *.log
+.tmp/
